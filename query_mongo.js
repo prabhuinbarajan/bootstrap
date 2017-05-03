@@ -15,11 +15,21 @@ print ("try { ");
 print ("db.Toolchain.deleteOne( { \"_id\" : ObjectId(\"58e56a68acac5a0020e2b930\") } ); ");
 print ("db.Toolchain.deleteOne( { \"_id\" : ObjectId(\"58e3fad09a148400216611cc\") } ); ");
 print ("db.Toolchain.deleteOne( { \"_id\" : ObjectId(\"58e573feacac5a001de2b932\") } ); ");
+print ("db.Toolchain.deleteOne( { \"_id\" : ObjectId(\"5909a34697b368001ead237a\") } ); ");
+
 print ("}catch (e) { ");
 print (" print (e); "); 
 print("}");
 print ( "db.Toolchain.insertMany(" );
-db.Toolchain.find({"orgId":"150e18f6-0165-34ad-ad30-8577b03eadb4", $or: [ { "_id": ObjectId("58e56a68acac5a0020e2b930") }, { "_id": ObjectId("58e3fad09a148400216611cc") }, { "_id": ObjectId("58e573feacac5a001de2b932") } ]}).toArray()
+db.Toolchain.find(
+    {"orgId":"150e18f6-0165-34ad-ad30-8577b03eadb4", $or: [
+        { "_id": ObjectId("58e56a68acac5a0020e2b930") },
+        { "_id": ObjectId("58e3fad09a148400216611cc") },
+        { "_id": ObjectId("58e573feacac5a001de2b932") } ,
+        { "_id": ObjectId("5909a34697b368001ead237a") }
+
+       ]
+    }).toArray()
 print ( ");" );
 
 

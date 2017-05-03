@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e -x
 if [ -z "$(which mongo)" ]; then
      echo "Please install mongo with homebrew mongo" 
      exit -1;
