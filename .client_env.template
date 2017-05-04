@@ -1,0 +1,6 @@
+VAULT_TOKEN=<vault_token>
+UNSEAL_KEY=<unseal_key>
+
+TENANT=qubeship
+ENV_TYPE=dev
+ENV_ID=qubeship_dev
