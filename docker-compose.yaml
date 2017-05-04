@@ -333,7 +333,7 @@ services:
       - /opt/${QUBE_BUILDER_JOBS_DIR_PATH}:/data:rw
       - /opt/${QUBE_BUILDER_JENKINS_HOME}:/opt:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /usr/local/bin/docker:/usr/bin/docker:z
+      - /usr/local/bin/docker:/usr/local/bin/docker:z
 
   qube_builder_slave:
     env_file: .env
@@ -367,3 +367,16 @@ services:
       - git_listener
     links:
       - git_listener:http
+
+  qube-vault:
+    image: vault
+    container_name: qube-vault
+    volumes:
+      - ./qubeship_home/vault/file:/vault/file:rw
+      - ./qubeship_home/vault/config:/vault/config:rw
+      - ./qubeship_home/firebase:/vault/data:rw
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/
+    environment:
+      VAULT_ADDR: http://127.0.0.1:8200
