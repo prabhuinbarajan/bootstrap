@@ -4,3 +4,5 @@ load.js*
 !.client_env.template
 qubeship_home/
 qube_vault_log
+.data/
+

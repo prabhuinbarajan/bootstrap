@@ -330,8 +330,8 @@ services:
       - "${QUBE_BUILDER_ADDL_PORT}:${QUBE_BUILDER_ADDL_PORT}"
       - "8000:8000"
     volumes:
-      - /opt/${QUBE_BUILDER_JOBS_DIR_PATH}:/data:rw
-      - /opt/${QUBE_BUILDER_JENKINS_HOME}:/opt:rw
+      - $PWD/.data/${QUBE_BUILDER_JOBS_DIR_PATH}:/data:rw
+      - $PWD/.data/${QUBE_BUILDER_JENKINS_HOME}:/opt:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /usr/local/bin/docker:/usr/local/bin/docker:z
 
