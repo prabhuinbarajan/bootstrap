@@ -1,0 +1,371 @@
+version: '2'
+# docker login -e $(gcloud auth list | grep ACTIVE | grep qubeship.io | awk '{print $2}')  -u _token -p "$(gcloud auth print-access-token)" https://gcr.io
+volumes:
+  qubeship-mongo-data:
+  qubeship-postgres-data:
+  builder_home_data:
+  builder_home_opt:
+
+services:
+  api_tenant:
+    env_file: .env
+    environment:
+      DEFAULT_LISTENER_PORT: ${TENANT_API_PORT}
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+    image: ${TENANT_API_IMAGE}:${TENANT_API_VERSION}
+    ports:
+      - "${TENANT_API_PORT}:${TENANT_API_PORT}"
+
+  api_auth:
+    env_file: .env
+    environment:
+      VIRTUAL_PATH: $AUTH_API_PATH
+      DEFAULT_LISTENER_PORT: ${AUTH_API_PORT}
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+      TENANT_API_URL: http://api_tenant:${TENANT_API_PORT}/v1/tenants
+    image: ${AUTH_API_IMAGE}:${AUTH_API_VERSION}
+    depends_on:
+      - api_tenant
+    ports:
+      - "${AUTH_API_PORT}:${AUTH_API_PORT}"
+    links:
+      - api_tenant
+
+  api_project:
+    env_file: .env
+    environment:
+      SPEC_PATH: $PROJECT_API_SPEC_PATH
+      VIRTUAL_PATH: $PROJECT_API_PATH
+      DEFAULT_LISTENER_PORT: ${PROJECT_API_PORT}
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+      AUTH_API_URL: http://api_auth:${AUTH_API_PORT}/v1/auth
+      QUBE_MONGODB_PORT_27017_TCP_ADDR: qube_mongodb
+      QUBE_MONGODB_PORT_27017_TCP_PORT: ${MONGO_PORT}
+      QUBE_SERVER_ADDR: api_registry:${API_REGISTRY_PORT}
+      QUBE_SERVER_SCHEME: http
+#      LISTENER_URL: ${NGROK_HOSTNAME}
+    image: ${PROJECT_API_IMAGE}:${PROJECT_API_VERSION}
+    ports:
+      - "${PROJECT_API_PORT}:${PROJECT_API_PORT}"
+    depends_on:
+      - api_auth
+      - qube_mongodb
+    links:
+      - api_auth
+      - qube_mongodb
+      - ngrok
+
+  api_pipeline:
+    env_file: .env
+    environment:
+      VIRTUAL_PATH: $PIPELINE_API_PATH
+      DEFAULT_LISTENER_PORT: ${PIPELINE_API_PORT}
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+      AUTH_API_URL: http://api_auth:${AUTH_API_PORT}/v1/auth
+    image: ${PIPELINE_API_IMAGE}:${PIPELINE_API_VERSION}
+    ports:
+      - "${PIPELINE_API_PORT}:${PIPELINE_API_PORT}"
+    depends_on:
+      - qube_postgres
+      - api_auth
+    links:
+      - qube_postgres:${PIPELINE_DB_HOST}
+      - api_auth
+
+  api_pipeline_v2:
+    env_file: .env
+    environment:
+      VIRTUAL_PATH: $ARTIFACTS_API_PATH
+      DEFAULT_LISTENER_PORT: $ARTIFACTS_API_PORT
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      ARTIFACTS_MONGOALCHEMY_DATABASE: artifacts
+      ARTIFACTS_MONGOALCHEMY_CONNECTION_STRING: mongodb://mongo:$MONGO_PORT/artifacts
+      ARTIFACTS_MONGOALCHEMY_SERVER: mongo
+      ARTIFACTS_MONGOALCHEMY_PORT: $MONGO_PORT
+    image: "${ARTIFACTS_API_IMAGE}:${ARTIFACTS_API_VERSION}"
+    ports:
+      - "${ARTIFACTS_API_PORT}:${ARTIFACTS_API_PORT}"
+    depends_on:
+       - qube_mongodb
+    links:
+       - qube_mongodb:mongo
+
+  api_toolchains:
+    env_file: .env
+    environment:
+      VIRTUAL_PATH: $TOOLCHAIN_API_PATH
+      DEFAULT_LISTENER_PORT: $TOOLCHAIN_API_PORT
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+      AUTH_API_URL: http://api_auth:${AUTH_API_PORT}/v1/auth
+      TOOLCHAIN_MONGOALCHEMY_DATABASE: toolchain
+      TOOLCHAIN_MONGOALCHEMY_CONNECTION_STRING: mongodb://mongo:$MONGO_PORT/toolchain
+      TOOLCHAIN_MONGOALCHEMY_SERVER: mongo
+      TOOLCHAIN_MONGOALCHEMY_PORT: $MONGO_PORT
+    image: "${TOOLCHAIN_API_IMAGE}:${TOOLCHAIN_API_VERSION}"
+    ports:
+      - "${TOOLCHAIN_API_PORT}:${TOOLCHAIN_API_PORT}"
+    depends_on:
+       - qube_mongodb
+       - api_auth
+    links:
+       - qube_mongodb:mongo
+       - api_auth
+
+  api_opinions:
+    env_file: .env
+    environment:
+      VIRTUAL_PATH: $OPINIONS_API_PATH
+      DEFAULT_LISTENER_PORT: ${OPINIONS_API_PORT}
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+      OPINIONS_MONGOALCHEMY_DATABASE: opinions
+      OPINIONS_MONGOALCHEMY_CONNECTION_STRING: mongodb://mongo:$MONGO_PORT/opinions
+      OPINIONS_MONGOALCHEMY_SERVER: mongo
+      OPINIONS_MONGOALCHEMY_PORT: $MONGO_PORT
+      AUTH_API_URL: http://api_auth:${AUTH_API_PORT}/v1/auth
+    image: "${OPINIONS_API_IMAGE}:${OPINIONS_API_VERSION}"
+    ports:
+      - "${OPINIONS_API_PORT}:${OPINIONS_API_PORT}"
+    depends_on:
+       - qube_mongodb
+    links:
+       - qube_mongodb:mongo
+
+  api_endpoints:
+    env_file: .env
+    environment:
+      DEFAULT_LISTENER_PORT: ${ENDPOINTS_API_PORT}
+      SPEC_PATH: $ENDPOINTS_API_SPEC_PATH
+      VIRTUAL_PATH: $ENDPOINTS_API_PATH
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+      AUTH_API_URL: http://api_auth:${AUTH_API_PORT}/v1/auth
+      QUBE_MONGODB_PORT_27017_TCP_ADDR: qube_mongodb
+      QUBE_MONGODB_PORT_27017_TCP_PORT: ${MONGO_PORT}
+    image: ${ENDPOINTS_API_IMAGE}:${ENDPOINTS_API_VERSION}
+    depends_on:
+      - api_auth
+      - qube_mongodb
+    ports:
+      - "${ENDPOINTS_API_PORT}:${ENDPOINTS_API_PORT}"
+    links:
+      - api_auth
+      - qube_mongodb
+
+  api_qubeservice:
+    env_file: .env
+    environment:
+      VIRTUAL_PATH: $QUBESERVICE_API_PATH
+      DEFAULT_LISTENER_PORT: ${QUBESERVICE_API_PORT}
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+      QUBESERVICE_MONGOALCHEMY_DATABASE: qubeservice
+      QUBESERVICE_MONGOALCHEMY_CONNECTION_STRING: mongodb://mongo:$MONGO_PORT/qubeservice
+      QUBESERVICE_MONGOALCHEMY_SERVER: mongo
+      QUBESERVICE_MONGOALCHEMY_PORT: $MONGO_PORT
+      AUTH_API_URL: http://api_auth:${AUTH_API_PORT}${AUTH_API_PATH}
+      ENDPOINT_API_URL: http://api_endpoints:${ENDPOINTS_API_PORT}${ENDPOINTS_API_PATH}
+      OPINION_API_URL: http://api_opinions:${OPINIONS_API_PORT}${OPINIONS_API_PATH}
+      TOOLCHAIN_API_URL: http://api_toolchains:${TOOLCHAIN_API_PORT}${TOOLCHAIN_API_PATH}
+      PROJECT_API_URL: http://api_project:${PROJECT_API_PORT}${PROJECT_API_PATH}
+      DEFAULT_TOOLCHAIN_IDS: 58e56a68acac5a0020e2b930,58e3fad09a148400216611cc
+      DEFAULT_OPINION_IDS: 58e5596a13d0cc000e88a95d
+      DEFAULT_ENDPOINT_IDS: 58e3fad42a0603000b3e58a8,58edb422238503000b74d7a6
+    image: "${QUBESERVICE_API_IMAGE}:${QUBESERVICE_API_VERSION}"
+    ports:
+      - "${QUBESERVICE_API_PORT}:${QUBESERVICE_API_PORT}"
+    depends_on:
+       - qube_mongodb
+    links:
+       - qube_mongodb:mongo
+       - api_auth
+       - api_endpoints
+       - api_project
+       - api_toolchains
+       - api_opinions
+
+  qube_events_listener:
+    env_file: .env
+    environment:
+      DEFAULT_LISTENER_PORT: ${QUBE_EVENTS_LISTENER_PORT}
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+    image: ${QUBE_EVENTS_LISTENER_IMAGE}:${QUBE_EVENTS_LISTENER_VERSION}
+    depends_on:
+      - qube_builder
+    links:
+      - qube_builder
+
+  api_registry:
+    env_file: .env
+    environment:
+      DEFAULT_LISTENER_PORT: ${API_REGISTRY_INTERNAL_PORT}
+      API_REGISTRY_PORT: ${API_REGISTRY_PORT}
+      API_REGISTRY_INTERNAL_PORT: ${API_REGISTRY_INTERNAL_PORT}
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+    image: ${API_REGISTRY_IMAGE}:${API_REGISTRY_VERSION}
+    ports:
+      - "${API_REGISTRY_PORT}:${API_REGISTRY_PORT}"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+       - api_auth
+       - qube_mongodb
+       - qube_postgres
+       - qube_events_listener
+       - api_endpoints
+       - api_pipeline
+       - api_pipeline_v2
+       - api_project
+       - api_tenant
+       - api_toolchains
+       - api_opinions
+       - api_qubeservice
+
+  qube_mongodb:
+    env_file: .env
+    image: ${MONGO_IMAGE}
+    ports:
+      - "${MONGO_PORT}:${MONGO_PORT}"
+    volumes:
+      - qubeship-mongo-data:/data/db
+
+  qube_postgres:
+    env_file: .env
+    image: ${POSTGRES_IMAGE}
+    volumes:
+      - qubeship-postgres-data:/var/lib/postgresql/data
+
+  qube_builder:
+    env_file: .env
+    environment:
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+      JAVA_OPTS: ${QUBE_BUILDER_JAVA_OPTS}
+      JNLP_SLAVE_IMAGE: ${JNLP_SLAVE_BASE_IMAGE}:${JNLP_SLAVE_VERSION}
+      QUBE_SERVER_ADDR: $API_URL_BASE
+    image: ${QUBE_BUILDER_IMAGE}:${QUBE_BUILDER_VERSION}
+    ports:
+      - "${QUBE_BUILDER_PORT}:${QUBE_BUILDER_PORT}"
+      - "${QUBE_BUILDER_ADDL_PORT}:${QUBE_BUILDER_ADDL_PORT}"
+      - "8000:8000"
+    volumes:
+      - builder_home_data:/data:rw
+      - builder_home_opt:/opt:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /usr/local/bin/docker:/usr/local/bin/docker:z
+
+  qube_builder_slave:
+    env_file: .env
+    image: ${JNLP_SLAVE_BASE_IMAGE}:${JNLP_SLAVE_VERSION}
+
+  git_listener:
+    env_file: .env
+    environment:
+      DEFAULT_LISTENER_PORT: ${GIT_LISTENER_PORT}
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      ENV_TYPE: ${ENV_TYPE}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+    image: ${GIT_LISTENER_IMAGE}:${GIT_LISTENER_VERSION}
+    ports:
+      - "${GIT_LISTENER_PORT}:80"
+
+  cli:
+    env_file: .env
+    image: ${CLI_IMAGE}:${CLI_VERSION}
+    command: [qube,"--version"]
+
+  ngrok:
+    env_file: .env
+    environment:
+      NGROK_AUTH: ${NGROK_AUTH}
+      NGROK_HOSTNAME: ${NGROK_HOSTNAME}
+    image: wernight/ngrok
+    command: [ngrok,"http","--authtoken", "${NGROK_AUTH}" , "--hostname", "${NGROK_HOSTNAME}", "http:80"]
+    ports:
+      - "4040:4040"
+    depends_on:
+      - git_listener
+    links:
+      - git_listener:http
+
+  qube-vault:
+    image: vault
+    container_name: qube-vault
+    volumes:
+      - ./qubeship_home/vault/file:/vault/file:rw
+      - ./qubeship_home/vault/config:/vault/config:rw
+      - ./qubeship_home/firebase:/vault/data:rw
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/
+    environment:
+      VAULT_ADDR: http://127.0.0.1:8200
+
+

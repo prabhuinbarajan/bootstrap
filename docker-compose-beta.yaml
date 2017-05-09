@@ -1,0 +1,19 @@
+version: '2'
+# docker login -e $(gcloud auth list | grep ACTIVE | grep qubeship.io | awk '{print $2}')  -u _token -p "$(gcloud auth print-access-token)" https://gcr.io
+services:
+  qubeship_app:
+    env_file: .env
+    environment:
+      DEFAULT_LISTENER_PORT: ${APP_PORT}
+      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
+      VAULT_TOKEN: ${VAULT_TOKEN}
+      ENV_ID: ${ENV_ID}
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      VAULT_ADDR: ${VAULT_ADDR}
+      TENANT: ${TENANT}
+      ENV_TYPE: ${ENV_TYPE}
+      URL_BASE: ${API_URL_BASE}
+    image: ${APP_IMAGE}:${APP_VERSION}
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+
