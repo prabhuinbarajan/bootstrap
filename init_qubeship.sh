@@ -5,13 +5,16 @@ if [ -e .client_env ]; then
 	exit 0
 fi
 
+QUBE_CONSUL_SERVICE=qube-consul
 QUBE_VAULT_SERVICE=qube-vault
 LOG_FILE=qube_vault_log
 
-# copy vault config.json and firebase.json to busybox
+# copy vault config.json, firebase.json, and consul.json to busybox
 docker-compose up -d busybox
 docker cp qubeship_home/vault/data/ "$(docker-compose ps -q busybox)":/vault/
+docker cp qubeship_home/consul/data/ "$(docker-compose ps -q busybox)":/consul/
 
+########################## START: VAULT INITIALIZATION ##########################
 # start qube-vault service
 docker-compose up -d $QUBE_VAULT_SERVICE
 
@@ -45,6 +48,12 @@ $RUN_CMD write $BASE_PATH/$TENANT/$ENV_TYPE/$ENV_ID/supertoken value=$VAULT_TOKE
 $RUN_CMD write $BASE_PATH/$TENANT/$ENV_TYPE/$ENV_ID/usercreds_writer_token value=$VAULT_TOKEN
 # firebase
 $RUN_CMD write $BASE_PATH/$TENANT/$ENV_TYPE/$ENV_ID/firebase_qubeship api_key=$FIREBASE_API_KEY service_key=@/vault/data/qubeship_firebase.json
+########################## END: VAULT INITIALIZATION ##########################
+
+########################## START: CONSUL INITIALIZATION ##########################
+# start qube-consul service
+docker-compose up -d $QUBE_CONSUL_SERVICE
+########################## END: CONSUL INITIALIZATION ##########################
 
 # install qubeship cli
 curl -sL http://cli.qubeship.io/install.sh | sh

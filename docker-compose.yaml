@@ -7,6 +7,7 @@ volumes:
   builder_home_opt:
   vault_file:
   vault_data:
+  qubeship-consul-data:
 
 services:
   api_tenant:
@@ -16,13 +17,15 @@ services:
       CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
       VAULT_TOKEN: ${VAULT_TOKEN}
       ENV_ID: ${ENV_ID}
-      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
+      CONF_SERVER_ADDR: qube-consul:$CONSUL_PORT
       VAULT_ADDR: ${VAULT_ADDR}
       TENANT: ${TENANT}
       ENV_TYPE: ${ENV_TYPE}
     image: ${TENANT_API_IMAGE}:${TENANT_API_VERSION}
     ports:
       - "${TENANT_API_PORT}:${TENANT_API_PORT}"
+    links:
+      - qube-consul
 
   api_auth:
     env_file: .env
@@ -374,3 +377,13 @@ services:
     container_name: busybox
     volumes:
       - vault_data:/vault/data:rw
+      - qubeship-consul-data:/consul/data:rw
+
+  qube-consul:
+    image: consul:latest
+    container_name: qube-consul
+    command: agent -server -bootstrap -ui -client 0.0.0.0 -config-file=/consul/data/consul.json
+    volumes:
+      - qubeship-consul-data:/consul/data:rw
+    ports:
+      - "${CONSUL_PORT}:${CONSUL_PORT}"
