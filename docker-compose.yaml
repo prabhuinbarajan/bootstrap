@@ -3,6 +3,10 @@ version: '2'
 volumes:
   qubeship-mongo-data:
   qubeship-postgres-data:
+  builder_home_data:
+  builder_home_opt:
+  vault_file:
+  vault_data:
 
 services:
   api_tenant:
@@ -41,26 +45,6 @@ services:
     links:
       - api_tenant
 
-  qubeship_app:
-    env_file: .env
-    environment:
-      DEFAULT_LISTENER_PORT: ${APP_PORT}
-      CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
-      VAULT_TOKEN: ${VAULT_TOKEN}
-      ENV_ID: ${ENV_ID}
-      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
-      VAULT_ADDR: ${VAULT_ADDR}
-      TENANT: ${TENANT}
-      ENV_TYPE: ${ENV_TYPE}
-      URL_BASE: ${API_URL_BASE}
-    image: ${APP_IMAGE}:${APP_VERSION}
-    ports:
-      - "${APP_PORT}:${APP_PORT}"
-    links:
-      - api_auth
-      - api_pipeline
-      - api_project
-
   api_project:
     env_file: .env
     environment:
@@ -79,7 +63,7 @@ services:
       QUBE_MONGODB_PORT_27017_TCP_PORT: ${MONGO_PORT}
       QUBE_SERVER_ADDR: api_registry:${API_REGISTRY_PORT}
       QUBE_SERVER_SCHEME: http
-      LISTENER_URL: ${NGROK_HOSTNAME}
+#      LISTENER_URL: ${NGROK_HOSTNAME}
     image: ${PROJECT_API_IMAGE}:${PROJECT_API_VERSION}
     ports:
       - "${PROJECT_API_PORT}:${PROJECT_API_PORT}"
@@ -89,6 +73,7 @@ services:
     links:
       - api_auth
       - qube_mongodb
+      - ngrok
 
   api_pipeline:
     env_file: .env
@@ -330,8 +315,8 @@ services:
       - "${QUBE_BUILDER_ADDL_PORT}:${QUBE_BUILDER_ADDL_PORT}"
       - "8000:8000"
     volumes:
-      - $PWD/.data/${QUBE_BUILDER_JOBS_DIR_PATH}:/data:rw
-      - $PWD/.data/${QUBE_BUILDER_JENKINS_HOME}:/opt:rw
+      - builder_home_data:/data:rw
+      - builder_home_opt:/opt:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /usr/local/bin/docker:/usr/local/bin/docker:z
 
@@ -349,10 +334,14 @@ services:
       ENV_TYPE: ${ENV_TYPE}
       VAULT_TOKEN: ${VAULT_TOKEN}
       ENV_ID: ${ENV_ID}
-      QUBE_URL: http://qube_platform/api/v1/webhooks/
     image: ${GIT_LISTENER_IMAGE}:${GIT_LISTENER_VERSION}
     ports:
       - "${GIT_LISTENER_PORT}:80"
+
+  cli:
+    env_file: .env
+    image: ${CLI_IMAGE}:${CLI_VERSION}
+    command: [qube,"--version"]
 
   ngrok:
     env_file: .env
@@ -372,11 +361,16 @@ services:
     image: vault
     container_name: qube-vault
     volumes:
-      - ./qubeship_home/vault/file:/vault/file:rw
-      - ./qubeship_home/vault/config:/vault/config:rw
-      - ./qubeship_home/firebase:/vault/data:rw
+      - vault_file:/vault/file:rw
+      - vault_data:/vault/data:rw
     cap_add:
       - IPC_LOCK
-    entrypoint: vault server -config=/vault/config/
+    entrypoint: vault server -config=/vault/data/vault.json
     environment:
       VAULT_ADDR: http://127.0.0.1:8200
+
+  busybox:
+    image: busybox
+    container_name: busybox
+    volumes:
+      - vault_data:/vault/data:rw

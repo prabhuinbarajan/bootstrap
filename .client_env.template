@@ -1,6 +1,8 @@
 VAULT_TOKEN=<vault_token>
 UNSEAL_KEY=<unseal_key>
 
+FIREBASE_API_KEY=AIzaSyDJ-zZsUmVV-l_VDhyyHrtlnseqGDZqlbQ
+
 TENANT=qubeship
 ENV_TYPE=dev
 ENV_ID=qubeship_dev

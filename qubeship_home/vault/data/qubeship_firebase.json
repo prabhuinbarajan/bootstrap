@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "qubeship-sandbox",
+  "private_key_id": "0a0c9d261e5066761648d50f83c557c24c07f1cd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCwlJcdqQNwmbsj\nfJKXVwnfTTBnT23AL8vbGE3sOh8wxBT3b3qrUvLVtPQXPp1bgC65789OR8n5jB8I\nkyUsrjzW49avd/xn8HD3GBvlwGmCARLpwplfnJPsbxrftSsG/bVkCnxQRzw3xYK0\npxom8aKbjVFOSSwF+aOByhehI5bZkWwiy/TUyT5CxoRW30dMVC/cNvChQSCv0N4D\nNtmBDt4EiW7jVzHlTJ8YJk0AhCREEoko/A+Rz8KyH8C/oVH1GG5+KSRTuMYqK8CG\npTWnFsTC+Tg3Zu1RX0UQ2D/xDPjKpxtoPlt7ATVLUiUW/obblPuRKH00p4ehCA4v\nDe1jYOOZAgMBAAECggEADCH5jCErylXVxOdvTxS86ens1Hxhpx3hnOk7mWqY8AnZ\nAvNW82ScqNBpIRu9Ric1jrMKhG9sUkgtbbJmkH5cUcuP2bid0Cp2KJQwfoXM+hDG\n0ub7ENW6WDl+GDbjgPR3vSr3RbDPU2mvxGfi5SAfMx7vojhm3PY9JNLU8s52M/ar\ngpkPw5oxdd397lZ6aXxMOvpzUv8noDobohbfKq43XTnUyxjrkyt4sh7OXZjlrcPk\ndfItFO/waxbg90CwYFd6KdV97RBC5xIfjl3FtMufiqIHuxptXrug64GxYZ+y3ELH\nzz+4ueWBWNBJhDjS0btjiMoqwDARctBJTXvXdDZQcQKBgQDzULyyeurXW38bJO75\nezHIXA8nBi3FKybxx0xUD5ySAYGsun/U4lgx9lhbzuU4AUKXa5S5ubByHA1wostT\ny22UIw7hmDlfgiHvrsgxV4K6PsJbsOGkAf3xfrBnq5oriU65WlW1Ux632v6sX1XY\nLobdRlo6TqkL7al+IlYVRxID9QKBgQC5yTcXVX5giF5ycWsArBWD6RBKdibviVc2\nadKvpuvmDYlgqgXi1WodkFnhtRoo/z2nY1DDj2ih4aqdFNbsbGs1Pi9dtH6M12TM\ncBd0nbrLVyfjkUGp5Aur923kP7OytUjqYZ6+gn32rw2yVdsbV+/438Wz9HHMNViH\nphgKIup+lQKBgQDlU35WVkXLbsBRDDF00KkuJ55ccJVpFW/iR65oOEKg1myrKShc\ntGzdwkqrVUhzzbQ+1TXbCuoD0u7T74vmUYDZM2XOONQycYucxUaIQuvCsG4tT3yM\nQRhgqcCIJZPsXsDlMABCI7J7JRwNyNk3JTsViT53YDYyOPEcIi6yZUbUlQKBgQC1\nf+7zO9GHyxHB6i2n7XXjdZg1tnHZR6pM/VsXwRHqoMTaC6BOd0IA+dnlWADjll+M\nHMl1E7AbnhQI+6fwNwcRb9vkRoXvYCoYU1WG1uT66/2LI4gryh7g9IuGFfmfF93R\nJGdqJJ+clG3kEF5Ku0E0OKCzapaV8nO3qbsIhA3kdQKBgQCmEr6jVfkSw4PFmpKY\n7FyioHaYBMGVkBIrUECWn0oB2xuwozK2G16gPvgNO34km1qeXycjZPWcuHkWX0ax\nNS+zSLDsENtdknADs3opre5TbA0cGJmQTS+iTBukmR3loF1VeQHrDrxOYQCpDG8F\nE2HkwuU5/3sit2q6aHF+zV1j1g==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-68wqd@qubeship-sandbox.iam.gserviceaccount.com",
+  "client_id": "110427419663348963480",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-68wqd%40qubeship-sandbox.iam.gserviceaccount.com"
+}
