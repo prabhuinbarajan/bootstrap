@@ -17,7 +17,7 @@ services:
       CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
       VAULT_TOKEN: ${VAULT_TOKEN}
       ENV_ID: ${ENV_ID}
-      CONF_SERVER_ADDR: qube-consul:$CONSUL_PORT
+      CONF_SERVER_ADDR: ${CONF_SERVER_ADDR}
       VAULT_ADDR: ${VAULT_ADDR}
       TENANT: ${TENANT}
       ENV_TYPE: ${ENV_TYPE}
@@ -371,6 +371,8 @@ services:
     entrypoint: vault server -config=/vault/data/vault.json
     environment:
       VAULT_ADDR: http://127.0.0.1:8200
+    ports:
+      - "${VAULT_PORT}:${VAULT_PORT}"
 
   busybox:
     image: busybox
