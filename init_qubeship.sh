@@ -69,7 +69,7 @@ sed -ibak "s/<vault_port>/$VAULT_PORT/g" .client_env
 sed -ibak "s/<consul_addr>/$QUBE_HOST/g" .client_env
 sed -ibak "s/<consul_port>/$CONSUL_PORT/g" .client_env
 sed -ibak "s#<api_url_base>#$API_URL_BASE#g" .client_env
-
+#github api url adjustments
 if [ ! -z "$GITHUB_ENTERPRISE_HOST" ]; then
     echo "GITHUB_API_URL=$GITHUB_ENTERPRISE_HOST/api/v3" >> .client_env
     echo "GITHUB_URL=$GITHUB_ENTERPRISE_HOST" >> .client_env
@@ -77,6 +77,7 @@ if [ ! -z "$GITHUB_ENTERPRISE_HOST" ]; then
     echo "GITHUB_TOKEN_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/access_token" >> .client_env
 
 fi
+
 
 
 # export variables in .client_env
