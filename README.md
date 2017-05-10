@@ -1,41 +1,32 @@
 # bootstrap
-docker-compose for starting all Qubeship components
-
-----
-
-# Steps
-
-### Install bootstrap
+1. clone the repo
 ```
-curl -sSL https://github.com/Qubeship/bootstrap/blob/master/bootstrap.sh | sh
-# or
-wget -qO- https://github.com/Qubeship/bootstrap/blob/master/bootstrap.sh | sh
+git clone https://github.com/Qubeship/bootstrap
+```
+2. edit the qubeship_home/config/qubeship.config file
+
+3.  run the configuration script
+```
+  ./init_qubeship.sh
 ```
 
-### Add the following lines to .bashrc or .bash_profile and replace the values with your own ones:
+4. start qubeship 
 ```
-export ENV_ID=YOUR_ID
-export CONF_SERVER_TOKEN=xyz-1234-abcd-xyz
-export VAULT_TOKEN=xyz-1234-abcd-xyz
+  ./run.sh
 ```
-
-### Run
+5. run the post configuration script and login as qubebuilder
 ```
-./run.sh all # to run everything including jenkins
-./run.sh     # to run API and app modules only
+   ./post_configuration.sh 
 ```
 
-### Run ngrok 
-In case of `./run.sh all`,
+6. start using qubeship
 ```
-./run_ngrok.sh
+  
 ```
 
-----
-
-# Troubleshooting
-
-### Container(s) failed to start due to the inefficient disk space
-```
-docker volume rm `docker volume ls -q -f dangling=true`
-```
+# Prerequisites
+1. Docker Runtime v1.11 and above
+2. Text Editor
+3. Curl 
+4. A valid docker host
+`
