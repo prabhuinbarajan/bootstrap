@@ -12,6 +12,12 @@ if [ -e .client_env ]; then
 	echo 'ERROR : qubeship is already pre-configured.'
 	exit 0
 fi
+QUBE_CONFIG_FILE=qubeship_home/config/qubeship.config
+
+if [ ! -e $QUBE_CONFIG_FILE ]; then
+	echo "ERROR : config file not found $QUBE_CONFIG_FILE"
+	exit 0
+fi
 
 if [ ! -f /usr/local/bin/docker-compose ]; then
   curl -L "https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -63,6 +69,7 @@ cat qubeship_home/consul/data/consul.json.template | jq --arg acl_master_token "
 sed -ibak "s#<conf_server_token>#${consul_access_token}#g" .client_env
 echo "sourcing .client_env"
 source .client_env
+source qubeship_home/config/qubeship.config
 
 set -o allexport
 

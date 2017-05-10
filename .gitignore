@@ -1,7 +1,8 @@
 .idea
-
+load.js*
 .client_env*
 !.client_env.template
 qube_vault_log
 .data/
 consul.json
+qubeship.config
