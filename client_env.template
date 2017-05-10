@@ -7,4 +7,5 @@ CONF_SERVER_ADDR=<consul_addr>:<consul_port>
 VAULT_ADDR=http://<vault_addr>:<vault_port>
 TENANT=qubeship
 ENV_TYPE=dev
+API_URL_BASE=<api_url_base>
 

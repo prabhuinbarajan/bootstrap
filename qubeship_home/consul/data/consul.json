@@ -2,5 +2,5 @@
   "acl_datacenter": "dc1",
   "acl_default_policy": "allow",
   "acl_down_policy": "allow",
-  "acl_master_token": "da39a303-9903-49b7-a00f-24cabc1db947"
+  "acl_master_token": "4b69dd75-72dd-4c13-9754-107e8b4228a8"
 }

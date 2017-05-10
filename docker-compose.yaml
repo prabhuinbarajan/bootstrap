@@ -65,6 +65,7 @@ services:
       QUBE_MONGODB_PORT_27017_TCP_ADDR: qube_mongodb
       QUBE_MONGODB_PORT_27017_TCP_PORT: ${MONGO_PORT}
       QUBE_SERVER_ADDR: api_registry:${API_REGISTRY_PORT}
+      CI_ADDR: http://qube_builder:${QUBE_BUILDER_PORT}
       QUBE_SERVER_SCHEME: http
 #      LISTENER_URL: ${NGROK_HOSTNAME}
     image: ${PROJECT_API_IMAGE}:${PROJECT_API_VERSION}
@@ -73,6 +74,7 @@ services:
     depends_on:
       - api_auth
       - qube_mongodb
+      - qube_builder
     links:
       - api_auth
       - qube_mongodb
@@ -189,6 +191,7 @@ services:
       AUTH_API_URL: http://api_auth:${AUTH_API_PORT}/v1/auth
       QUBE_MONGODB_PORT_27017_TCP_ADDR: qube_mongodb
       QUBE_MONGODB_PORT_27017_TCP_PORT: ${MONGO_PORT}
+      CI_ADDR: http://qube_builder:${QUBE_BUILDER_PORT}
     image: ${ENDPOINTS_API_IMAGE}:${ENDPOINTS_API_VERSION}
     depends_on:
       - api_auth
@@ -198,6 +201,7 @@ services:
     links:
       - api_auth
       - qube_mongodb
+      - qube_builder
 
   api_qubeservice:
     env_file: .env
@@ -318,8 +322,8 @@ services:
       - "${QUBE_BUILDER_ADDL_PORT}:${QUBE_BUILDER_ADDL_PORT}"
       - "8000:8000"
     volumes:
-      - builder_home_data:/data:rw
-      - builder_home_opt:/opt:rw
+      - ./qubeship_home/builder/data:/data:rw
+      - ./qubeship_home/builder/opt:/opt:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /usr/local/bin/docker:/usr/local/bin/docker:z
 

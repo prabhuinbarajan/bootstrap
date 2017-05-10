@@ -4,5 +4,6 @@ load.js*
 !.client_env.template
 qube_vault_log
 .data/
-consul.json
-qubeship.config
+**/consul.json*
+**/qubeship.config
+**/qubeship_home/*
