@@ -5,3 +5,4 @@ load.js*
 qube_vault_log
 .data/
 consul.json
+qubeship.config
