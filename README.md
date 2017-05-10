@@ -23,3 +23,10 @@ git clone https://github.com/Qubeship/bootstrap
 ```
   
 ```
+
+# Prerequisites
+1. Docker Runtime v1.11 and above
+2. Text Editor
+3. Curl 
+4. A valid docker host
+`
