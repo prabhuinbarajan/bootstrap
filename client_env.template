@@ -1,0 +1,10 @@
+UNSEAL_KEY=<unseal_key>
+FIREBASE_API_KEY=AIzaSyDJ-zZsUmVV-l_VDhyyHrtlnseqGDZqlbQ
+CONF_SERVER_TOKEN=<conf_server_token>
+VAULT_TOKEN=<vault_token>
+ENV_ID=qubeship_dev
+CONF_SERVER_ADDR=<consul_addr>:<consul_port>
+VAULT_ADDR=http://<vault_addr>:<vault_port>
+TENANT=qubeship
+ENV_TYPE=dev
+
