@@ -14,3 +14,6 @@ docker-compose down -v
 if [ !  -z "$BETA_ACCESS_USERNAME" ]; then
     docker-compose -f docker-compose-beta.yaml down -v
 fi
+
+rm -rf qubeship_home/builder/data/*
+rm -rf qubeship_home/builder/opt/*

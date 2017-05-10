@@ -55,6 +55,10 @@ VAULT_TOKEN=$(cat $LOG_FILE | awk -F': ' 'NR==2{print $2}' | tr -d '\r')
 
 # unseal vault server
 $RUN_VAULT_CMD unseal $UNSEAL_KEY
+echo "sourcing $QUBE_CONFIG_FILE"
+
+source $QUBE_CONFIG_FILE
+
 echo "copying client template"
 cp client_env.template .client_env
 # put key and token to .client_env
@@ -64,7 +68,15 @@ sed -ibak "s/<vault_addr>/$QUBE_HOST/g" .client_env
 sed -ibak "s/<vault_port>/$VAULT_PORT/g" .client_env
 sed -ibak "s/<consul_addr>/$QUBE_HOST/g" .client_env
 sed -ibak "s/<consul_port>/$CONSUL_PORT/g" .client_env
-sed -ibak "s/<api_url_base>/$API_URL_BASE/g" .client_env
+sed -ibak "s#<api_url_base>#$API_URL_BASE#g" .client_env
+
+if [ ! -z "$GITHUB_ENTERPRISE_HOST" ]; then
+    echo "GITHUB_API_URL=$GITHUB_ENTERPRISE_HOST/api/v3" >> .client_env
+    echo "GITHUB_URL=$GITHUB_ENTERPRISE_HOST/api/v3" >> .client_env
+    echo "GITHUB_AUTH_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/authorize" >> .client_env
+    echo "GITHUB_TOKEN_URL=https://$GITHUB_ENTERPRISE_HOST/login/oauth/access_token" >> .client_env
+
+fi
 
 
 # export variables in .client_env
@@ -76,7 +88,7 @@ sed -ibak "s/<api_url_base>/$API_URL_BASE/g" .client_env
 sed -ibak "s#<conf_server_token>#${consul_access_token}#g" .client_env
 echo "sourcing .client_env"
 source .client_env
-source qubeship_home/config/qubeship.config
+
 
 set -o allexport
 
