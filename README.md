@@ -26,7 +26,7 @@ git clone https://github.com/Qubeship/bootstrap
 
 # Prerequisites
 1. Docker Runtime v1.11 and above
-2. docker-compose
+2. Docker-compose
 3. Text Editor
 4. Curl 
 5. A valid docker host
