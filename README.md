@@ -29,6 +29,7 @@ The settings can be found from your GITHUB account, "settings" section and under
 # Prerequisites
 1. Docker Runtime v1.11 and above
 2. Docker-compose
+3. [Docker-machine](https://github.com/docker/machine/releases)
 3. Text Editor
 4. Curl 
 5. A valid docker host
