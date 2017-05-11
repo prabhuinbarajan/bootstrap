@@ -34,8 +34,7 @@ QUBE_HOST=$(echo $DOCKER_HOST | awk '{ sub(/tcp:\/\//, ""); sub(/:.*/, ""); prin
 API_URL_BASE=http://$QUBE_HOST:$API_REGISTRY_PORT
 
 consul_access_token=$(uuidgen | tr '[:upper:]' '[:lower:]')
-cat qubeship_home/consul/data/consul.json.template | jq --arg acl_master_token "${consul_access_token}"  '.acl_master_token=$acl_master_token' > qubeship_home/consul/data/consul.json
-
+sed "s#\$consul_acl_master_token#$consul_access_token#g" qubeship_home/consul/data/consul.json.template  > qubeship_home/consul/data/consul.json
 # copy vault config.json, firebase.json, and consul.json to busybox
 docker-compose up -d busybox
 docker cp qubeship_home/vault/data/ "$(docker-compose ps -q busybox)":/vault/
