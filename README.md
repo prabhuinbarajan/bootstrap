@@ -31,3 +31,46 @@ git clone https://github.com/Qubeship/bootstrap
 4. Curl 
 5. A valid docker host
 `
+
+
+----
+# Deploying specific open source Qubeship services
+
+### 1. Bring down running Qubeship if one is running from previous Bootstrap execution
+```
+  ./down.sh
+ ```
+ Docker container pertaining to Qubeship should all have stopped and removed.
+ 
+### 2. Remove docker image of the service you want to replace
+```
+  docker rmi <imageid>
+```
+
+### 3. Configure the .env file
+
+- Make a backup of this file in case you would like to revert back to the community container images.
+
+Update the image repository of the image you want to replace
+
+- Go to the  section under "# images" and to the line that starts with "<service>_IMAGE" where <service> is the name of the service whose image is to be replaced.  Specify the repository where the new image exist.
+
+Eg:
+```
+  TOOLCHAIN_API_IMAGE=johndoerepo/api_toolchain
+```
+
+- Go to the section under "# version" and tot he line stat starts with "<service>_VERSION" where <service> is the name of the service whose image is to be replaced
+Eg:
+```
+  TOOLCHAIN_API_VERSION=latest
+```
+
+Save the changes.
+
+### 4. Using the command line, login your docker repository 
+
+### 5. Run bootstrap.sh
+
+If everything is OK, the service from the new image should be executing in the Qubehship enviornment started by Bootstrap
+
