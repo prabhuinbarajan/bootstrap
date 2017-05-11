@@ -2,8 +2,10 @@
 1. clone the repo
 ```
 git clone https://github.com/Qubeship/bootstrap
+git checkout community_beta 
 ```
-2. edit the qubeship_home/config/qubeship.config file
+2. edit the qubeship_home/config/qubeship.config file.
+The settings can be found from your GITHUB account, "settings" section and under "OAuth applications"
 
 3.  run the configuration script
 ```
