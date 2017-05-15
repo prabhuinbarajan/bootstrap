@@ -40,7 +40,7 @@ git checkout community_beta
 ```
 ----
 
-## Qubeship  Configuration Guide Qubeship  Configuration Guide
+## Qubeship  Configuration Guide
 
 ### Step 1:  your Docker Endpoint :
 *  your docker host is where Qubeship services will be displayed. You will need this in order to configure Qubeship Oauth applications in github. For the purpose , we will refer to this information as DOCKER_ENDPOINT.  There are three variants for running docker , and they all can result in different DOCKER_ENDPOINT , consequently different Qubeship Service endpoints:  
