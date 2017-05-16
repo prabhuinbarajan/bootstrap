@@ -3,12 +3,23 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 set -o allexport +e
 source .env
-set  -e
+
 # copy .client_env.template to .client_env
-if [ -z $DOCKER_HOST ]; then
-    echo "ERROR : DOCKER_HOST environment variable has not been set. exiting"
+output=`docker ps -a`
+docker_client_status=$?
+
+if [ $docker_client_status -ne 0 ]; then
+    echo "ERROR : Docker doesnt seem to be running. is your docker running?"
     exit -1
 fi
+
+set  -e
+
+QUBE_DOCKER_HOST=${DOCKER_HOST:-localhost}
+if [ -z $DOCKER_HOST ]; then
+    echo "INFO: DOCKER_HOST is not defined. setting QUBE_DOCKER_HOST to $QUBE_DOCKER_HOST"
+fi
+
 if [ -e .client_env ]; then
 	echo 'ERROR : qubeship is already pre-configured.'
 	exit 0
@@ -30,7 +41,7 @@ fi
 QUBE_CONSUL_SERVICE=qube-consul
 QUBE_VAULT_SERVICE=qube-vault
 LOG_FILE=qube_vault_log
-QUBE_HOST=$(echo $DOCKER_HOST | awk '{ sub(/tcp:\/\//, ""); sub(/:.*/, ""); print $0}')
+QUBE_HOST=$(echo $QUBE_DOCKER_HOST | awk '{ sub(/tcp:\/\//, ""); sub(/:.*/, ""); print $0}')
 API_URL_BASE=http://$QUBE_HOST:$API_REGISTRY_PORT
 
 consul_access_token=$(uuidgen | tr '[:upper:]' '[:lower:]')

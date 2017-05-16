@@ -339,6 +339,8 @@ services:
       GITHUB_AUTH_URL: ${GITHUB_AUTH_URL}
       GITHUB_TOKEN_URL: ${GITHUB_TOKEN_URL}
     image: ${QUBE_BUILDER_IMAGE}:${QUBE_BUILDER_VERSION}
+#    entrypoint: bash
+#    command: ["-c",  "sleep 300"]
     depends_on:
       - qube-vault-opener
     ports:
@@ -346,8 +348,8 @@ services:
       - "${QUBE_BUILDER_ADDL_PORT}:${QUBE_BUILDER_ADDL_PORT}"
       - "8000:8000"
     volumes:
-      - ./qubeship_home/builder/data:/data:rw
-      - ./qubeship_home/builder/opt:/opt:rw
+      - builder_home_data:/data:rw
+      - builder_home_opt:/opt:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /usr/local/bin/docker:/usr/local/bin/docker:z
 
