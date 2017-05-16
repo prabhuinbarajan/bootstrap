@@ -19,8 +19,9 @@ You should be able to run the following command and get a valid output:
 1. Clone the repo
 ```
 git clone https://github.com/Qubeship/bootstrap
-git checkout community_beta 
+cd bootstrap ; git checkout community_beta 
 ```
+
 2. Edit the qubeship_home/config/qubeship.config file.
 You can find the NGROK_HOSTNAME, NGROK_AUTH, BETA_ACCESS_USERNAME, and BETA_ACCESS_TOKEN in your Welcome Kit email. You can obtain the
 client ID and secret information from your GitHub account in the "Settings" section under "0Auth applications." Specific doc
@@ -45,7 +46,7 @@ If you have any questions, please reach out to us at contactus@qubeship.io
 
 
 7. Uninstall.  
-If you want to reset qubeship on your machine, please use `uninstall` command. It will remove all generted configuration files from the sub-folders of bootstrap. After that, you can optionally run `./init_qubeship.sh` again to re-initialize bootstrap.
+If you want to reset qubeship on your machine, please use `uninstall` command. It will remove all generted configuration files from the sub-folders of bootstrap. After that, you can re-initialize the bootstrap by starting from step 3 above.
 
 
 ----
