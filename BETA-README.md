@@ -46,7 +46,10 @@ If you have any questions, please reach out to us at contactus@qubeship.io
 
 
 7. Uninstall.  
-If you want to reset qubeship on your machine, please use `uninstall` command. It will remove all generted configuration files from the sub-folders of bootstrap. After that, you can re-initialize the bootstrap by starting from step 3 above.
+If you want to reset qubeship on your machine, please use `uninstall.sh` command. It will remove all generted configuration files from the sub-folders of bootstrap. After that, you can re-initialize the bootstrap by starting from step 3 above.
+```
+   ./uninstall.sh 
+```
 
 
 ----
