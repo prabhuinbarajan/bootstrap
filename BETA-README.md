@@ -42,7 +42,7 @@ on how to obtain this information below under "Configure Qubeship."
 ```
 
 6. Use Qubeship. You can find more documentation online at qubeship.io/docs. 
-If you have any questions, please reach out to us at contactus@qubeship.io
+If you have any questions, please reach out to us at support@qubeship.io
 
 
 7. Uninstall.  
