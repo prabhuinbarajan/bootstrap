@@ -1,4 +1,4 @@
-# Install Qubeship Beta
+# Install Qubeship Opensource
 
 ## Prerequisites
 
@@ -43,6 +43,12 @@ on how to obtain this information below under "Configure Qubeship."
 ```
 
 6. Use Qubeship. You can find more documentation online at qubeship.io/docs. 
+
+7. To Uninstall Qubeship , you can run  
+```
+   ./uninstall.sh 
+```
+this will uninstall qubeship, destroy all the data you have setup. But this will leave the configuration files under qubeship_home as is. You can start from step 3 if you want to reinstall qubeship
 
 If you have any questions, please reach out to us at support@qubeship.io
 
@@ -112,12 +118,4 @@ GITHUB_BUILDER_SECRET=
 # Qubeship Builder Authentication Realm
 GITHUB_CLI_CLIENTID=
 GITHUB_CLI_SECRET=
-
-# optional - use only for beta users. please refer to welcome kit and copy paste these values
-NGROK_HOSTNAME=
-NGROK_AUTH=
-BETA_ACCESS_USERNAME=
-BETA_ACCESS_TOKEN=
-```
-
 
