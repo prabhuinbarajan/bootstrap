@@ -1,5 +1,8 @@
 version: '2'
-# docker login -e $(gcloud auth list | grep ACTIVE | grep qubeship.io | awk '{print $2}')  -u _token -p "$(gcloud auth print-access-token)" https://gcr.io
+volumes:
+  docker-registry-data:
+  docker-registry-creds:
+
 services:
   qubeship_app:
     env_file: .env
@@ -17,3 +20,30 @@ services:
     ports:
       - "${APP_PORT}:${APP_PORT}"
 
+  docker-registry:
+    restart: always
+    image: registry:2
+    ports:
+      - 5001:5000
+    environment:
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/cert.pem
+      REGISTRY_HTTP_TLS_KEY: /certs/key.pem
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: Registry Realm
+    volumes:
+      - docker-registry-data:/var/lib/registry
+      - docker-registry-creds:/certs
+      - docker-registry-creds:/auth
+     # - ./qubeship_home/docker-registry/config.yml:/etc/docker/registry/config.yml
+    depends_on:
+      - registry_copy
+
+  registry_copy:
+    env_file: .env
+    image: ${QUBE_OPENSSL_IMAGE}:${QUBE_OPENSSL_VERSION}
+    #image: busybox
+    container_name: registry_copy
+    volumes:
+      - docker-registry-creds:/certs:rw
+      - docker-registry-creds:/auth:rw

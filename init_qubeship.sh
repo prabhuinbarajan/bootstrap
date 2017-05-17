@@ -68,6 +68,10 @@ $RUN_VAULT_CMD unseal $UNSEAL_KEY
 echo "sourcing $QUBE_CONFIG_FILE"
 
 source $QUBE_CONFIG_FILE
+if [ ! -z $BETA_ACCESS_USER_NAME ];  then
+    docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
+    docker-compose -f docker-compose-beta.yaml up -d docker-registry
+fi
 
 echo "copying client template"
 cp client_env.template .client_env
