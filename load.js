@@ -126,3 +126,36 @@ db.Opinion.insertMany(
 	}
 ]
 );
+
+use qubeship;
+db.endPoint.remove(
+    {_id: ObjectId("58edb422238503000b74d7a6")}
+);
+
+db.endPoint.insertMany(
+[
+    {
+        "_id" : ObjectId("58edb422238503000b74d7a6"),
+        "_class" : "com.ca.io.qubeship.model.EndPoint",
+        "tenant" : "4b95bf35-1b75-3e8a-8b02-6e4dd989e098",
+        "orgId" : "39928fd4-b86a-36bf-8a06-20932b88ba81",
+        "owner" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
+        "credentialId" : "925750d0-f719-4a69-8e07-5ff4f4fac400",
+        "credentialPath" : "secret/resources/39928fd4-b86a-36bf-8a06-20932b88ba81/production/creds/925750d0-f719-4a69-8e07-5ff4f4fac400",
+        "createdBy" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
+        "createdDate" : "1493916853258",
+        "modifiedBy" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
+        "modifiedDate" : "1493916853258",
+        "credentialType" : "username_password",
+        "name" : "Qubeship Default Docker Registry",
+        "provider" : "generic",
+        "category" : "production",
+        "endPoint" : "https://registry.beta.qubeship.io:5001/",
+        "type" : "registry",
+        "visibility" : "public_",
+        "isDefault" : true,
+        "additionalInfo" : {
+            "account" : "registry.beta.qubeship.io:5001/"
+        }
+    }
+]);

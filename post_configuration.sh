@@ -18,18 +18,14 @@ orgId=$(qube auth user-info --org | grep -A2 "orgs\":" | tail -1  | sed "s#,##g"
 ./mongo_load.sh $orgId
 
 qube service postconfiguration
+
+$DIR/run.sh
+
 if [ ! -z $BETA_ACCESS_USER_NAME ];  then
-    qube endpoints create --category production --endpoint-url https://registry.beta.qubeship.io/v2 \
-    --name default-registry --provider generic --type registry --default > /tmp/registry-ep.json
-    registry_endpoint_id=$(cat /tmp/registry-ep.json | grep "\"id\":" | sed "s#,##g"  | sed 's#"##g' | awk -F ":" '{ gsub(/ /, "", $2); print $2}')
+    registry_endpoint_id=58edb422238503000b74d7a6
     qube endpoints postcredential --endpoint-id $registry_endpoint_id \
         --credential-type username_password \
         --credential-data '{"username": "qubeship", "password":"qubeship"}'
-    echo "endpoint for default registry created successfully" && rm -rf /tmp/registry-ep.json
-
-    RUN_CONSUL_CMD="docker-compose exec $QUBE_CONSUL_SERVICE sh"
-    $RUN_CONSUL_CMD -c 'echo {\"DEFAULT_ENDPOINT_IDS\":\"$registry_endpoint_id\"}  | consul kv put qubeship/envs/'${ENV_TYPE}/${ENV_ID}'/settings -'
+    echo "endpoint for default registry created successfully"
 
 fi
-
-$DIR/run.sh
