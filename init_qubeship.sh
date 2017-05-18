@@ -1,7 +1,7 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
-set -o allexport +e
+set -o allexport +e -x
 source .env
 
 # copy .client_env.template to .client_env
@@ -24,12 +24,12 @@ if [ -e .client_env ]; then
 	echo 'ERROR : qubeship is already pre-configured.'
 	exit 0
 fi
-QUBE_CONFIG_FILE=qubeship_home/config/qubeship.config
+# QUBE_CONFIG_FILE=qubeship_home/config/qubeship.config
 
-if [ ! -e $QUBE_CONFIG_FILE ]; then
-	echo "ERROR : config file not found $QUBE_CONFIG_FILE"
-	exit 0
-fi
+# if [ ! -e $QUBE_CONFIG_FILE ]; then
+# 	echo "ERROR : config file not found $QUBE_CONFIG_FILE"
+# 	exit 0
+# fi
 
 if [ ! -f /usr/local/bin/docker-compose ]; then
   curl -L "https://github.com/docker/compose/releases/download/1.9.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -48,7 +48,9 @@ consul_access_token=$(uuidgen | tr '[:upper:]' '[:lower:]')
 sed "s#\$consul_acl_master_token#$consul_access_token#g" qubeship_home/consul/data/consul.json.template  > qubeship_home/consul/data/consul.json
 # copy vault config.json, firebase.json, and consul.json to busybox
 docker-compose up -d busybox
-docker cp qubeship_home/vault/data/ "$(docker-compose ps -q busybox)":/vault/
+for file in $(ls $DIR/qubeship_home/vault/data/) ; do
+    docker cp qubeship_home/vault/data/$file "$(docker-compose ps -q busybox)":/vault/data
+done
 docker cp qubeship_home/consul/data/consul.json "$(docker-compose ps -q busybox)":/consul/data/
 
 ########################## START: VAULT INITIALIZATION ##########################
@@ -65,12 +67,16 @@ VAULT_TOKEN=$(cat $LOG_FILE | awk -F': ' 'NR==2{print $2}' | tr -d '\r')
 
 # unseal vault server
 $RUN_VAULT_CMD unseal $UNSEAL_KEY
-echo "sourcing $QUBE_CONFIG_FILE"
 
-source $QUBE_CONFIG_FILE
-if [ ! -z $BETA_ACCESS_USER_NAME ];  then
+BETA_CONFIG_FILE=qubeship_home/config/beta.config
+SCM_CONFIG_FILE=qubeship_home/config/scm.config
+echo "sourcing $BETA_CONFIG_FILE"
+
+source $BETA_CONFIG_FILE
+if [ ! -z $BETA_ACCESS_USERNAME ];  then
     docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
     docker-compose -f docker-compose-beta.yaml up -d docker-registry
+    docker-compose -f docker-compose-beta.yaml run oauth_registrator $@ > $SCM_CONFIG_FILE
 fi
 
 echo "copying client template"
@@ -84,6 +90,7 @@ sed -ibak "s/<consul_addr>/$QUBE_HOST/g" .client_env
 sed -ibak "s/<consul_port>/$CONSUL_PORT/g" .client_env
 sed -ibak "s#<api_url_base>#$API_URL_BASE#g" .client_env
 #github api url adjustments
+echo "sourcing $SCM_CONFIG_FILE"
 if [ ! -z "$GITHUB_ENTERPRISE_HOST" ]; then
     echo "GITHUB_API_URL=$GITHUB_ENTERPRISE_HOST/api/v3" >> .client_env
     echo "GITHUB_URL=$GITHUB_ENTERPRISE_HOST" >> .client_env

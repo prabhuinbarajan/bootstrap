@@ -5,7 +5,8 @@ cd $DIR
 set -o allexport -x
 if [ -e .client_env ]; then
     source .client_env
-    source qubeship_home/config/qubeship.config
+    source qubeship_home/config/scm.config
+    source qubeship_home/config/beta.config
 else
   ./login.sh
 fi

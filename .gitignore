@@ -6,4 +6,6 @@ qube_vault_log
 .data/
 **/consul.json*
 **/qubeship.config
+**/beta.config
+**/scm.config
 **/qubeship_home/*

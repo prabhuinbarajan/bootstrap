@@ -13,7 +13,8 @@ fi
 set -o allexport
 if [ -e .client_env ]; then
     source .client_env
-    source qubeship_home/config/qubeship.config
+    source qubeship_home/config/scm.config
+    source qubeship_home/config/beta.config
     rm -rf ./.client_env*
 fi
 

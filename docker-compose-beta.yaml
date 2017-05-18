@@ -47,3 +47,11 @@ services:
     volumes:
       - docker-registry-creds:/certs:rw
       - docker-registry-creds:/auth:rw
+
+  oauth_registrator:
+    env_file: .env
+    environment:
+      APP_CB_URL: http://${QUBE_HOST}:${APP_PORT}/api/v1/auth/callback?provider=github
+      CLI_CB_URL: http://cli.qubeship.io/index.html
+      BUILDER_CB_URL: http://${QUBE_HOST}:${QUBE_BUILDER_PORT}/securityRealm/finishLogin
+    image: "${REGISTRATOR_IMAGE}:${REGISTRATOR_VERSION}"
