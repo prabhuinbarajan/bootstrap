@@ -20,9 +20,9 @@ if [ -e $BETA_CONFIG_FILE ] ; then
 fi
 echo "Please login with your qube builder url"
 qube auth login
-beta_access="false"
+is_beta="false"
 if [ ! -z $BETA_ACCESS_USER_NAME ];  then
-    beta_access="true"
+    is_beta="true"
 fi
 orgId=$(qube auth user-info --org | jq -r '.tenant.orgs[0].id')
 sed -ibak "s/39928fd4-b86a-36bf-8a06-20932b88ba81/${orgId}/g" load.js
