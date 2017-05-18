@@ -3,12 +3,19 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
 set -o allexport -x
+BETA_CONFIG_FILE=qubeship_home/config/beta.config
+SCM_CONFIG_FILE=qubeship_home/config/scm.config
+
 if [ -e .client_env ]; then
     source .client_env
-    source qubeship_home/config/scm.config
-    source qubeship_home/config/beta.config
 else
   ./login.sh
+fi
+if [ -e $SCM_CONFIG_FILE ] ; then
+    source $SCM_CONFIG_FILE
+fi
+if [ -e $BETA_CONFIG_FILE ] ; then
+    source $BETA_CONFIG_FILE
 fi
 services=$@
 set -e -x

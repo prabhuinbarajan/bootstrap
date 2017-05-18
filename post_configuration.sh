@@ -5,14 +5,19 @@ cd $DIR
 export PATH=$PATH:$DIR/qubeship_home/bin
 
 set -o allexport -x
+BETA_CONFIG_FILE=qubeship_home/config/beta.config
+SCM_CONFIG_FILE=qubeship_home/config/scm.config
 
 if [ -e .client_env ]; then
     source $DIR/.client_env
-    source $DIR/qubeship_home/config/scm.config
-    source $DIR/qubeship_home/config/beta.config
     source ~/.qube_cli_profile
 fi
-
+if [ -e $SCM_CONFIG_FILE ] ; then
+    source $SCM_CONFIG_FILE
+fi
+if [ -e $BETA_CONFIG_FILE ] ; then
+    source $BETA_CONFIG_FILE
+fi
 echo "Please login with your qube builder url"
 qube auth login
 beta_access="false"
