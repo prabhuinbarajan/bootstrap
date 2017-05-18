@@ -18,7 +18,7 @@ fi
 if [ -e $BETA_CONFIG_FILE ] ; then
     source $BETA_CONFIG_FILE
 fi
-echo "Please login with your qube builder url"
+echo "Please login with your qube builder user"
 qube auth login
 is_beta="false"
 if [ ! -z $BETA_ACCESS_USER_NAME ];  then
