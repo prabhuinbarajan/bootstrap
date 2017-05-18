@@ -4,7 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 export PATH=$PATH:$DIR/qubeship_home/bin
 
-set -o allexport -x
+set -o allexport -x -e
 BETA_CONFIG_FILE=qubeship_home/config/beta.config
 SCM_CONFIG_FILE=qubeship_home/config/scm.config
 
