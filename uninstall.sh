@@ -26,8 +26,6 @@ docker-compose down -v
 
 if [ !  -z "$BETA_ACCESS_USERNAME" ]; then
     docker-compose -f docker-compose-beta.yaml down -v
-    rm -rf qubeship_home/config/scm.config
-
 fi
 
 rm -rf qubeship_home/builder/data/*
