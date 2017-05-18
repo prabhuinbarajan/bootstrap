@@ -106,7 +106,13 @@ sed -ibak "s/<consul_addr>/$QUBE_HOST/g" .client_env
 sed -ibak "s/<consul_port>/$CONSUL_PORT/g" .client_env
 sed -ibak "s#<api_url_base>#$API_URL_BASE#g" .client_env
 #github api url adjustments
-echo "sourcing $SCM_CONFIG_FILE"
+if [ -f $SCM_CONFIG_FILE ] ; then
+    echo "sourcing $SCM_CONFIG_FILE"
+    source $SCM_CONFIG_FILE
+else
+    echo "ERROR: $SCM_CONFIG_FILE not found. please create the file $SCM_CONFIG_FILE. follow $SCM_CONFIG_FILE.template and retry install"
+    exit -1
+fi
 if [ ! -z "$GITHUB_ENTERPRISE_HOST" ]; then
     echo "GITHUB_API_URL=$GITHUB_ENTERPRISE_HOST/api/v3" >> .client_env
     echo "GITHUB_URL=$GITHUB_ENTERPRISE_HOST" >> .client_env
