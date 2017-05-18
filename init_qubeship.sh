@@ -83,9 +83,12 @@ $RUN_VAULT_CMD unseal $UNSEAL_KEY
 
 BETA_CONFIG_FILE=qubeship_home/config/beta.config
 SCM_CONFIG_FILE=qubeship_home/config/scm.config
-echo "sourcing $BETA_CONFIG_FILE"
-
-source $BETA_CONFIG_FILE
+if [ -f $BETA_CONFIG_FILE ]; then
+    echo "sourcing $BETA_CONFIG_FILE"
+    source $BETA_CONFIG_FILE
+else
+    echo "INFO: $BETA_CONFIG_FILE not found. possibly running community edition"
+fi
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
     docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
     docker-compose -f docker-compose-beta.yaml up -d docker-registry
