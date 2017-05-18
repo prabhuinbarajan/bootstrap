@@ -1,11 +1,11 @@
 use toolchain;
-try { 
-db.Toolchain.deleteOne( { "_id" : ObjectId("58e56a68acac5a0020e2b930") } ); 
-db.Toolchain.deleteOne( { "_id" : ObjectId("58e3fad09a148400216611cc") } ); 
-db.Toolchain.deleteOne( { "_id" : ObjectId("58e573feacac5a001de2b932") } ); 
-db.Toolchain.deleteOne( { "_id" : ObjectId("5909a34697b368001ead237a") } ); 
-}catch (e) { 
- print (e); 
+try {
+db.Toolchain.deleteOne( { "_id" : ObjectId("58e56a68acac5a0020e2b930") } );
+db.Toolchain.deleteOne( { "_id" : ObjectId("58e3fad09a148400216611cc") } );
+db.Toolchain.deleteOne( { "_id" : ObjectId("58e573feacac5a001de2b932") } );
+db.Toolchain.deleteOne( { "_id" : ObjectId("5909a34697b368001ead237a") } );
+}catch (e) {
+ print (e);
 }
 db.Toolchain.insertMany(
 [
@@ -101,11 +101,11 @@ db.Toolchain.insertMany(
 	}
 ]
 );
-use opinions; 
-try { 
+use opinions;
+try {
 db.Opinion.deleteOne( { "_id" : ObjectId("58e5596a13d0cc000e88a95d") } );
-}catch (e) { 
- print (e); 
+}catch (e) {
+ print (e);
 }
 db.Opinion.insertMany(
 [
@@ -126,36 +126,65 @@ db.Opinion.insertMany(
 	}
 ]
 );
+if (beta_access) {
+    use qubeship;
+    db.endPoint.remove(
+        {_id: ObjectId("58edb422238503000b74d7a6")}
+    );
+    db.endPoint.remove(
+        {_id: ObjectId("58e3fad42a0603000b3e58a8")}
+    );
 
-use qubeship;
-db.endPoint.remove(
-    {_id: ObjectId("58edb422238503000b74d7a6")}
-);
-
-db.endPoint.insertMany(
-[
-    {
-        "_id" : ObjectId("58edb422238503000b74d7a6"),
-        "_class" : "com.ca.io.qubeship.model.EndPoint",
-        "tenant" : "4b95bf35-1b75-3e8a-8b02-6e4dd989e098",
-        "orgId" : "39928fd4-b86a-36bf-8a06-20932b88ba81",
-        "owner" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
-        "credentialId" : "925750d0-f719-4a69-8e07-5ff4f4fac400",
-        "credentialPath" : "secret/resources/39928fd4-b86a-36bf-8a06-20932b88ba81/production/creds/925750d0-f719-4a69-8e07-5ff4f4fac400",
-        "createdBy" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
-        "createdDate" : "1493916853258",
-        "modifiedBy" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
-        "modifiedDate" : "1493916853258",
-        "credentialType" : "username_password",
-        "name" : "Qubeship Default Docker Registry",
-        "provider" : "generic",
-        "category" : "production",
-        "endPoint" : "https://registry.beta.qubeship.io:5001/",
-        "type" : "registry",
-        "visibility" : "public_",
-        "isDefault" : true,
-        "additionalInfo" : {
-            "account" : "registry.beta.qubeship.io:5001/"
+    db.endPoint.insertMany(
+    [
+        {
+            "_id" : ObjectId("58edb422238503000b74d7a6"),
+            "_class" : "com.ca.io.qubeship.model.EndPoint",
+            "tenant" : "4b95bf35-1b75-3e8a-8b02-6e4dd989e098",
+            "orgId" : "39928fd4-b86a-36bf-8a06-20932b88ba81",
+            "owner" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
+            "credentialId" : "925750d0-f719-4a69-8e07-5ff4f4fac400",
+            "credentialPath" : "secret/resources/39928fd4-b86a-36bf-8a06-20932b88ba81/production/creds/925750d0-f719-4a69-8e07-5ff4f4fac400",
+            "createdBy" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
+            "createdDate" : "1493916853258",
+            "modifiedBy" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
+            "modifiedDate" : "1493916853258",
+            "credentialType" : "username_password",
+            "name" : "Qubeship Default Docker Registry",
+            "provider" : "generic",
+            "category" : "production",
+            "endPoint" : "https://registry.beta.qubeship.io:5001/",
+            "type" : "registry",
+            "visibility" : "public_",
+            "isDefault" : true,
+            "additionalInfo" : {
+                "account" : "registry.beta.qubeship.io:5001/"
+            }
+        },
+        {
+            "_id" : ObjectId("58e3fad42a0603000b3e58a8"),
+            "_class" : "com.ca.io.qubeship.model.EndPoint",
+            "tenant" : "d25a61af-3f88-3c58-9bff-0c44244f1d42",
+            "orgId" : "39928fd4-b86a-36bf-8a06-20932b88ba81",
+            "owner" : "e2ba0158-f880-3f2c-b5eb-3e3745fd9c81",
+            "credentialId" : "a7a08aec-8955-46e1-941d-7602b3190d41",
+            "credentialPath" : "secret/resources/39928fd4-b86a-36bf-8a06-20932b88ba81/production/creds/a7a08aec-8955-46e1-941d-7602b3190d41",
+            "createdBy" : "e2ba0158-f880-3f2c-b5eb-3e3745fd9c81",
+            "createdDate" : "1491335892154",
+            "modifiedBy" : "e2ba0158-f880-3f2c-b5eb-3e3745fd9c81",
+            "modifiedDate" : "1492021530755",
+            "sourceId" : "589933543c2d090006a6a48a",
+            "credentialType" : "access_token",
+            "name" : "Qubeship Sandbox Cluster",
+            "provider" : "kubernetes",
+            "category" : "production",
+            "endPoint" : "https://192.168.99.101:8443",
+            "type" : "target",
+            "visibility" : "public_",
+            "isDefault" : false,
+            "additionalInfo" : {
+                "namespace" : "default"
+            }
         }
-    }
-]);
+    ]);
+}

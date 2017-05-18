@@ -3,6 +3,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 set -o allexport +e -x
 source .env
+export PATH=$PATH:$DIR/qubeship_home/bin
 
 # copy .client_env.template to .client_env
 output=`docker ps -a`
@@ -14,6 +15,18 @@ if [ $docker_client_status -ne 0 ]; then
 fi
 
 set  -e
+
+if [ "$(uname)" == "Darwin" ]
+then
+  echo "detected OSX"
+  jq_url=https://github.com/stedolan/jq/releases/download/jq-1.5/jq-osx-amd64
+    #brew cask install minikube
+
+else
+  echo "detected linux"
+  jq_url=https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+fi
+curl -sLo $DIR/qubeship_home/bin/jq $jq_url && chmod +x $DIR/qubeship_home/bin/jq
 
 QUBE_DOCKER_HOST=${DOCKER_HOST:-localhost}
 if [ -z $DOCKER_HOST ]; then
