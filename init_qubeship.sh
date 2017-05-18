@@ -92,7 +92,10 @@ fi
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
     docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
     docker-compose -f docker-compose-beta.yaml up -d docker-registry
-    docker-compose -f docker-compose-beta.yaml run oauth_registrator $@ > $SCM_CONFIG_FILE
+    docker-compose -f docker-compose-beta.yaml run oauth_registrator $@ \
+    | grep -v "# " | awk '{gsub("\r","",$0);print}' > $SCM_CONFIG_FILE  
+    # cat /tmp/scm.config |  grep -v "# "| sed -e 's/\r$//' >  $SCM_CONFIG_FILE
+    
 fi
 
 echo "copying client template"
