@@ -21,7 +21,7 @@ fi
 echo "Please login with your qube builder user"
 qube auth login
 is_beta="false"
-if [ ! -z $BETA_ACCESS_USER_NAME ];  then
+if [ ! -z $BETA_ACCESS_USERNAME ];  then
     is_beta="true"
 fi
 orgId=$(qube auth user-info --org | jq -r '.tenant.orgs[0].id')
@@ -36,7 +36,7 @@ qube service postconfiguration
 
 $DIR/run.sh
 
-if [ ! -z $BETA_ACCESS_USER_NAME ];  then
+if [ ! -z $BETA_ACCESS_USERNAME ];  then
     registry_endpoint_id=58edb422238503000b74d7a6
     qube endpoints postcredential --endpoint-id $registry_endpoint_id \
         --credential-type username_password \
