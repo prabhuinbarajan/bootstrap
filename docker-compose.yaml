@@ -338,6 +338,8 @@ services:
       GITHUB_URL: ${GITHUB_URL}
       GITHUB_AUTH_URL: ${GITHUB_AUTH_URL}
       GITHUB_TOKEN_URL: ${GITHUB_TOKEN_URL}
+      INSTALL_TYPE: ${INSTALL_TYPE}
+      COMPANY: ${COMPANY}
     image: ${QUBE_BUILDER_IMAGE}:${QUBE_BUILDER_VERSION}
 #    entrypoint: bash
 #    command: ["-c",  "sleep 300"]
