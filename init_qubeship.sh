@@ -13,6 +13,10 @@ if [ $docker_client_status -ne 0 ]; then
     echo "ERROR : Docker doesnt seem to be running. is your docker running?"
     exit -1
 fi
+if [ -e .client_env ]; then
+	echo 'ERROR : qubeship is already pre-configured.'
+	exit 0
+fi
 
 set  -e
 
@@ -33,10 +37,8 @@ if [ -z $DOCKER_HOST ]; then
     echo "INFO: DOCKER_HOST is not defined. setting QUBE_DOCKER_HOST to $QUBE_DOCKER_HOST"
 fi
 
-if [ -e .client_env ]; then
-	echo 'ERROR : qubeship is already pre-configured.'
-	exit 0
-fi
+
+
 # QUBE_CONFIG_FILE=qubeship_home/config/qubeship.config
 
 # if [ ! -e $QUBE_CONFIG_FILE ]; then

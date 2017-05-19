@@ -18,8 +18,14 @@ fi
 if [ -e $BETA_CONFIG_FILE ] ; then
     source $BETA_CONFIG_FILE
 fi
+extra_args=""
+if [ ! -z $github_username ]; then
+    extra_args="--username $github_username --password $github_password --organization-name $SYSTEM_GITHUB_ORG"
+fi
+
 echo "Please login with your qube builder user"
-qube auth login
+
+qube auth login $extra_args
 is_beta="false"
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
     is_beta="true"
