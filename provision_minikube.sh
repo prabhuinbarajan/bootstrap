@@ -37,9 +37,13 @@ if [ $(kubectl config  current-context) != "minikube" ]; then
     echo "ERROR: minikube configuration failed. endpoint configuration may not be successful"
     exit 0
 fi
-vmstatus=$(minikube status | grep "minikubeVM:" | awk -F":" '{gsub(/ /,"",$2); print $2}' | tr '[:upper:]' '[:lower:]')
-kubestatus=$(minikube status | grep "localkube:" | awk -F":" '{gsub(/ /,"",$2); print $2}' | tr '[:upper:]' '[:lower:]')
 
+get_minikube_status() {
+  vmstatus=$(minikube status | grep "minikubeVM:" | awk -F":" '{gsub(/ /,"",$2); print $2}' | tr '[:upper:]' '[:lower:]')
+  kubestatus=$(minikube status | grep "localkube:" | awk -F":" '{gsub(/ /,"",$2); print $2}' | tr '[:upper:]' '[:lower:]')
+}
+
+get_minikube_status
 if [ \( "$vmstatus" != "running" \) -o  \( "$kubestatus" != "running" \) ]; then
     minikube start
 else
@@ -50,6 +54,20 @@ if [  "$minikube_ip" == "" ]; then
     echo "ERROR: unable to identify minikube ip. endpoint configuration may not be successful"
     exit 0
 fi
+
+# wait until minikube is running
+timeout_count=0
+while [ $timeout_count -lt 10 ]
+do
+  if [ \( "$vmstatus" != "running" \) -o  \( "$kubestatus" != "running" \) ]; then
+    timeout_count=$(expr $timeout_count + 1)
+    get_minikube_status
+  else
+    echo "minikube running"
+    break
+  fi
+done
+
 default_namespace=$(kubectl get namespaces  | grep default | awk '{print $1}')
 if [ "$default_namespace" != "default" ]; then
     echo "ERROR: default namespace not found. endpoint configuration may not be successful"
@@ -86,4 +104,3 @@ endpoint_id=58e3fad42a0603000b3e58a8
 qube endpoints postcredential --endpoint-id $endpoint_id \
     --credential-type username_password \
     --credential-data '{"token": "$default_token"}'
-
