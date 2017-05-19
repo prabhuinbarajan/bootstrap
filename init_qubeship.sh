@@ -94,6 +94,7 @@ else
     echo "INFO: $BETA_CONFIG_FILE not found. possibly running community edition"
 fi
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
+
     docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
     docker-compose -f docker-compose-beta.yaml up -d docker-registry
     docker-compose -f docker-compose-beta.yaml run oauth_registrator $@ \
@@ -124,19 +125,36 @@ else
     echo "ERROR: $SCM_CONFIG_FILE not found. please create the file $SCM_CONFIG_FILE. follow $SCM_CONFIG_FILE.template and retry install"
     exit -1
 fi
-if [ ! -z "$GITHUB_ENTERPRISE_HOST" ]; then
-    if [ "$GITHUB_ENTERPRISE_HOST" == "https://github.com" ] ; then
-        echo "GITHUB_API_URL=https://api.github.com" >> .client_env
-    else
-        echo "GITHUB_API_URL=$GITHUB_ENTERPRISE_HOST/api/v3" >> .client_env
-    fi
-    echo "GITHUB_URL=$GITHUB_ENTERPRISE_HOST" >> .client_env
-    echo "GITHUB_AUTH_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/authorize" >> .client_env
-    echo "GITHUB_TOKEN_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/access_token" >> .client_env
 
+GITHUB_ENTERPRISE_HOST=${GITHUB_ENTERPRISE_HOST:-https://github.com}
+
+if [ "$GITHUB_ENTERPRISE_HOST" == "https://github.com" ] ; then
+    echo "GITHUB_API_URL=https://api.github.com" >> .client_env
+else
+    echo "GITHUB_API_URL=$GITHUB_ENTERPRISE_HOST/api/v3" >> .client_env
 fi
+echo "GITHUB_URL=$GITHUB_ENTERPRISE_HOST" >> .client_env
+echo "GITHUB_AUTH_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/authorize" >> .client_env
+echo "GITHUB_TOKEN_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/access_token" >> .client_env
 
-
+if [ ! -z $github_username ]; then
+    auth=$(echo $github_username:$github_password | base64)
+    data='{
+        "client_id" : "'$GITHUB_BUILDER_CLIENTID'",
+        "client_secret" : "'$GITHUB_BUILDER_SECRET'",
+        "scopes": [
+           "write:repo_hook", "read:repo_hook", "read:org", "repo", "user"
+        ]
+    }'
+    curl -X POST \
+      $GITHUB_API_URL/authorizations \
+      -H "authorization: Basic $auth" \
+      -H 'cache-control: no-cache' \
+      -H 'content-type: application/json' \
+      -d "$data"
+else
+   echo "skipping qubebuilder configuration"
+fi
 
 # export variables in .client_env
 ########################## START: CONSUL INITIALIZATION ##########################
