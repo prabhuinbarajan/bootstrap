@@ -80,7 +80,7 @@ $DIR/init_qubeship.sh $extraopts
 
 echo "starting qubeship server"
 $DIR/run.sh
-echo "waiting 180s until all qubeship services are up"
+echo "waiting until all qubeship services are up"
 
 ./status.sh "true"
 
