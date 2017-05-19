@@ -15,13 +15,15 @@ fi
 if [ -e $SCM_CONFIG_FILE ] ; then
     source $SCM_CONFIG_FILE
 fi
+extra_args=""
+
 if [ -e $BETA_CONFIG_FILE ] ; then
     source $BETA_CONFIG_FILE
+    if [ ! -z $github_username ]; then
+        extra_args="--username $github_username --password $github_password --organization-name $SYSTEM_GITHUB_ORG"
+    fi
 fi
-extra_args=""
-if [ ! -z $github_username ]; then
-    extra_args="--username $github_username --password $github_password --organization-name $SYSTEM_GITHUB_ORG"
-fi
+
 
 echo "Please login with your qube builder user"
 
