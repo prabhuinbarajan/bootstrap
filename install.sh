@@ -2,6 +2,16 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 set -o allexport
+function url_ready() {
+  url="$1"
+  echo -n "Waiting for ${url} to become available."
+  while [ ! "200" = "$(curl -sLiI -w "%{http_code}\\n" -o /dev/null ${url})" ]; do
+    echo -n '.'
+    sleep 1
+  done
+  echo 'ready.'
+}
+
 source .env
 set -e -x
 export PATH=$PATH:$DIR/qubeship_home/bin
@@ -65,7 +75,9 @@ $DIR/init_qubeship.sh $extraopts
 echo "starting qubeship server"
 $DIR/run.sh
 echo "waiting 180s until all qubeship services are up"
-sleep 180
+source $DIR/.client_env
+
+url_ready "${QUBE_BUILDER_URL}/jnlpJars/jenkins-cli.jar"
 
 echo "running post configuration"
 $DIR/post_configuration.sh
