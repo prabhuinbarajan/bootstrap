@@ -26,7 +26,7 @@ cd bootstrap ; git checkout community_beta
 
 3.  Run the beta install script
 ```
-  ./qubeship_beta_install.sh
+  ./qubeship_beta_install.sh <githubusername> [gitpassword | -p]  [githuburl] [githubsystemorg]
 ```
 
 4. login to the qubeship app
