@@ -30,10 +30,10 @@ else
 fi
 
 
-export github_username=$1
-export github_password=$2
-export github_url=$3
-export github_org=$4
+export github_username=${1:-$GITHUB_USERNAME}
+export github_password=${2:-$GITHUB_PWD}
+export github_url=${3:-$GITHUB_URL}
+export github_org=${4:-$GITHUB_ORG}
 if [ -z "$github_username" ] ; then
     echo "Usage: ./install.sh <githubusername> [gitpassword | -p]  [githuburl] [githubsystemorg]"
     exit -1
