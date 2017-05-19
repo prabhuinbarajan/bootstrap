@@ -26,7 +26,7 @@ if [ ! -z $BETA_ACCESS_USERNAME ];  then
     files="$files -f docker-compose-beta.yaml"
 fi
 
-docker-compose ps
+docker-compose  $files ps
 
 wait_for_services=${1}
 if [ ! -z $wait_for_services ]; then
