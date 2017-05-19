@@ -22,6 +22,7 @@ SCM_CONFIG_FILE=qubeship_home/config/scm.config
 if [ -f $BETA_CONFIG_FILE ]; then
     echo "sourcing $BETA_CONFIG_FILE"
     source $BETA_CONFIG_FILE
+
 else
     echo "INFO: running community edition"
     if [ ! -f $SCM_CONFIG_FILE ]; then
@@ -39,6 +40,11 @@ else
     source $SCM_CONFIG_FILE
 fi
 
+
+export is_beta="false"
+if [ ! -z $BETA_ACCESS_USERNAME ];  then
+    export is_beta="true"
+fi
 
 export github_username=${1:-$GITHUB_USERNAME}
 export github_password=${2:-$GITHUB_PWD}
@@ -75,9 +81,8 @@ $DIR/init_qubeship.sh $extraopts
 echo "starting qubeship server"
 $DIR/run.sh
 echo "waiting 180s until all qubeship services are up"
-source $DIR/.client_env
 
-url_ready "${QUBE_BUILDER_URL}/jnlpJars/jenkins-cli.jar"
+./status.sh "true"
 
 echo "running post configuration"
 $DIR/post_configuration.sh
