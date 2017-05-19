@@ -40,7 +40,7 @@ if [ ! -z $BETA_ACCESS_USERNAME ];  then
     registry_endpoint_id=58edb422238503000b74d7a6
     qube endpoints postcredential --endpoint-id $registry_endpoint_id \
         --credential-type username_password \
-        --credential-data '{"username": "qubeship", "password":"qubeship"}'
+        --credential-data '{"username":"qubeship","password":"qubeship"}'
     echo "endpoint for default registry created successfully"
     echo "provisioning minikube"
     ./provision_minikube.sh
