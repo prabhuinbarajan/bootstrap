@@ -21,33 +21,18 @@ PORTS                                                                      NAMES
 1. Clone the repo
 ```
 git clone https://github.com/Qubeship/bootstrap
-git checkout community_beta 
-```
-2. Edit the qubeship_home/config/qubeship.config file.
-You can find the NGROK_HOSTNAME, NGROK_AUTH, BETA_ACCESS_USERNAME, and BETA_ACCESS_TOKEN in your Welcome Kit email. You can obtain the
-client ID and secret information from your GitHub account in the "Settings" section under "0Auth applications." Specific doc
-on how to obtain this information below under "Configure Qubeship."
-
-3.  Run the configuration script
-```
- ./init_qubeship.sh
+cd bootstrap ; git checkout community_beta 
 ```
 
-4. Start Qubeship 
+2. prepare the scm.config file in qubeship_home/config/scm.config. refer to configure qubeship section for instructions
+
+3.  Run the install script
 ```
-  ./run.sh
-```
-5. Run the post configuration script and Login as qubebuilder
-```
-   ./post_configuration.sh 
+  ./install.sh <githubusername> [gitpassword | -p]  [githuburl] [githubsystemorg]
 ```
 
-6. Use Qubeship. You can find more documentation online at qubeship.io/docs. 
+4. Use Qubeship. You can find more documentation online at qubeship.io/docs. 
 
-7. If you want to reset qubeship on your machine, please use `uninstall.sh` command. It will remove all generted configuration files from the sub-folders of bootstrap. After that, you can re-initialize the bootstrap by starting from step 3 above.
-```
-   ./uninstall.sh 
-```
 
 If you have any questions, please reach out to us at support@qubeship.io
 
@@ -117,4 +102,8 @@ GITHUB_BUILDER_SECRET=
 # Qubeship Builder Authentication Realm
 GITHUB_CLI_CLIENTID=
 GITHUB_CLI_SECRET=
+```
 
+### Github Security
+- we need the github username and password credentials to perform the qubeship initialization steps. this is only collected in the install process to generate intermediate oauth tokens using https://developer.github.com/v3/oauth_authorizations/ and is used for non-interactive qubeship logins during the setup process. The user name / password credentials so collected are discarded at the end of the installation process.  
+After initial setup , Qubeship uses OAUTH authentication as described in https://developer.github.com/v3/oauth/.  
