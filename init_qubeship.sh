@@ -137,24 +137,24 @@ echo "GITHUB_URL=$GITHUB_ENTERPRISE_HOST" >> .client_env
 echo "GITHUB_AUTH_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/authorize" >> .client_env
 echo "GITHUB_TOKEN_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/access_token" >> .client_env
 
-if [ ! -z $github_username ]; then
-    auth=$(echo $github_username:$github_password | base64)
-    data='{
-        "client_id" : "'$GITHUB_BUILDER_CLIENTID'",
-        "client_secret" : "'$GITHUB_BUILDER_SECRET'",
-        "scopes": [
-           "write:repo_hook", "read:repo_hook", "read:org", "repo", "user"
-        ]
-    }'
-    curl -X POST \
-      $GITHUB_API_URL/authorizations \
-      -H "authorization: Basic $auth" \
-      -H 'cache-control: no-cache' \
-      -H 'content-type: application/json' \
-      -d "$data"
-else
-   echo "skipping qubebuilder configuration"
-fi
+sed -ibak "s#<conf_server_token>#${consul_access_token}#g" .client_env
+echo "sourcing .client_env"
+source .client_env
+
+auth=$(echo -n $github_username:$github_password | base64)
+data='{
+    "client_id" : "'$GITHUB_BUILDER_CLIENTID'",
+    "client_secret" : "'$GITHUB_BUILDER_SECRET'",
+    "scopes": [
+       "write:repo_hook", "read:repo_hook", "read:org", "repo", "user"
+    ]
+}'
+github_token=$(curl -s -X POST \
+  $GITHUB_API_URL/authorizations \
+  -H "authorization: Basic $auth" \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d "$data" | jq -r .token)
 
 # export variables in .client_env
 ########################## START: CONSUL INITIALIZATION ##########################
@@ -162,9 +162,7 @@ fi
 
 
 ########################## END: CONSUL INITIALIZATION ##########################
-sed -ibak "s#<conf_server_token>#${consul_access_token}#g" .client_env
-echo "sourcing .client_env"
-source .client_env
+
 
 
 set -o allexport
@@ -185,6 +183,7 @@ $RUN_VAULT_CMD write $BASE_PATH/$TENANT/$ENV_TYPE/$ENV_ID/github_builder_client 
 $RUN_VAULT_CMD write $BASE_PATH/$TENANT/$ENV_TYPE/$ENV_ID/github_cli_client id=$GITHUB_CLI_CLIENTID secret=$GITHUB_CLI_SECRET
 $RUN_VAULT_CMD write $BASE_PATH/$TENANT/$ENV_TYPE/$ENV_ID/github_gui_client id=$GITHUB_GUI_CLIENTID secret=$GITHUB_GUI_SECRET
 
+$RUN_VAULT_CMD write $BASE_PATH/$TENANT/$ENV_TYPE/$ENV_ID/qubebuilder access_token=$github_token
 
 RUN_CONSUL_CMD="docker-compose exec $QUBE_CONSUL_SERVICE sh"
 $RUN_CONSUL_CMD -c 'echo {\"X\":\"X\"}  | consul kv put qubeship/envs/'${ENV_TYPE}'/settings -'
