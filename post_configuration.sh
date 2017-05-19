@@ -23,8 +23,7 @@ if [ -e $BETA_CONFIG_FILE ] ; then
         extra_args="--username $github_username --password $github_password --organization-name $SYSTEM_GITHUB_ORG"
     fi
 fi
-
-
+#extra_args=""
 echo "Please login with your qube builder user"
 
 qube auth login $extra_args

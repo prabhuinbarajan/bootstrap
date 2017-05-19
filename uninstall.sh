@@ -22,11 +22,12 @@ fi
 if [ -e $BETA_CONFIG_FILE ] ; then
     source $BETA_CONFIG_FILE
 fi
-docker-compose down -v
 
 if [ !  -z "$BETA_ACCESS_USERNAME" ]; then
     docker-compose -f docker-compose-beta.yaml down -v
 fi
-
-rm -rf qubeship_home/builder/data/*
-rm -rf qubeship_home/builder/opt/*
+docker-compose down -v
+if [ !  -z "$BETA_ACCESS_USERNAME" ]; then
+    docker-compose -f docker-compose-beta.yaml down -v
+fi
+docker-compose down -v

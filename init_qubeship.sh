@@ -14,8 +14,8 @@ if [ $docker_client_status -ne 0 ]; then
     exit -1
 fi
 if [ -e .client_env ]; then
-	echo 'ERROR : qubeship is already pre-configured.'
-	exit 0
+	echo 'ERROR : qubeship is already configured. if you want to rerun install run ./uninstall.sh first'
+	exit -1
 fi
 
 set  -e
@@ -58,6 +58,8 @@ QUBE_VAULT_SERVICE=qube-vault
 LOG_FILE=qube_vault_log
 QUBE_HOST=$(echo $QUBE_DOCKER_HOST | awk '{ sub(/tcp:\/\//, ""); sub(/:.*/, ""); print $0}')
 API_URL_BASE=http://$QUBE_HOST:$API_REGISTRY_PORT
+APP_URL=http://$QUBE_HOST:$APP_PORT
+BUILDER_URL=http://$QUBE_HOST:$QUBE_BUILDER_PORT
 
 consul_access_token=$(uuidgen | tr '[:upper:]' '[:lower:]')
 sed "s#\$consul_acl_master_token#$consul_access_token#g" qubeship_home/consul/data/consul.json.template  > qubeship_home/consul/data/consul.json
@@ -110,6 +112,10 @@ sed -ibak "s/<vault_port>/$VAULT_PORT/g" .client_env
 sed -ibak "s/<consul_addr>/$QUBE_HOST/g" .client_env
 sed -ibak "s/<consul_port>/$CONSUL_PORT/g" .client_env
 sed -ibak "s#<api_url_base>#$API_URL_BASE#g" .client_env
+sed -ibak "s#<app_url>#$APP_URL#g" .client_env
+sed -ibak "s#<qube_builder_url>#$BUILDER_URL#g" .client_env
+sed -ibak "s#<qube_host>#$QUBE_HOST#g" .client_env
+
 #github api url adjustments
 if [ -f $SCM_CONFIG_FILE ] ; then
     echo "sourcing $SCM_CONFIG_FILE"
@@ -119,7 +125,11 @@ else
     exit -1
 fi
 if [ ! -z "$GITHUB_ENTERPRISE_HOST" ]; then
-    echo "GITHUB_API_URL=$GITHUB_ENTERPRISE_HOST/api/v3" >> .client_env
+    if [ "$GITHUB_ENTERPRISE_HOST" == "https://github.com" ] ; then
+        echo "GITHUB_API_URL=https://api.github.com" >> .client_env
+    else
+        echo "GITHUB_API_URL=$GITHUB_ENTERPRISE_HOST/api/v3" >> .client_env
+    fi
     echo "GITHUB_URL=$GITHUB_ENTERPRISE_HOST" >> .client_env
     echo "GITHUB_AUTH_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/authorize" >> .client_env
     echo "GITHUB_TOKEN_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/access_token" >> .client_env

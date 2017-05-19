@@ -11,7 +11,7 @@ db.Toolchain.insertMany(
 [
 	{
 		"_id" : ObjectId("58e3fad09a148400216611cc"),
-		"orgId" : "39928fd4-b86a-36bf-8a06-20932b88ba81",
+		"orgId" : "6727f870-5243-3f9e-bf11-0ce6e37bcfa0",
 		"imageName" : "qubeship-python",
 		"status" : "published",
 		"modifiedBy" : "e2ba0158-f880-3f2c-b5eb-3e3745fd9c81",
@@ -40,7 +40,7 @@ db.Toolchain.insertMany(
 		"language" : "java",
 		"imageName" : "qubeship-java",
 		"status" : "published",
-		"orgId" : "39928fd4-b86a-36bf-8a06-20932b88ba81",
+		"orgId" : "6727f870-5243-3f9e-bf11-0ce6e37bcfa0",
 		"builderTrackingId" : "191",
 		"manifest" : "YnVpbGQuY29tcGlsZTogJ212biBjbGVhbiBpbnN0YWxsJwpidWlsZC51bml0dGVzdDogJ212biB0ZXN0JwpidWlsZC5zdGF0aWNfY29kZV9hbmFseXNpczogJ3NvbmFyLXJ1bm5lcicKYmFrZS5oYXJkZW46ICdlY2hvIGhhcmRlbicKZGVwbG95X3RvX3FhLmUyZTogJ2JhdHMgJDEnCmRlcGxveV90b19xYS5mdW5jdGlvbmFsX3Rlc3Q6ICJlY2hvIGZ1bmN0aW9uYWxfdGVzdCIKZGVwbG95X3RvX3FhLm1hbnVhbF9hcHByb3ZlOiAiZWNobyBtYW51YWxfYXBwcm92ZSIK",
 		"id" : "58e56a68acac5a0020e2b930",
@@ -75,7 +75,7 @@ db.Toolchain.insertMany(
 		"endpointId" : "6v9123123456",
 		"tenantId" : "c26cd23f-5bfc-3117-9181-34dbbe31c9cb",
 		"builderTrackingId" : "227",
-		"orgId" : "39928fd4-b86a-36bf-8a06-20932b88ba81",
+		"orgId" : "6727f870-5243-3f9e-bf11-0ce6e37bcfa0",
 		"id" : "58e573feacac5a001de2b932",
 		"modifiedBy" : "ef322d6d-05f1-3625-b7af-ed0beeeee232",
 		"dockerfile" : "I0ZST00gbWF2ZW46My4zLWpkay04CkZST00gZ3JhZGxlOjMuNS1qZGs4ClVTRVIgcm9vdApSVU4gYXB0LWdldCB1cGRhdGUgJiYgYXB0LWdldCBpbnN0YWxsIGJhdHMKCkVOViBTT05BUl9SVU5ORVJfVkVSU0lPTiAyLjQKRU5WIFNPTkFSX1JVTk5FUl9IT01FIC9vcHQvc29uYXItcnVubmVyLSR7U09OQVJfUlVOTkVSX1ZFUlNJT059CkVOViBTT05BUl9SVU5ORVJfUEFDS0FHRSBzb25hci1ydW5uZXItZGlzdC0ke1NPTkFSX1JVTk5FUl9WRVJTSU9OfS56aXAKRU5WIEhPTUUgJHtTT05BUl9SVU5ORVJfSE9NRX0KRU5WIFBBVEggIiRQQVRIOiR7U09OQVJfUlVOTkVSX0hPTUV9L2JpbiIKV09SS0RJUiAvb3B0CgpSVU4gd2dldCBodHRwOi8vcmVwbzEubWF2ZW4ub3JnL21hdmVuMi9vcmcvY29kZWhhdXMvc29uYXIvcnVubmVyL3NvbmFyLXJ1bm5lci1kaXN0LyR7U09OQVJfUlVOTkVSX1ZFUlNJT059LyR7U09OQVJfUlVOTkVSX1BBQ0tBR0V9IFwKICYmIHVuemlwIHNvbmFyLXJ1bm5lci1kaXN0LSR7U09OQVJfUlVOTkVSX1ZFUlNJT059LnppcCBcCiAmJiBybSAke1NPTkFSX1JVTk5FUl9QQUNLQUdFfQoKI1JVTiBncm91cGFkZCAtciBzb25hciBcCiMgJiYgdXNlcmFkZCAtciAtcyAvdXNyL3NiaW4vbm9sb2dpbiAtZCAke1NPTkFSX1JVTk5FUl9IT01FfSAtYyAiU29uYXIgc2VydmljZSB1c2VyIiAtZyBzb25hciBzb25hciBcCiMgJiYgY2hvd24gLVIgc29uYXI6c29uYXIgJHtTT05BUl9SVU5ORVJfSE9NRX0gXAojICYmIG1rZGlyIC1wIC9kYXRhIFwKIyAmJiBjaG93biAtUiBzb25hcjpzb25hciAvZGF0YQojIFVTRVIgc29uYXIKCldPUktESVIgL2RhdGEKClZPTFVNRSAvZGF0YQpSVU4gZWNobyAiIiA+PiAke1NPTkFSX1JVTk5FUl9IT01FfS9jb25mL3NvbmFyLXJ1bm5lci5wcm9wZXJ0aWVzClJVTiBlY2hvIHNvbmFyLmhvc3QudXJsPWh0dHA6Ly9zb25hci5xdWJlc2hpcC5pbyA+PiAke1NPTkFSX1JVTk5FUl9IT01FfS9jb25mL3NvbmFyLXJ1bm5lci5wcm9wZXJ0aWVzCgojRU5UUllQT0lOVCAke1NPTkFSX1JVTk5FUl9IT01FfS9iaW4vc29uYXItcnVubmVyCkNNRCBbIm12biIsInNvbmFyLXJ1bm5lciIsImJhdHMiXQo="
@@ -91,7 +91,7 @@ db.Toolchain.insertMany(
 		"tenantId" : "d25a61af-3f88-3c58-9bff-0c44244f1d42",
 		"createdBy" : "e2ba0158-f880-3f2c-b5eb-3e3745fd9c81",
 		"manifest" : "YnVpbGQuY29tcGlsZTogJ3NlcnZpY2Ugc3VwZXJ2aXNvciBzdGFydCAmJiBncmFkbGUgYnVpbGQnCmJ1aWxkLnVuaXR0ZXN0OiAnZ3JhZGxlIGJ1aWxkJwpidWlsZC5zdGF0aWNfY29kZV9hbmFseXNpczogJ3NvbmFyLXJ1bm5lcicKYmFrZS5oYXJkZW46ICdlY2hvIGhhcmRlbicKZGVwbG95X3RvX3FhLmUyZTogJ2JhdHMgJDEnCmRlcGxveV90b19xYS5mdW5jdGlvbmFsX3Rlc3Q6ICJlY2hvIGZ1bmN0aW9uYWxfdGVzdCIKZGVwbG95X3RvX3FhLm1hbnVhbF9hcHByb3ZlOiAiZWNobyBtYW51YWxfYXBwcm92ZSIK",
-		"orgId" : "39928fd4-b86a-36bf-8a06-20932b88ba81",
+		"orgId" : "6727f870-5243-3f9e-bf11-0ce6e37bcfa0",
 		"isFinal" : true,
 		"language" : "java",
 		"createdDate" : "1493803846",
@@ -117,7 +117,7 @@ db.Opinion.insertMany(
 		"isDefault" : false,
 		"status" : "published",
 		"createdBy" : "5c9d596e-d999-3ac4-bbf9-bee5d58c6566",
-		"orgId" : "39928fd4-b86a-36bf-8a06-20932b88ba81",
+		"orgId" : "6727f870-5243-3f9e-bf11-0ce6e37bcfa0",
 		"visibility" : "public",
 		"modifiedDate" : "1492465971",
 		"description" : "default out-of-the-box opinion",
@@ -127,7 +127,7 @@ db.Opinion.insertMany(
 ]
 );
 use qubeship;
-if (beta_access) {
+if (true) {
     db.endPoint.remove(
         {_id: ObjectId("58edb422238503000b74d7a6")}
     );
@@ -141,10 +141,10 @@ if (beta_access) {
             "_id" : ObjectId("58edb422238503000b74d7a6"),
             "_class" : "com.ca.io.qubeship.model.EndPoint",
             "tenant" : "4b95bf35-1b75-3e8a-8b02-6e4dd989e098",
-            "orgId" : "39928fd4-b86a-36bf-8a06-20932b88ba81",
+            "orgId" : "6727f870-5243-3f9e-bf11-0ce6e37bcfa0",
             "owner" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
             "credentialId" : "925750d0-f719-4a69-8e07-5ff4f4fac400",
-            "credentialPath" : "secret/resources/39928fd4-b86a-36bf-8a06-20932b88ba81/production/creds/925750d0-f719-4a69-8e07-5ff4f4fac400",
+            "credentialPath" : "secret/resources/6727f870-5243-3f9e-bf11-0ce6e37bcfa0/production/creds/925750d0-f719-4a69-8e07-5ff4f4fac400",
             "createdBy" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
             "createdDate" : "1493916853258",
             "modifiedBy" : "0e83ea2b-82cc-3846-bf4a-0c7fda85c085",
@@ -165,10 +165,10 @@ if (beta_access) {
             "_id" : ObjectId("58e3fad42a0603000b3e58a8"),
             "_class" : "com.ca.io.qubeship.model.EndPoint",
             "tenant" : "d25a61af-3f88-3c58-9bff-0c44244f1d42",
-            "orgId" : "39928fd4-b86a-36bf-8a06-20932b88ba81",
+            "orgId" : "6727f870-5243-3f9e-bf11-0ce6e37bcfa0",
             "owner" : "e2ba0158-f880-3f2c-b5eb-3e3745fd9c81",
             "credentialId" : "a7a08aec-8955-46e1-941d-7602b3190d41",
-            "credentialPath" : "secret/resources/39928fd4-b86a-36bf-8a06-20932b88ba81/production/creds/a7a08aec-8955-46e1-941d-7602b3190d41",
+            "credentialPath" : "secret/resources/6727f870-5243-3f9e-bf11-0ce6e37bcfa0/production/creds/a7a08aec-8955-46e1-941d-7602b3190d41",
             "createdBy" : "e2ba0158-f880-3f2c-b5eb-3e3745fd9c81",
             "createdDate" : "1491335892154",
             "modifiedBy" : "e2ba0158-f880-3f2c-b5eb-3e3745fd9c81",
