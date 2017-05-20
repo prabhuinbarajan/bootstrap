@@ -1,5 +1,5 @@
 .idea
-load.js*
+load.js
 .client_env*
 !.client_env.template
 qube_vault_log

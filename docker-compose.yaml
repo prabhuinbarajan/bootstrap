@@ -123,6 +123,7 @@ services:
       CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
       VAULT_TOKEN: ${VAULT_TOKEN}
       ENV_ID: ${ENV_ID}
+      AUTH_API_URL: http://api_auth:${AUTH_API_PORT}/v1/auth
       ARTIFACTS_MONGOALCHEMY_DATABASE: artifacts
       ARTIFACTS_MONGOALCHEMY_CONNECTION_STRING: mongodb://mongo:$MONGO_PORT/artifacts
       ARTIFACTS_MONGOALCHEMY_SERVER: mongo
@@ -133,8 +134,10 @@ services:
     depends_on:
        - qube-vault-opener
        - qube_mongodb
+       - api_auth
     links:
        - qube_mongodb:mongo
+       - api_auth
 
   api_toolchains:
     env_file: .env
@@ -187,8 +190,10 @@ services:
     depends_on:
        - qube-vault-opener
        - qube_mongodb
+       - api_auth
     links:
        - qube_mongodb:mongo
+       - api_auth
 
   api_endpoints:
     env_file: .env

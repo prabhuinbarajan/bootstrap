@@ -22,12 +22,13 @@ fi
 if [ -e $BETA_CONFIG_FILE ] ; then
     source $BETA_CONFIG_FILE
 fi
+files="-f docker-compose.yaml"
 
 if [ !  -z "$BETA_ACCESS_USERNAME" ]; then
-    docker-compose -f docker-compose-beta.yaml down -v
+    files="$files -f docker-compose-beta.yaml"
 fi
-docker-compose down -v
-if [ !  -z "$BETA_ACCESS_USERNAME" ]; then
-    docker-compose -f docker-compose-beta.yaml down -v
-fi
+docker-compose $files down -v
+docker-compose $files down -v
+#docker rm -f $(docker ps --filter name=bootstrap --format "{{lower .ID}}")
+#docker rm -f $(docker-compose $files ps -q)
 docker-compose down -v

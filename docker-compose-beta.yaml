@@ -19,6 +19,8 @@ services:
     image: ${APP_IMAGE}:${APP_VERSION}
     ports:
       - "${APP_PORT}:${APP_PORT}"
+    depends_on:
+      - qube-vault-opener
 
   docker-registry:
     restart: always

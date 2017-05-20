@@ -15,6 +15,8 @@ function url_ready() {
 source .env
 set -e -x
 export PATH=$PATH:$DIR/qubeship_home/bin
+SECONDS=0
+echo "install.sh: $( date ) : starting qubeship install"
 
 BETA_CONFIG_FILE=qubeship_home/config/beta.config
 SCM_CONFIG_FILE=qubeship_home/config/scm.config
@@ -42,8 +44,12 @@ fi
 
 
 export is_beta="false"
+files="-f docker-compose.yaml"
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
     export is_beta="true"
+    docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
+    files="$files -f docker-compose-beta.yaml"
+    docker-compose $files pull
 fi
 
 export github_username=${1:-$GITHUB_USERNAME}
@@ -74,16 +80,17 @@ if [ ! -z $github_url ]; then
 fi
 
 
-echo "running preinstall scripts"
+echo "install.sh: $( date ) : running preinstall scripts"
 $DIR/init_qubeship.sh $extraopts
 
 
-echo "starting qubeship server"
+echo "install.sh: $( date ) :starting qubeship server"
 $DIR/run.sh
-echo "waiting until all qubeship services are up"
+echo "install.sh: $( date ) :waiting until all qubeship services are up"
 
 ./status.sh "true"
 
-echo "running post configuration"
+echo "install.sh: $( date ) :running post configuration"
 $DIR/post_configuration.sh
+echo "install.sh: $( date ) :completed qubeship installation in $SECONDS seconds"
 
