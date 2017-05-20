@@ -81,7 +81,7 @@ if [  "$default_token" == "" ]; then
 fi
 echo $minikube_ip ":" $default_token
 
-cat <<EOF > /tmp/minikube
+cat <<EOF > $DIR/qubeship_home/minikube/minikube.config
 minikube_ip=$minikube_ip
 default_token=$default_token
 EOF
