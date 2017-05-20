@@ -1,11 +1,11 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
-set -o allexport
+set -o allexport -e
 source $DIR/qube_common_functions.sh
 eval $(get_options $@)
+
 source .env
-set -e
 if [ $verbose ]; then
     set -x
 fi
