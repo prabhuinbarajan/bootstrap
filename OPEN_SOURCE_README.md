@@ -115,9 +115,9 @@ Qubeship currently supports only http(s):// . SSH is in pipeline.
 GITHUB_ENTERPRISE_HOST  =   # no trailing slashes , only schema://hostname
 ```
 #### 5. SYSTEM_GITHUB_ORG:  
-This denotes the default system  organization for Qubeship. All users with membership to this org will be considered admin users for that Qubeship instance. 
-(https://raw.githubusercontent.com/Qubeship/bootstrap/blob/master/GithubORG.tiff)
-if this is left blank, the installers personal github org will be used as default.
+This denotes the default system  organization for Qubeship. All users with membership to this org will be considered admin users for that Qubeship instance.   
+![Example](https://raw.githubusercontent.com/Qubeship/bootstrap/blob/master/GithubORG.tiff)  
+if this is left blank, the installers personal github org will be used as default.  
 
 ```
 SYSTEM_GITHUB_ORG  =  # if left blank , default will be install  users personal github org
