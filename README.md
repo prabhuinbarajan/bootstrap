@@ -23,8 +23,8 @@ cd bootstrap ; git checkout community_beta
 ```
 
 
-2. copy the beta.config file to qubeship_home/config
-   Note : Community users - need to create the SCM.config file. For instructions, please refer to : https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md
+2. copy the beta.config file to qubeship_home/config  
+  **Note** : Community users - need to create the SCM.config file. For instructions, please refer to : https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md
 
 3.  Run the install script
 ```
