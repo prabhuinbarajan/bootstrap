@@ -39,13 +39,13 @@ services:
       - docker-registry-creds:/auth
      # - ./qubeship_home/docker-registry/config.yml:/etc/docker/registry/config.yml
     depends_on:
-      - registry_copy
+      - docker_registry_configurator
 
-  registry_copy:
+  docker_registry_configurator:
     env_file: .env
-    image: ${QUBE_OPENSSL_IMAGE}:${QUBE_OPENSSL_VERSION}
+    image: ${DOCKER_REGISTRY_CONFIGURATOR_IMAGE}:${DOCKER_REGISTRY_CONFIGURATOR_VERSION}
     #image: busybox
-    container_name: registry_copy
+    container_name: docker_registry_configurator
     volumes:
       - docker-registry-creds:/certs:rw
       - docker-registry-creds:/auth:rw
