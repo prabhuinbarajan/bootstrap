@@ -8,5 +8,8 @@ qube_vault_log
 **/qubeship.config
 **/beta.config
 **/scm.config
-**/qubeship_home/*
+**/bin/*
+#**/qubeship_home/*
 #**/minikube/*
+load.js.private
+**/qubeship_home/endpoints/*.config

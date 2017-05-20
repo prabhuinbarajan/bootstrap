@@ -1,0 +1,9 @@
+#Only for beta users. will be in the welcome kit
+NGROK_HOSTNAME=
+NGROK_AUTH=
+BETA_ACCESS_USERNAME=
+BETA_ACCESS_TOKEN=
+COMPANY=
+install_registry=true
+install_target_cluster=true
+target_cluster_type=minikube
