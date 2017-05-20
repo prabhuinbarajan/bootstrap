@@ -70,13 +70,14 @@ services:
       VAULT_ADDR: ${VAULT_ADDR}
       TENANT: ${TENANT}
       ENV_TYPE: ${ENV_TYPE}
+      GITHUB_API_URL: ${GITHUB_API_URL}
       AUTH_API_URL: http://api_auth:${AUTH_API_PORT}/v1/auth
       QUBE_MONGODB_PORT_27017_TCP_ADDR: qube_mongodb
       QUBE_MONGODB_PORT_27017_TCP_PORT: ${MONGO_PORT}
       QUBE_SERVER_ADDR: api_registry:${API_REGISTRY_PORT}
       CI_ADDR: http://qube_builder:${QUBE_BUILDER_PORT}
       QUBE_SERVER_SCHEME: http
-#      LISTENER_URL: ${NGROK_HOSTNAME}
+      LISTENER_URL: ${NGROK_HOSTNAME}
     image: ${PROJECT_API_IMAGE}:${PROJECT_API_VERSION}
     ports:
       - "${PROJECT_API_PORT}:${PROJECT_API_PORT}"
@@ -102,6 +103,7 @@ services:
       VAULT_ADDR: ${VAULT_ADDR}
       TENANT: ${TENANT}
       ENV_TYPE: ${ENV_TYPE}
+      CI_ADDR: ${QUBE_BUILDER_URL}
       AUTH_API_URL: http://api_auth:${AUTH_API_PORT}/v1/auth
       JENKINS_BLUEOCEAN_ADDR: http://qube_builder:${QUBE_BUILDER_PORT}/blue/rest/organizations/jenkins
     image: ${PIPELINE_API_IMAGE}:${PIPELINE_API_VERSION}
@@ -376,6 +378,7 @@ services:
       ENV_TYPE: ${ENV_TYPE}
       VAULT_TOKEN: ${VAULT_TOKEN}
       ENV_ID: ${ENV_ID}
+      CI_ADDR: ${QUBE_BUILDER_URL}
     image: ${GIT_LISTENER_IMAGE}:${GIT_LISTENER_VERSION}
     depends_on:
       - qube-vault-opener
@@ -421,6 +424,8 @@ services:
     volumes:
       - vault_data:/vault/data:rw
       - qubeship-consul-data:/consul/data:rw
+    depends_on:
+      - ngrok
 
   qube-consul:
     image: consul:latest
