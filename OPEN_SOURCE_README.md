@@ -116,7 +116,7 @@ GITHUB_ENTERPRISE_HOST  =   # no trailing slashes , only schema://hostname
 ```
 #### 5. SYSTEM_GITHUB_ORG:  
 This denotes the default system  organization for Qubeship. All users with membership to this org will be considered admin users for that Qubeship instance.   
-![Example](https://raw.githubusercontent.com/Qubeship/bootstrap/blob/master/GithubORG.png)  
+![Example](https://raw.githubusercontent.com/Qubeship/bootstrap/master/GithubORG.png)  
 if this is left blank, the installers personal github org will be used as default.  
 
 ```
