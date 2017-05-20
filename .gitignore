@@ -9,3 +9,4 @@ qube_vault_log
 **/beta.config
 **/scm.config
 **/qubeship_home/*
+**/minikube/*
