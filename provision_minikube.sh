@@ -81,26 +81,8 @@ if [  "$default_token" == "" ]; then
 fi
 echo $minikube_ip ":" $default_token
 
-cat <<EOF > /tmp/ep_update.js
-use qubeship;
-try {
-    db.endPoint.update(
-        {_id: ObjectId("58edb422238503000b74d7a6")},
-        {
-            \$set:{
-                "endPoint" : "https://${minikube_ip}:8443"
-            }
-        }
-    )
-}catch (e) {
- print (e);
-}
+cat <<EOF > /tmp/minikube
+minikube_ip=$minikube_ip
+default_token=$default_token
 EOF
 
-docker cp /tmp/ep_update.js $(docker-compose ps -q qube_mongodb):/tmp
-docker-compose exec qube_mongodb sh -c "mongo < /tmp/ep_update.js"
-
-endpoint_id=58e3fad42a0603000b3e58a8
-qube endpoints postcredential --endpoint-id $endpoint_id \
-    --credential-type username_password \
-    --credential-data '{"token": "$default_token"}'
