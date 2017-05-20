@@ -30,5 +30,7 @@ if [ !  -z "$BETA_ACCESS_USERNAME" ]; then
     docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
     files="$files -f docker-compose-beta.yaml"
 fi
+
+export LISTENER_URL=$(wget -qO- $QUBE_HOST:4040/inspect/http | grep URL | sed 's#\\##g' | sed 's#window.common = JSON.parse("##g' | sed 's#");$##g' | jq -r '.Session.Tunnels.command_line.URL' | awk -F/ '{print $3}')
 echo "starting docker-compose $base_command $files $options $services"
 $base_command $files $options $services
