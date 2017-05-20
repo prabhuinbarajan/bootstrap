@@ -68,7 +68,7 @@ api_toolchains_version=$(docker exec -it $(docker-compose ps -q api_registry) cu
 
 
 api_qubeservice_swagger=$(docker exec -it $(docker-compose ps -q api_registry) curl http://api_qubeservice:$QUBESERVICE_API_PORT/specs.json| jq -r '.swagger') 
-api_qubeservice_version=$(docker exec -it $(docker-compose ps -q api_registry) curl http://api_qubeservice:${QUBESERVICE_API_PORT}$QUBESERVICE_API_PATH/version| jq -r '.version')
+api_qubeservice_version=$(curl -s http://$QUBE_HOST:${QUBESERVICE_API_PORT}$QUBESERVICE_API_PATH/version| jq -r '.version')
 
 docker_registry_swagger="not supported"
 docker_registry_version=$(docker login registry.beta.qubeship.io:5001 -u qubeship -p qubeship | awk '{ if ( $0 == "Login Succeeded" )  {print "stable" }}')

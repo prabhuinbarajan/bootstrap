@@ -153,12 +153,12 @@ if (true) {
             "name" : "Qubeship Default Docker Registry",
             "provider" : "generic",
             "category" : "production",
-            "endPoint" : "https://registry.beta.qubeship.io:5001/",
+            "endPoint" : "https://some_registry/",
             "type" : "registry",
             "visibility" : "public_",
             "isDefault" : true,
             "additionalInfo" : {
-                "account" : "registry.beta.qubeship.io:5001/"
+                "account" : "someregistryprefix"
             }
         },
         {
@@ -178,12 +178,12 @@ if (true) {
             "name" : "Qubeship Sandbox Cluster",
             "provider" : "kubernetes",
             "category" : "production",
-            "endPoint" : "https://192.168.99.101:8443",
+            "endPoint" : "https://somelocalhost:8443",
             "type" : "target",
             "visibility" : "public_",
             "isDefault" : false,
             "additionalInfo" : {
-                "namespace" : "default"
+                "namespace" : "somenamespace"
             }
         }
     ]);

@@ -2,29 +2,21 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 set -o allexport
-function url_ready() {
-  url="$1"
-  echo -n "Waiting for ${url} to become available."
-  while [ ! "200" = "$(curl -sLiI -w "%{http_code}\\n" -o /dev/null ${url})" ]; do
-    echo -n '.'
-    sleep 1
-  done
-  echo 'ready.'
-}
-
+source $DIR/qube_common_functions.sh
+eval $(get_options $@)
 source .env
-set -e -x
+set -e
+if [ $verbose ]; then
+    set -x
+fi
 export PATH=$PATH:$DIR/qubeship_home/bin
 SECONDS=0
 echo "install.sh: $( date ) : starting qubeship install"
 
-BETA_CONFIG_FILE=qubeship_home/config/beta.config
-SCM_CONFIG_FILE=qubeship_home/config/scm.config
 
 if [ -f $BETA_CONFIG_FILE ]; then
     echo "sourcing $BETA_CONFIG_FILE"
     source $BETA_CONFIG_FILE
-
 else
     echo "INFO: running community edition"
     if [ ! -f $SCM_CONFIG_FILE ]; then
@@ -42,46 +34,27 @@ else
     source $SCM_CONFIG_FILE
 fi
 
-
-export is_beta="false"
-files="-f docker-compose.yaml"
-if [ ! -z $BETA_ACCESS_USERNAME ];  then
-    export is_beta="true"
+if [ $is_beta ];  then
     docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
-    files="$files -f docker-compose-beta.yaml"
+fi
+
+if [ $auto_pull ] ; then
     docker-compose $files pull
 fi
 
-export github_username=${1:-$GITHUB_USERNAME}
-export github_password=${2:-$GITHUB_PWD}
-export github_url=${3:-$GITHUB_URL}
-export github_org=${4:-$GITHUB_ORG}
 if [ -z "$github_username" ] ; then
-    echo "Usage: ./install.sh <githubusername> [gitpassword | -p]  [githuburl] [githubsystemorg]"
+    echo "ERROR: missing username"
+    show_help
     exit -1
 fi
 
-if [ "$github_password" == "-p" ];then
-    read -s -p "password: " github_password
-fi
 if [ -z "$github_password" ] ; then
-    echo "ERROR: need github password. please refer to https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md#github-security"
-    echo "Usage: ./install.sh <githubusername> [gitpassword | -p]  [githuburl] [githubsystemorg]"
-    exit -1
+    echo "ERROR: missing password"
+    show_help
 fi
-
-extraopts="--username $github_username --password $github_password"
-if [ ! -z $github_org ]; then
- extraopts="$extraopts --github-org $github_org"
-fi
-
-if [ ! -z $github_url ]; then
- extraopts="$extraopts --github-host $github_url"
-fi
-
 
 echo "install.sh: $( date ) : running preinstall scripts"
-$DIR/init_qubeship.sh $extraopts
+$DIR/init_qubeship.sh $resolved_args
 
 
 echo "install.sh: $( date ) :starting qubeship server"
@@ -91,6 +64,5 @@ echo "install.sh: $( date ) :waiting until all qubeship services are up"
 ./status.sh "true"
 
 echo "install.sh: $( date ) :running post configuration"
-$DIR/post_configuration.sh
+$DIR/post_configuration.sh $resolved_args
 echo "install.sh: $( date ) :completed qubeship installation in $SECONDS seconds"
-

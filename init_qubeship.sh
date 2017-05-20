@@ -1,7 +1,16 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
-set -o allexport +e -x
+set -o allexport +e
+
+source $DIR/qube_common_functions.sh
+eval $(get_options $@)
+echo $resolved_args
+
+if [ $verbose ]; then
+    set -x
+fi
+
 source .env
 export PATH=$PATH:$DIR/qubeship_home/bin
 
@@ -85,19 +94,17 @@ VAULT_TOKEN=$(cat $LOG_FILE | awk -F': ' 'NR==2{print $2}' | tr -d '\r')
 # unseal vault server
 $RUN_VAULT_CMD unseal $UNSEAL_KEY
 
-BETA_CONFIG_FILE=qubeship_home/config/beta.config
-SCM_CONFIG_FILE=qubeship_home/config/scm.config
 if [ -f $BETA_CONFIG_FILE ]; then
     echo "sourcing $BETA_CONFIG_FILE"
     source $BETA_CONFIG_FILE
 else
     echo "INFO: $BETA_CONFIG_FILE not found. possibly running community edition"
 fi
+
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
 
-    docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
     docker-compose -f docker-compose.yaml -f docker-compose-beta.yaml up -d docker-registry
-    docker-compose -f docker-compose.yaml -f docker-compose-beta.yaml run oauth_registrator $@ \
+    docker-compose -f docker-compose.yaml -f docker-compose-beta.yaml run oauth_registrator $resolved_args \
     | grep -v "# " | awk '{gsub("\r","",$0);print}' > $SCM_CONFIG_FILE  
     # cat /tmp/scm.config |  grep -v "# "| sed -e 's/\r$//' >  $SCM_CONFIG_FILE
     
