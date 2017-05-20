@@ -24,8 +24,9 @@ cd bootstrap ; git checkout community_beta
 
 
 2. copy the beta.config file to qubeship_home/config
+   Note : Community users - need to create the SCM.config file. For instructions, please refer to : https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md
 
-3.  Run the beta install script
+3.  Run the install script
 ```
   ./qubeship_beta_install.sh --username <githubusername> --password [gitpassword]  [--organization github_organization] [--github-host githubsystemorg]
 ```
