@@ -74,7 +74,7 @@ as an 0Auth application in GitHub. You only need to do this once.
  
 To configure OAuth applications, enter the following information in GitHub OAuth:
 
-#### Builder:  
+#### 1. Builder:  
 ```
     Client Name : qubeship-builder
     Home Page : https://qubeship.io
@@ -83,6 +83,28 @@ To configure OAuth applications, enter the following information in GitHub OAuth
 ```
 Copy and paste the client id and secret into the qubeship_home/config/qubeship.config 
 in the variables **GITHUB_BUILDER_CLIENTID** and **GITHUB_BUILDER_SECRET**
+
+#### 2. CLI: 
+```
+    Client Name : qubeship-cli
+    Home Page : https://qubeship.io
+    Description : Qubeship CLI client
+    call back URL: http://cli.qubeship.io/index.html
+```
+Copy and paste the client id and secret into the qubeship_home/config/qubeship.config 
+in the variables **GITHUB_CLI_CLIENTID** and **GITHUB_CLI_SECRET**
+
+#### 3. GUI:  
+```
+    Client Name : qubeship-gui
+    Home Page : https://qubeship.io
+    Description : Qubeship GUI client
+    call back URL:  http://<docker endpoint>:7000/api/v1/auth/callback?provider=github
+```
+
+Copy and paste the client id and secret into the qubeship_home/config/qubeship.config 
+in the variables **GITHUB_GUI_CLIENTID** and **GITHUB_GUI_SECRET**
+
 
 ### Config File Example
 
