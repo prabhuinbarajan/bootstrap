@@ -4,7 +4,7 @@ cd $DIR/../..
 export PATH=$DIR:$PATH
 set +x -e
 
-PROJECT=$1
+PROJECT=$(echo $1 | sed 's#/-service$##')
 CONTEXT_PATH=$(echo $2 | sed 's#/\(.*\)$#\1#')
 if [ -z $PROJECT ] ; then
     echo "Usage: ${BASH_SOURCE[0]} qube_project_name context_path"
