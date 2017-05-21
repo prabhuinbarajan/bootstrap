@@ -26,9 +26,11 @@ then
   echo "detected OSX"
     #brew cask install minikube
   base64_decode="gbase64 -d"
+  base64_encode="gbase64"
+
 else
   echo "detected linux"
-  base64_decode="base64 -d"
+  base64_encode="base64"
 fi
 
 

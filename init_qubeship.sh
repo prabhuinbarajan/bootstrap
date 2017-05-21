@@ -154,7 +154,7 @@ sed -ibak "s#<conf_server_token>#${consul_access_token}#g" .client_env
 echo "sourcing .client_env"
 source .client_env
 
-auth=$(echo -n $github_username:$github_password | $base64_decode)
+auth=$(echo -n $github_username:$github_password | $base64_encode)
 data='{
     "client_id" : "'$GITHUB_BUILDER_CLIENTID'",
     "client_secret" : "'$GITHUB_BUILDER_SECRET'",
