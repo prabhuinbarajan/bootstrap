@@ -147,6 +147,7 @@ echo "GITHUB_URL=$GITHUB_ENTERPRISE_HOST" >> .client_env
 echo "GITHUB_AUTH_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/authorize" >> .client_env
 echo "GITHUB_TOKEN_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/access_token" >> .client_env
 
+sed -ibak "s#<system_github_org>#$SYSTEM_GITHUB_ORG#g" .client_env
 sed -ibak "s#<conf_server_token>#${consul_access_token}#g" .client_env
 echo "sourcing .client_env"
 source .client_env
@@ -165,6 +166,7 @@ github_token=$(curl -s -X POST \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -d "$data" | jq -r .token)
+
 
 # export variables in .client_env
 ########################## START: CONSUL INITIALIZATION ##########################
