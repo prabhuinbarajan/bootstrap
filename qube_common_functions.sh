@@ -45,7 +45,7 @@ c.  --install-registry : if you want to register  a default registry on installa
 c.  --install-target : if you want to register  a default target endpoint for deployment , set value to one of the supported cluster types
                        supported cluster values are : ["minikube"]
                        Community Users:
-                         Qubeship will expect  the kubernetes config details to be provided by user in  qubeship_home/endpoints/kube.config
+                         Qubeship will expect  the kubernetes config details to be provided by user in qubeship_home/endpoints/kube.config
                          Please refer to qubeship_home/endpoints/kube.config.template for example.
                        BETA Users:
                          this is done automatically.
@@ -119,7 +119,9 @@ function get_options() {
                  fi
 
                 if [ $read_password ]; then
-                    read -s -p "github password: " github_password
+                    if [ -z "$github_password" ]; then
+                        read -s -p "github password: " github_password
+                    fi
                     if [ -z $github_password ];  then
                         printf 'ERROR: "--password" requires valid password\n' >&2
                     fi
@@ -181,6 +183,8 @@ cat <<EOF > /tmp/ep_update.js
     }
 EOF
 
+docker cp /tmp/ep_update.js $(docker-compose ps -q qube_mongodb):/tmp
+docker-compose exec qube_mongodb sh -c "mongo < /tmp/ep_update.js"
 }
 
 export -f get_options

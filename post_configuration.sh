@@ -42,12 +42,12 @@ sed "s/<SYSTEM_GITHUB_ORG>/${orgId}/g" load.js.template | sed  "s/beta_access/${
 
 docker cp load.js $(docker-compose ps -q qube_mongodb):/tmp
 docker-compose exec qube_mongodb sh -c "mongo < /tmp/load.js"
-read -n1 -r -p "Press any key to continue..." key
+
 qube_service_configuration_complete="false"
 
 access_token=$(vault read -field=access_token secret/resources/$TENANT/$ENV_TYPE/$ENV_ID/qubebuilder)
-set +x
-set +e
+
+set +e +x
 #if [ $verbose ]; then
 #fi
 for i in `seq 1 3`;
@@ -66,7 +66,7 @@ if [ "$qube_service_configuration_complete" == "false" ]; then
     exit 1
 fi
 if [ $verbose ]; then
-    set -e
+    set -x
 fi
 
 #$DIR/run.sh
@@ -84,10 +84,10 @@ if [ $install_registry ];  then
         registry_endpoint_id=58edb422238503000b74d7a6
         registry_endpoint_url=registry_url
         echo "updating registry"
-        update_endpoint_data $registry_endpoint_id $registry_endpoint_url
-        endpoint_addl_info='{"additionalInfo":{"account":"'${registry_prefix}'"}'
-        qube endpoints update --endpoint-id $registry_endpoint_id --additional-info "${endpoint_addl_info}"
-        data='{"username":"'${registry_userid}'","password":"'${registry_password}'"}'
+        # update_endpoint_target_data $registry_endpoint_id $registry_endpoint_url
+        endpoint_addl_info='{"account":"${registry_prefix}"}'
+        qube endpoints update --endpoint-id $registry_endpoint_id --endpoint-url $registry_endpoint_url --additional-info $endpoint_addl_info
+        data='{"username":"${registry_userid}","password":"'${registry_password}'"}'
         qube endpoints postcredential --endpoint-id $registry_endpoint_id \
             --credential-type username_password \
             --credential-data "${data}"
@@ -100,11 +100,9 @@ if [ $install_target_cluster ]; then
         source $KUBE_CONFIG_FILE
         minikube_endpoint_id=58e3fad42a0603000b3e58a8
         echo "updating endpoint database"
-        update_endpoint_data $minikube_endpoint_id $kube_api_server
-        endpoint_addl_info='{"additionalInfo":{"namespace":"'${kube_namespace}'"}'
-        qube endpoints update --endpoint-id $minikube_endpoint_id --additional-info "${endpoint_addl_info}"
-        docker cp /tmp/ep_update.js $(docker-compose ps -q qube_mongodb):/tmp
-        docker-compose exec qube_mongodb sh -c "mongo < /tmp/ep_update.js"
+        # update_endpoint_target_data $minikube_endpoint_id $kube_api_server
+        endpoint_addl_info='{"namespace":"${kube_namespace}"}'
+        qube endpoints update --endpoint-id $minikube_endpoint_id --endpoint-url $kube_api_server --additional-info $endpoint_addl_info
         data='{"token":"'${kube_token}'"}'
         qube endpoints postcredential --endpoint-id $minikube_endpoint_id \
             --credential-type access_token \

@@ -23,10 +23,11 @@ services:
       - qube-vault-opener
 
   docker-registry:
+    env_file: .env
     restart: always
     image: registry:2
     ports:
-      - 5001:5000
+      - "${DOCKER_REGISTRY_PORT}:5000"
     environment:
       REGISTRY_HTTP_TLS_CERTIFICATE: /certs/cert.pem
       REGISTRY_HTTP_TLS_KEY: /certs/key.pem

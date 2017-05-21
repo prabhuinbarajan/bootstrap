@@ -102,9 +102,12 @@ else
 fi
 
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
+  if [ $install_registry ]; then
+    docker-compose $files up -d docker-registry
+    docker cp "$(docker-compose $files ps -q docker_registry_configurator)":/auth/registry.config qubeship_home/endpoints/
+  fi
 
-    docker-compose -f docker-compose.yaml -f docker-compose-beta.yaml up -d docker-registry
-    docker-compose -f docker-compose.yaml -f docker-compose-beta.yaml run oauth_registrator $resolved_args \
+    docker-compose $files run oauth_registrator $resolved_args \
     | grep -v "# " | awk '{gsub("\r","",$0);print}' > $SCM_CONFIG_FILE  
     # cat /tmp/scm.config |  grep -v "# "| sed -e 's/\r$//' >  $SCM_CONFIG_FILE
     

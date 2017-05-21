@@ -79,7 +79,7 @@ if [  "$default_token" == "" ]; then
     echo "ERROR: default token not found. endpoint configuration may not be successful"
     exit 0
 fi
-api_server=$(kubectl cluster-info | grep "is running at" | awk -F"is running at " '{print $2}')
+api_server=$(kubectl config view  -o jsonpath='{.clusters[?(@.name == "minikube")].cluster.server }')
 echo $api_server ":" $default_token
 
 cat <<EOF > $DIR/qubeship_home/endpoints/kube.config

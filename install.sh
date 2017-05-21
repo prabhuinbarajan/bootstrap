@@ -1,7 +1,7 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
-set -o allexport -e
+set -o allexport
 source $DIR/qube_common_functions.sh
 eval $(get_options $@)
 
