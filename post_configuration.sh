@@ -82,12 +82,12 @@ if [ $install_registry ];  then
     if [ -e $REGISTRY_CONFIG_FILE ]; then
         source $REGISTRY_CONFIG_FILE
         registry_endpoint_id=58edb422238503000b74d7a6
-        registry_endpoint_url=registry_url
+        registry_endpoint_url=$registry_url
         echo "updating registry"
         # update_endpoint_target_data $registry_endpoint_id $registry_endpoint_url
-        endpoint_addl_info='{"account":"${registry_prefix}"}'
-        qube endpoints update --endpoint-id $registry_endpoint_id --endpoint-url $registry_endpoint_url --additional-info $endpoint_addl_info
-        data='{"username":"${registry_userid}","password":"'${registry_password}'"}'
+        endpoint_addl_info='{"account":"'${registry_prefix}'"}'
+        qube endpoints update --endpoint-id $registry_endpoint_id --endpoint-url $registry_endpoint_url --additional-info $endpoint_addl_info --default
+        data='{"username":"'${registry_userid}'","password":"'${registry_password}'"}'
         qube endpoints postcredential --endpoint-id $registry_endpoint_id \
             --credential-type username_password \
             --credential-data "${data}"
@@ -101,8 +101,8 @@ if [ $install_target_cluster ]; then
         minikube_endpoint_id=58e3fad42a0603000b3e58a8
         echo "updating endpoint database"
         # update_endpoint_target_data $minikube_endpoint_id $kube_api_server
-        endpoint_addl_info='{"namespace":"${kube_namespace}"}'
-        qube endpoints update --endpoint-id $minikube_endpoint_id --endpoint-url $kube_api_server --additional-info $endpoint_addl_info
+        endpoint_addl_info='{"namespace":"'${kube_namespace}'"}'
+        qube endpoints update --endpoint-id $minikube_endpoint_id --endpoint-url $kube_api_server --additional-info $endpoint_addl_info --default
         data='{"token":"'${kube_token}'"}'
         qube endpoints postcredential --endpoint-id $minikube_endpoint_id \
             --credential-type access_token \
