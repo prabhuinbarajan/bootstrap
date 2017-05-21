@@ -5,7 +5,9 @@ volumes:
 
 services:
   qubeship_app:
-    env_file: .env
+    env_file:
+      - .env
+      - .client_env
     environment:
       DEFAULT_LISTENER_PORT: ${APP_PORT}
       CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
