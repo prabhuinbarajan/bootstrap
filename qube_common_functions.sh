@@ -137,7 +137,7 @@ function get_options() {
                 ;;
             -h|-\?|--help)   # Call a "show_help" function to display a synopsis, then exit.
                 show_help
-                set -e
+                echo return_code=1
                 exit 1
                 ;;
             --auto-pull)
@@ -159,6 +159,7 @@ function get_options() {
 
         shift
     done
+    echo "return_code=0"
     echo 'resolved_args="'$resolved_args'"'
 
 }

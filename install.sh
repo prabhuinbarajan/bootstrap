@@ -4,6 +4,9 @@ cd $DIR
 set -o allexport
 source $DIR/qube_common_functions.sh
 eval $(get_options $@)
+if [ "$return_code" -eq 1 ]; then
+    exit $return_code
+fi
 source .env
 touch .client_env
 set -e
