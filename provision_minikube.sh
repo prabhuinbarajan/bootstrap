@@ -10,6 +10,7 @@ then
     #brew cask install minikube
   minikube_url=https://storage.googleapis.com/minikube/releases/v0.19.0/minikube-darwin-amd64
   kubectl_url=http://storage.googleapis.com/kubernetes-release/release/v1.6.0/bin/darwin/amd64/kubectl
+  base64_decode="base64 -D"
 else
   echo "detected linux"
   if [ "$EUID" -ne 0 ]; then
@@ -18,6 +19,7 @@ else
   fi
   minikube_url=https://storage.googleapis.com/minikube/releases/v0.19.0/minikube-linux-amd64
   kubectl_url=http://storage.googleapis.com/kubernetes-release/release/v1.6.0/bin/linux/amd64/kubectl
+  base64_decode="base64 -d"
 fi
 
 if [ -z $(which minikube) ]; then
@@ -81,13 +83,14 @@ fi
 
 for i in `seq 1 3`;
 do
-    default_token=$(kubectl get serviceaccounts default -o yaml | grep -A1 secrets:  | tail -1 | awk '{print $3}')
-if [  "$default_token" == "" ]; then
-    echo "ERROR: default token not found. Waiting for 20 secs"
-    sleep 20
-else
-    break
-fi
+    DEFAULT_TOKEN_NAME=$(kubectl --namespace=kube-system get serviceaccount default -o jsonpath="{.secrets[0].name}")
+    default_token=$(kubectl --namespace=kube-system get secret "$DEFAULT_TOKEN" -o go-template="{{.data.token}}" | $base64_decode)
+    if [  "$default_token" == "" ]; then
+        echo "ERROR: default token not found. Waiting for 20 secs"
+        sleep 20
+    else
+        break
+    fi
 done
 
 if [  "$default_token" == "" ]; then
@@ -96,6 +99,12 @@ if [  "$default_token" == "" ]; then
 fi
 api_server=$(kubectl config view  -o jsonpath='{.clusters[?(@.name == "minikube")].cluster.server }')
 echo $api_server ":" $default_token
+
+# validate token
+if [ ! "200" = "$(curl -ksw "%{http_code}\\n" -o /dev/null -H "Authorization: Bearer $default_token" $api_server/version)" ]; then
+    echo 'token is not valid'
+    exit 1
+fi
 
 cat <<EOF > $DIR/qubeship_home/endpoints/kube.config
 kube_api_server=$api_server
