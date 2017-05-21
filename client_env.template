@@ -14,4 +14,5 @@ QUBE_APP_URL=<app_url>
 QUBE_BUILDER_URL=<qube_builder_url>
 QUBE_HOST=<qube_host>
 ANALYTICS_ENDPOINT=https://qubeship-analytics.firebaseio.com
+CI_ADDR=<qube_builder_url>
 SYSTEM_GITHUB_ORG=<system_github_org>
