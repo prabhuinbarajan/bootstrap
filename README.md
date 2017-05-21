@@ -24,8 +24,8 @@ cd bootstrap ; git checkout community_beta
 
 
 2. **Note** 
-   **Beta Users**:copy the beta.config file to qubeship_home/config  
-   **Community users**: create  scm.config file in qubeship_home/config. For instructions, please refer to : https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md
+   **Beta Users**: copy the beta.config file to qubeship_home/config  
+   **Community users**: create  scm.config file in qubeship_home/config. For instructions, please refer to: https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md
 
 3.  Run the install script
 ```
@@ -80,8 +80,8 @@ e.  --install-sample-projects   install sample qubeship projects
 
 ```
 
-### Post Install -  viewing services deployed to qubeship
-In order to view the services deployed via qubeship, you will have to take some special steps. this is because the local kubernetes installation doesnt  give access to services over standard endpoints. As a one time setup effort, You have to run this from the bootsrap directory
+### Post Install - viewing services deployed to qubeship
+In order to view the services deployed via qubeship, you will have to take some special steps. This is necessary because the local kubernetes installation doesn't give access to services over standard endpoints. As a one time setup effort, you have to run this from the bootsrap directory.
 ```
   qubeship_home/bin/kube-service-patch.sh
 ```
