@@ -21,6 +21,17 @@ if [ ! -z $BETA_ACCESS_USERNAME ];  then
     files="$files -f docker-compose-beta.yaml"
 fi
 
+if [ "$(uname)" == "Darwin" ]
+then
+  echo "detected OSX"
+    #brew cask install minikube
+  base64_decode="gbase64 -d"
+else
+  echo "detected linux"
+  base64_decode="base64 -d"
+fi
+
+
 function show_help() {
 (>&2 cat << EOF
 ./install.sh --help
