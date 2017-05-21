@@ -34,6 +34,10 @@ fi
 kubectl config use-context minikube
 echo "confirming minikube is running"
 if [ $(kubectl config  current-context) != "minikube" ]; then
+    echo "minikube context not found...attempting to start"
+    minikube start
+fi
+if [ $(kubectl config  current-context) != "minikube" ]; then
     echo "ERROR: minikube configuration failed. endpoint configuration may not be successful"
     exit 0
 fi
