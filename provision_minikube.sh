@@ -26,7 +26,7 @@ else
     echo "minikube already present"
 fi
 if [  -z $(which kubectl | grep qubeship_home) ]; then
-    curl -sLo kubectl $kubectl_url && chmod +x kubectl &&  mv kubectl /usr/local/bin/
+    curl -sLo kubectl $kubectl_url && chmod +x kubectl &&  mv kubectl $DIR/qubeship_home/bin
 else
     echo "kubectl already present"
 fi
