@@ -103,3 +103,16 @@ kube_token=$default_token
 kube_namespace=default
 EOF
 
+if [ -e $DIR/qubeship_home/endpoints/registry.config ]; then
+    source $DIR/qubeship_home/endpoints/registry.config
+    echo "adding registry $registry_url to minikube"
+    kubectl create secret docker-registry myregistrykey --docker-server=$registry_url --docker-username=$registry_userid --docker-password=$registry_password --docker-email=in@val.id
+    kubectl get serviceaccounts default -o yaml > ./sa.yaml
+cat << EOF >>sa.yaml
+imagePullSecrets:
+    - name: myregistrykey
+EOF
+    kubectl replace serviceaccount default -f ./sa.yaml
+    rm ./sa.yaml
+
+fi
