@@ -12,10 +12,6 @@ fi
 BETA_CONFIG_FILE=qubeship_home/config/beta.config
 SCM_CONFIG_FILE=qubeship_home/config/scm.config
 set -o allexport
-if [ -e .client_env ]; then
-    source .client_env
-    rm -rf ./.client_env*
-fi
 if [ -e $SCM_CONFIG_FILE ] ; then
     source $SCM_CONFIG_FILE
 fi
@@ -33,4 +29,10 @@ docker-compose $files down -v
 set +e
 docker rm -f $(docker-compose $files ps -q)
 docker-compose down -v
+
+# delete .client_env
+if [ -e .client_env ]; then
+    source .client_env
+    rm -rf ./.client_env*
+fi
 set -e

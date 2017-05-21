@@ -5,6 +5,7 @@ set -o allexport
 source $DIR/qube_common_functions.sh
 eval $(get_options $@)
 source .env
+touch .client_env
 set -e
 if [ $verbose ]; then
     set -x

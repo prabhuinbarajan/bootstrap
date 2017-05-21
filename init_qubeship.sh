@@ -22,7 +22,7 @@ if [ $docker_client_status -ne 0 ]; then
     echo "ERROR : Docker doesnt seem to be running. is your docker running?"
     exit -1
 fi
-if [ -e .client_env ]; then
+if [ -s .client_env ]; then
 	echo 'ERROR : qubeship is already configured. if you want to rerun install run ./uninstall.sh first'
 	exit -1
 fi
