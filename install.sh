@@ -4,8 +4,8 @@ cd $DIR
 set -o allexport
 source $DIR/qube_common_functions.sh
 eval $(get_options $@)
-
 source .env
+set -e
 if [ $verbose ]; then
     set -x
 fi
@@ -51,16 +51,16 @@ fi
 if [ -z "$github_password" ] ; then
     echo "ERROR: missing password"
     show_help
+    exit -1
 fi
 
 echo "install.sh: $( date ) : running preinstall scripts"
 $DIR/init_qubeship.sh $resolved_args
 
-
 echo "install.sh: $( date ) :starting qubeship server"
 $DIR/run.sh
-echo "install.sh: $( date ) :waiting until all qubeship services are up"
 
+echo "install.sh: $( date ) :waiting until all qubeship services are up"
 ./status.sh "true"
 
 echo "install.sh: $( date ) :running post configuration"

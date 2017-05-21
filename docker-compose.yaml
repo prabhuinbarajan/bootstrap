@@ -11,7 +11,9 @@ volumes:
 
 services:
   api_tenant:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       DEFAULT_LISTENER_PORT: ${TENANT_API_PORT}
       CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
@@ -30,7 +32,9 @@ services:
       - qube-consul
 
   api_auth:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       VIRTUAL_PATH: $AUTH_API_PATH
       DEFAULT_LISTENER_PORT: ${AUTH_API_PORT}
@@ -58,7 +62,9 @@ services:
       - api_tenant
 
   api_project:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       SPEC_PATH: $PROJECT_API_SPEC_PATH
       VIRTUAL_PATH: $PROJECT_API_PATH
@@ -92,7 +98,9 @@ services:
       - ngrok
 
   api_pipeline:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       VIRTUAL_PATH: $PIPELINE_API_PATH
       DEFAULT_LISTENER_PORT: ${PIPELINE_API_PORT}
@@ -118,7 +126,9 @@ services:
       - api_auth
 
   api_pipeline_v2:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       VIRTUAL_PATH: $ARTIFACTS_API_PATH
       DEFAULT_LISTENER_PORT: $ARTIFACTS_API_PORT
@@ -142,7 +152,9 @@ services:
        - api_auth
 
   api_toolchains:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       VIRTUAL_PATH: $TOOLCHAIN_API_PATH
       DEFAULT_LISTENER_PORT: $TOOLCHAIN_API_PORT
@@ -170,7 +182,9 @@ services:
        - api_auth
 
   api_opinions:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       VIRTUAL_PATH: $OPINIONS_API_PATH
       DEFAULT_LISTENER_PORT: ${OPINIONS_API_PORT}
@@ -198,7 +212,9 @@ services:
        - api_auth
 
   api_endpoints:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       DEFAULT_LISTENER_PORT: ${ENDPOINTS_API_PORT}
       SPEC_PATH: $ENDPOINTS_API_SPEC_PATH
@@ -270,7 +286,9 @@ services:
        - api_opinions
 
   qube_events_listener:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       DEFAULT_LISTENER_PORT: ${QUBE_EVENTS_LISTENER_PORT}
       CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
@@ -287,7 +305,9 @@ services:
       - qube_builder
 
   api_registry:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       DEFAULT_LISTENER_PORT: ${API_REGISTRY_INTERNAL_PORT}
       API_REGISTRY_PORT: ${API_REGISTRY_PORT}
@@ -334,7 +354,9 @@ services:
       - qubeship-postgres-data:/var/lib/postgresql/data
 
   qube_builder:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
       VAULT_TOKEN: ${VAULT_TOKEN}
@@ -368,7 +390,9 @@ services:
       - /usr/local/bin/docker:/usr/local/bin/docker:z
 
   qube_builder_slave:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     image: ${JNLP_SLAVE_BASE_IMAGE}:${JNLP_SLAVE_VERSION}
 
   git_listener:
@@ -396,7 +420,9 @@ services:
     command: [qube,"--version"]
 
   ngrok:
-    env_file: .env
+    env_file:
+       - .env
+       - .client_env
     environment:
       NGROK_AUTH: ${NGROK_AUTH}
       NGROK_HOSTNAME: ${NGROK_HOSTNAME}
