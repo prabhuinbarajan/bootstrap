@@ -407,6 +407,7 @@ services:
       VAULT_TOKEN: ${VAULT_TOKEN}
       ENV_ID: ${ENV_ID}
       CI_ADDR: ${QUBE_BUILDER_URL}
+      CI_USER: qubebuilder
     image: ${GIT_LISTENER_IMAGE}:${GIT_LISTENER_VERSION}
     depends_on:
       - qube-vault-opener

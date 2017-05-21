@@ -8,7 +8,7 @@ export PATH=$DIR/qubeship_home/bin:$PATH
 
 if [ "$(id -u)" != "0" ]; then
     echo "this script needs to be run as root. You dont seem to have root privileges"
-	echo "Usage: sudo  kube-service-patch $(minikube ip)"
+    echo "Usage: sudo  ${BASH_SOURCE[0]} \$(minikube ip)"
     exit 1
 fi
 ip=$1
@@ -21,8 +21,11 @@ set -x
 if [ "$(uname)" == "Darwin" ]
 then
   echo "detected OSX"
-  echo "route -n add 10.0.0.0/24 $ip"
-  route -n add 10.0.0.0/24 $ip
+  for i in `seq 2 254`;
+    do
+        echo "route -n add 10.0.0.$i/32 $ip"
+        route -n add 10.0.0.$i/32 $ip
+    done
 else
 
   echo "detected linux"
