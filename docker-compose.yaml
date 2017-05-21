@@ -227,7 +227,9 @@ services:
       - qube_builder
 
   api_qubeservice:
-    env_file: .env
+    env_file: 
+       - .env
+       - .client_env
     environment:
       VIRTUAL_PATH: $QUBESERVICE_API_PATH
       DEFAULT_LISTENER_PORT: ${QUBESERVICE_API_PORT}
@@ -370,7 +372,9 @@ services:
     image: ${JNLP_SLAVE_BASE_IMAGE}:${JNLP_SLAVE_VERSION}
 
   git_listener:
-    env_file: .env
+    env_file: 
+      - .env
+      - .client_env
     environment:
       DEFAULT_LISTENER_PORT: ${GIT_LISTENER_PORT}
       CONF_SERVER_TOKEN: ${CONF_SERVER_TOKEN}
