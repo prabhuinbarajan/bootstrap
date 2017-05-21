@@ -2,7 +2,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 set -x -e
-export PATH=$PATH:$DIR/qubeship_home/bin
+export PATH=$DIR/qubeship_home/bin:$PATH
 
 if [ "$(uname)" == "Darwin" ]
 then
@@ -25,7 +25,7 @@ if [ -z $(which minikube) ]; then
 else
     echo "minikube already present"
 fi
-if [  -z $(which kubectl) ]; then
+if [  -z $(which kubectl | grep qubeship_home) ]; then
     curl -sLo kubectl $kubectl_url && chmod +x kubectl &&  mv kubectl /usr/local/bin/
 else
     echo "kubectl already present"
