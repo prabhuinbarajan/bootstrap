@@ -7,6 +7,9 @@ export PATH=$PATH:$DIR/qubeship_home/bin
 set -o allexport -e
 source $DIR/qube_common_functions.sh
 eval $(get_options $@)
+if [ "$return_code" -eq 1 ]; then
+    exit $return_code
+fi
 
 if [ $verbose ]; then
     set -x
@@ -40,8 +43,8 @@ orgId=$(qube auth user-info --org | jq -r '.tenant.orgs[0].id')
 sed "s/<SYSTEM_GITHUB_ORG>/${orgId}/g" load.js.template | sed  "s/beta_access/${is_beta:-false}/g" > load.js
 
 
-docker cp load.js $(docker-compose ps -q qube_mongodb):/tmp
-docker-compose exec qube_mongodb sh -c "mongo < /tmp/load.js"
+docker cp load.js $(docker-compose ps -q qube_mongodb 2>/dev/null):/tmp
+docker-compose exec qube_mongodb sh -c "mongo < /tmp/load.js" 2>/dev/null
 
 qube_service_configuration_complete="false"
 

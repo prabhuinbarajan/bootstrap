@@ -23,16 +23,22 @@ files="-f docker-compose.yaml"
 if [ !  -z "$BETA_ACCESS_USERNAME" ]; then
     files="$files -f docker-compose-beta.yaml"
 fi
-docker-compose $files down -v
-docker-compose $files down -v
+docker-compose $files down -v 2>/dev/null
+docker-compose $files down -v 2>/dev/null
 #docker rm -f $(docker ps --filter name=bootstrap --format "{{lower .ID}}")
+process_ids=$(docker-compose $files ps -q 2>/dev/null)
 set +e
-docker rm -f $(docker-compose $files ps -q)
-docker-compose down -v
-
+if [ ! -z  "$process_ids" ]; then
+    echo "force remove: $process_ids"
+    docker rm -f $process_ids
+else
+    echo "no containers alive in bootstrap"
+fi
+docker-compose $files down -v 2>/dev/null
+docker volume ls | grep bootstrap_ | awk '{print $2}' | xargs docker volume rm
+set -e
 # delete .client_env
 if [ -e .client_env ]; then
     source .client_env
     rm -rf ./.client_env*
 fi
-set -e

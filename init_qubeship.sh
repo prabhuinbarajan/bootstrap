@@ -1,15 +1,15 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
-set -o allexport +e
+set -o allexport +e +x
 
 source $DIR/qube_common_functions.sh
 eval $(get_options $@)
+if [ "$return_code" -eq 1 ]; then
+    exit $return_code
+fi
 echo $resolved_args
 
-if [ $verbose ]; then
-    set -x
-fi
 
 source .env
 export PATH=$PATH:$DIR/qubeship_home/bin
@@ -17,7 +17,9 @@ export PATH=$PATH:$DIR/qubeship_home/bin
 # copy .client_env.template to .client_env
 output=`docker ps -a`
 docker_client_status=$?
-
+if [ $verbose ]; then
+    set -x
+fi
 if [ $docker_client_status -ne 0 ]; then
     echo "ERROR : Docker doesnt seem to be running. is your docker running?"
     exit -1
@@ -73,15 +75,15 @@ BUILDER_URL=http://$QUBE_HOST:$QUBE_BUILDER_PORT
 consul_access_token=$(uuidgen | tr '[:upper:]' '[:lower:]')
 sed "s#\$consul_acl_master_token#$consul_access_token#g" qubeship_home/consul/data/consul.json.template  > qubeship_home/consul/data/consul.json
 # copy vault config.json, firebase.json, and consul.json to busybox
-docker-compose up -d busybox
+docker-compose up -d busybox 2>/dev/null
 for file in $(ls $DIR/qubeship_home/vault/data/) ; do
-    docker cp qubeship_home/vault/data/$file "$(docker-compose ps -q busybox)":/vault/data
+    docker cp qubeship_home/vault/data/$file "$(docker-compose ps -q busybox  2>/dev/null)":/vault/data
 done
-docker cp qubeship_home/consul/data/consul.json "$(docker-compose ps -q busybox)":/consul/data/
+docker cp qubeship_home/consul/data/consul.json "$(docker-compose ps -q busybox 2>/dev/null)":/consul/data/
 
 ########################## START: VAULT INITIALIZATION ##########################
 # start qube-vault service
-docker-compose up -d $QUBE_VAULT_SERVICE $QUBE_CONSUL_SERVICE
+docker-compose up -d $QUBE_VAULT_SERVICE $QUBE_CONSUL_SERVICE  2>/dev/null
 
 
 RUN_VAULT_CMD="docker-compose exec $QUBE_VAULT_SERVICE vault"
@@ -103,11 +105,11 @@ fi
 
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
   if [ $install_registry ]; then
-    docker-compose $files up -d docker-registry
-    docker cp "$(docker-compose $files ps -q docker_registry_configurator)":/auth/registry.config qubeship_home/endpoints/
+    docker-compose $files up -d docker-registry  2>/dev/null
+    docker cp "$(docker-compose $files ps -q docker_registry_configurator  2>/dev/null)":/auth/registry.config qubeship_home/endpoints/
   fi
 
-    docker-compose $files run oauth_registrator $resolved_args \
+    docker-compose $files run oauth_registrator $resolved_args  2>/dev/null \
     | grep -v "# " | awk '{gsub("\r","",$0);print}' > $SCM_CONFIG_FILE  
     # cat /tmp/scm.config |  grep -v "# "| sed -e 's/\r$//' >  $SCM_CONFIG_FILE
     
