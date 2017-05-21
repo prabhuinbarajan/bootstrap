@@ -89,7 +89,7 @@ if [ $install_registry ];  then
         echo "updating registry"
         # update_endpoint_target_data $registry_endpoint_id $registry_endpoint_url
         endpoint_addl_info='{"account":"'${registry_prefix}'"}'
-        qube endpoints update --endpoint-id $registry_endpoint_id --endpoint-url $registry_endpoint_url --additional-info $endpoint_addl_info --default
+        qube endpoints update --endpoint-id $registry_endpoint_id --endpoint-url $registry_endpoint_url --additional-info $endpoint_addl_info --default --visibility=public
         data='{"username":"'${registry_userid}'","password":"'${registry_password}'"}'
         qube endpoints postcredential --endpoint-id $registry_endpoint_id \
             --credential-type username_password \
@@ -105,7 +105,7 @@ if [ $install_target_cluster ]; then
         echo "updating endpoint database"
         # update_endpoint_target_data $minikube_endpoint_id $kube_api_server
         endpoint_addl_info='{"namespace":"'${kube_namespace}'"}'
-        qube endpoints update --endpoint-id $minikube_endpoint_id --endpoint-url $kube_api_server --additional-info $endpoint_addl_info --default
+        qube endpoints update --endpoint-id $minikube_endpoint_id --endpoint-url $kube_api_server --additional-info $endpoint_addl_info --default --visibility=public
         data='{"token":"'${kube_token}'"}'
         qube endpoints postcredential --endpoint-id $minikube_endpoint_id \
             --credential-type access_token \
