@@ -102,17 +102,28 @@ kube_api_server=$api_server
 kube_token=$default_token
 kube_namespace=default
 EOF
-
+set +e
 if [ -e $DIR/qubeship_home/endpoints/registry.config ]; then
     source $DIR/qubeship_home/endpoints/registry.config
     echo "adding registry $registry_url to minikube"
-    kubectl create secret docker-registry myregistrykey --docker-server=$registry_url --docker-username=$registry_userid --docker-password=$registry_password --docker-email=in@val.id
-    kubectl get serviceaccounts default -o yaml > ./sa.yaml
+    registry_secret=$(kubectl get secret myregistrykey | awk '{print $1}' | grep myregistrykey)
+    if [ -z "$registry_secret" ] ; then
+        kubectl create secret docker-registry myregistrykey --docker-server=$registry_url --docker-username=$registry_userid --docker-password=$registry_password --docker-email=in@val.id
+    else
+        echo "secret $registry_secret already present. skipping secret creation"
+    fi
+    secret_present=$(kubectl get serviceaccounts default -o yaml | grep myregistrykey)
+    if [ -z "$secret_present" ]; then
+        kubectl get serviceaccounts default -o yaml > ./sa.yaml
 cat << EOF >>sa.yaml
 imagePullSecrets:
     - name: myregistrykey
 EOF
-    kubectl replace serviceaccount default -f ./sa.yaml
-    rm ./sa.yaml
+        kubectl replace serviceaccount default -f ./sa.yaml
+        rm ./sa.yaml
+    else
+        echo "registry imagepull secret already present in namespace"
+    fi
 
 fi
+set -e
