@@ -30,5 +30,7 @@ fi
 docker-compose $files down -v
 docker-compose $files down -v
 #docker rm -f $(docker ps --filter name=bootstrap --format "{{lower .ID}}")
-#docker rm -f $(docker-compose $files ps -q)
+set +e
+docker rm -f $(docker-compose $files ps -q)
 docker-compose down -v
+set -e
