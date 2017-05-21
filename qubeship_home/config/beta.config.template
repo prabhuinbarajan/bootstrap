@@ -7,3 +7,4 @@ COMPANY=
 install_registry=true
 install_target_cluster=true
 target_cluster_type=minikube
+install_sample_projects=true

@@ -7,6 +7,10 @@ eval $(get_options $@)
 if [ "$return_code" -eq 1 ]; then
     exit $return_code
 fi
+if [ "$no_args" -eq 1 ]; then
+    show_help;
+    exit 1
+fi
 source .env
 touch .client_env
 set -e

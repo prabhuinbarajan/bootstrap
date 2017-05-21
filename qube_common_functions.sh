@@ -35,13 +35,14 @@ fi
 function show_help() {
 (>&2 cat << EOF
 ./install.sh --help
-Usage: install.sh [-h|--help] [--verbose] [--username githubusername] [--password githubpassword]  [--organization orgname] [--github-host host ] [--install-registry] [--install-target target_cluster_type]
+Usage: install.sh [-h|--help] [--verbose] [--username githubusername] [--password githubpassword]  [--organization orgname] [--github-host host ] [--install-registry] [--install-target target_cluster_type] [--install-sample-projects]
     --username              github username
     --password              github password. password can be provided in command line. if not, qubeship will prompt for password
     --organization          default github organization
     --github-host           github host [ format: http(s)://hostname ]
     --install-target        install a target endpoint of target_cluster_type [minikube, swarm] (**default true for beta users)
     --install-registry      install a private docker registry endpoint (**default true for beta users))
+    --install-sample-projects install sample qubeship projects
     --verbose               verbose mode.
     --auto-pull             automatic pull of docker images from qubeship
 
@@ -53,19 +54,26 @@ c.  --install-registry : if you want to register  a default registry on installa
                             Qubeship will expect  the registry details to be provided by user in  qubeship_home/endpoints/registry.config
                             Please refer to qubeship_home/endpoints/registry.config.template for example.
                        BETA Users: this is done automatically.
-c.  --install-target : if you want to register  a default target endpoint for deployment , set value to one of the supported cluster types
+d.  --install-target : if you want to register  a default target endpoint for deployment , set value to one of the supported cluster types
                        supported cluster values are : ["minikube"]
                        Community Users:
                          Qubeship will expect  the kubernetes config details to be provided by user in qubeship_home/endpoints/kube.config
                          Please refer to qubeship_home/endpoints/kube.config.template for example.
                        BETA Users:
                          this is done automatically.
+e.  --install-sample-projects install sample qubeship projects
+
 EOF
 )
+exit 1
+
 }
 
 function get_options() {
     resolved_args="-t"
+    if [ -z "$@" ]; then
+        echo "no_args=1"
+    fi
     while :; do
         case $1 in
             --install-target)   # Call a "show_help" function to display a synopsis, then exit.
@@ -146,10 +154,14 @@ function get_options() {
                 echo "registry=true"
                 resolved_args="$resolved_args --install-registry"
                 ;;
+            --install-sample-projects)
+                install_sample_projects=true
+                echo "install_sample_projects=true"
+                resolved_args="$resolved_args $1"
+                ;;
             -h|-\?|--help)   # Call a "show_help" function to display a synopsis, then exit.
-                show_help
                 echo return_code=1
-                exit 1
+                show_help
                 ;;
             --auto-pull)
                 auto_pull=true

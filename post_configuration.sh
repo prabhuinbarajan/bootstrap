@@ -123,5 +123,7 @@ echo "You can use your GITHUB credentials to login !!!!"
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
     echo "APP: $APP_URL"
 fi
-qube service create --service-name "QubeFirstPythonProject" --language=python
-qube service create --service-name "QubeFirstJavaProject" --language=java
+if [ $install_sample_projects ] ; then
+    qube service create --service-name "QubeFirstPythonProject" --language=python
+    qube service create --service-name "QubeFirstJavaProject" --language=java
+fi
