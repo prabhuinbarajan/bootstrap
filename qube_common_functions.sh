@@ -11,7 +11,7 @@ KUBE_CONFIG_FILE=$DIR/qubeship_home/endpoints/kube.config
 REGISTRY_CONFIG_FILE=$DIR/qubeship_home/endpoints/registry.config
 is_beta=
 files="-f docker-compose.yaml"
-
+is_osx=
 if [ -f $BETA_CONFIG_FILE ] ; then
     source $BETA_CONFIG_FILE
 fi
@@ -23,6 +23,7 @@ fi
 
 if [ "$(uname)" == "Darwin" ]
 then
+  is_osx=true
   echo "DEBUG: detected OSX"
   if [ ! -z $(which base64) ]; then
         base64_bin="base64"
@@ -87,7 +88,7 @@ exit 1
 
 function get_options() {
     resolved_args="-t"
-    if [ -z "$@" ]; then
+    if [ "$*" == "" ]; then
         echo "no_args=1"
     fi
     while :; do

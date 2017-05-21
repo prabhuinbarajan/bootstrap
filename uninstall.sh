@@ -1,9 +1,14 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
-
+uninstall_minikube=$1
 output=`docker ps -a`
 docker_client_status=$?
+
+if [ "$(uname)" == "Darwin" ]
+then
+  is_osx=true
+fi
 
 if [ $docker_client_status -ne 0 ]; then
     echo "ERROR : Docker doesnt seem to be running. is your docker running?"
@@ -41,4 +46,22 @@ set -e
 if [ -e .client_env ]; then
     source .client_env
     rm -rf ./.client_env*
+fi
+
+if [ $is_osx ]; then
+    set +e
+    if [ ! -z "$uninstall_minikube" ]; then
+        set -x
+        echo "uninstalling minikube"
+        rm -rf ~/.minikube/*
+        rm -rf qubeship_home/endpoints/kube.config
+        if [ ! -z "$(which VBoxManage)" ]; then
+            VBoxManage controlvm minikube poweroff
+            VBoxManage unregistervm minikube -delete
+        fi
+
+    fi
+    set -e
+else
+    echo "uninstall minikube not supported"
 fi

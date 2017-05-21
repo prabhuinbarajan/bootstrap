@@ -108,7 +108,7 @@ if [ ! -z $BETA_ACCESS_USERNAME ];  then
     docker-compose $files up -d docker-registry  2>/dev/null
     docker cp "$(docker-compose $files ps -q docker_registry_configurator  2>/dev/null)":/auth/registry.config qubeship_home/endpoints/
   fi
-
+    docker-compose $files pull oauth_registrator
     docker-compose $files run oauth_registrator $resolved_args  2>/dev/null \
     | grep -v "# " | awk '{gsub("\r","",$0);print}' > $SCM_CONFIG_FILE  
     # cat /tmp/scm.config |  grep -v "# "| sed -e 's/\r$//' >  $SCM_CONFIG_FILE
