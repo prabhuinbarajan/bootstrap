@@ -24,14 +24,28 @@ fi
 if [ "$(uname)" == "Darwin" ]
 then
   echo "detected OSX"
-    #brew cask install minikube
-  base64_decode="gbase64 -d"
-  base64_encode="gbase64"
+  if [ ! -z $(which base64) ]; then
+        base64_bin="base64"
+        base64_encode="$base64_bin"
+        if [ ! -z "$(base64 --help | grep -i gnu )" ]; then
+            echo "found gnu base 64 "
+            base64_decode_opts="-d"
+        else
+            echo "found OSX base64"
+            base64_decode_opts="-D"
+        fi
+        base64_decode="$base64_bin $base64_decode_opts"
+  else
+     echo "ERROR : base64 utility not found. this is usually a standard for OSX . exiting"
+     exit 1
+  fi
 
 else
   echo "detected linux"
   base64_encode="base64"
+  base64_decode="base64 -d"
 fi
+echo "INFO: base64 utility : $base64_encode $base64_decode"
 
 
 function show_help() {

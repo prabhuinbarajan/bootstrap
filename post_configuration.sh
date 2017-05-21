@@ -124,6 +124,8 @@ if [ ! -z $BETA_ACCESS_USERNAME ];  then
     echo "APP: $APP_URL"
 fi
 if [ $install_sample_projects ] ; then
+    echo "creating python sample project"
     qube service create --service-name "QubeFirstPythonProject" --language=python
+    echo "creating java sample project"
     qube service create --service-name "QubeFirstJavaProject" --language=java
 fi
