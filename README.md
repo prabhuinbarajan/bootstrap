@@ -80,3 +80,29 @@ e.  --install-sample-projects   install sample qubeship projects
 
 ```
 
+### Post Install -  viewing services deployed to qubeship
+In order to view the services deployed via qubeship, you will have to take some special steps. this is because the local kubernetes installation doesnt  give access to services over standard endpoints. As a one time setup effort, You have to run this from the bootsrap directory
+```
+  qubeship_home/bin/kube-service-patch.sh
+```
+Step 1: determine your service name:
+    this is the container prefix of your project.
+    `kubectl get services`
+```
+NAME                             CLUSTER-IP   EXTERNAL-IP   PORT(S)          AGE
+kubernetes                       10.0.0.1     <none>        443/TCP          3d
+qubefirstpythonproject-service   10.0.0.63    <none>        443/TCP,80/TCP   2h
+```
+
+Step 2:
+use the access_qubeservice utilty to figure out your service url  
+```
+qubeship_home/bin/access_qubeservice.sh qubefirstpythonproject-service /api
+qubefirstjavaproject-service
+IP address of the qubefirstjavaproject-service-service : 10.0.0.63 for api
+curl http://10.0.0.63/api
+{"api": "hello world"}
+```   
+
+
+
