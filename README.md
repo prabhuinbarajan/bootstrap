@@ -24,7 +24,7 @@ cd bootstrap ; git checkout community_beta
 
 
 2. **Note** 
-   **Beta Users** :copy the beta.config file to qubeship_home/config  
+   **Beta Users**:copy the beta.config file to qubeship_home/config  
    **Community users**: create  scm.config file in qubeship_home/config. For instructions, please refer to : https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md
 
 3.  Run the install script
@@ -32,7 +32,7 @@ cd bootstrap ; git checkout community_beta
   ./qubeship_beta_install.sh --username <githubusername> --password [gitpassword]  [--organization github_organization] [--github-host githubsystemorg]
 ```
 
-At the end of installation , you should see a message like this
+At the end of installation, you should see a message like this
 ```
 Your Qubeship Installation is ready for use!!!!
 Here are some useful urls!!!!
