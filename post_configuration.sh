@@ -114,11 +114,14 @@ if [ $install_target_cluster ]; then
     fi
 fi
 
+
 set +x
 echo "Your Qubeship Installation is ready for use!!!!"
 echo "Here are some useful urls!!!!"
 echo "API: $API_URL_BASE"
 echo "You can use your GITHUB credentials to login !!!!"
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
-    echo "APP: $QUBE_APP_URL"
+    echo "APP: $APP_URL"
 fi
+qube service create --service-name "QubeFirstPythonProject" --language=python
+qube service create --service-name "QubeFirstJavaProject" --language=java
