@@ -67,7 +67,7 @@ QUBE_VAULT_SERVICE=qube-vault
 LOG_FILE=qube_vault_log
 QUBE_HOST=$(echo $QUBE_DOCKER_HOST | awk '{ sub(/tcp:\/\//, ""); sub(/:.*/, ""); print $0}')
 API_URL_BASE=http://$QUBE_HOST:$API_REGISTRY_PORT
-APP_URL=http://$QUBE_HOST:$APP_PORT
+QUBE_APP_URL=http://$QUBE_HOST:$APP_PORT
 BUILDER_URL=http://$QUBE_HOST:$QUBE_BUILDER_PORT
 
 consul_access_token=$(uuidgen | tr '[:upper:]' '[:lower:]')
@@ -123,7 +123,7 @@ sed -ibak "s/<vault_port>/$VAULT_PORT/g" .client_env
 sed -ibak "s/<consul_addr>/$QUBE_HOST/g" .client_env
 sed -ibak "s/<consul_port>/$CONSUL_PORT/g" .client_env
 sed -ibak "s#<api_url_base>#$API_URL_BASE#g" .client_env
-sed -ibak "s#<app_url>#$APP_URL#g" .client_env
+sed -ibak "s#<app_url>#$QUBE_APP_URL#g" .client_env
 sed -ibak "s#<qube_builder_url>#$BUILDER_URL#g" .client_env
 sed -ibak "s#<qube_host>#$QUBE_HOST#g" .client_env
 

@@ -117,5 +117,5 @@ echo "Here are some useful urls!!!!"
 echo "API: $API_URL_BASE"
 echo "You can use your GITHUB credentials to login !!!!"
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
-    echo "APP: $APP_URL"
+    echo "APP: $QUBE_APP_URL"
 fi
