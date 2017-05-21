@@ -9,7 +9,7 @@ then
   echo "detected OSX"
     #brew cask install minikube
   minikube_url=https://storage.googleapis.com/minikube/releases/v0.19.0/minikube-darwin-amd64
-  kubectl_url=http://storage.googleapis.com/kubernetes-release/release/v1.3.0/bin/darwin/amd64/kubectl
+  kubectl_url=http://storage.googleapis.com/kubernetes-release/release/v1.6.0/bin/darwin/amd64/kubectl
 else
   echo "detected linux"
   if [ "$EUID" -ne 0 ]; then
@@ -17,7 +17,7 @@ else
      exit -1;
   fi
   minikube_url=https://storage.googleapis.com/minikube/releases/v0.19.0/minikube-linux-amd64
-  kubectl_url=http://storage.googleapis.com/kubernetes-release/release/v1.3.0/bin/linux/amd64/kubectl
+  kubectl_url=http://storage.googleapis.com/kubernetes-release/release/v1.6.0/bin/linux/amd64/kubectl
 fi
 
 if [ -z $(which minikube) ]; then
@@ -72,13 +72,24 @@ do
   fi
 done
 
+
 default_namespace=$(kubectl get namespaces  | grep default | awk '{print $1}')
 if [ "$default_namespace" != "default" ]; then
     echo "ERROR: default namespace not found. endpoint configuration may not be successful"
     exit 0
 fi
 
-default_token=$(kubectl get serviceaccounts default -o yaml | grep -A1 secrets:  | tail -1 | awk '{print $3}')
+for i in `seq 1 3`;
+do
+    default_token=$(kubectl get serviceaccounts default -o yaml | grep -A1 secrets:  | tail -1 | awk '{print $3}')
+if [  "$default_token" == "" ]; then
+    echo "ERROR: default token not found. Waiting for 20 secs"
+    sleep 20
+else
+    break
+fi
+done
+
 if [  "$default_token" == "" ]; then
     echo "ERROR: default token not found. endpoint configuration may not be successful"
     exit 0
