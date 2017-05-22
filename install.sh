@@ -50,6 +50,11 @@ if [ $auto_pull ] ; then
     docker-compose $files pull
 fi
 
+
+if [ -z "$(which curl)" ]; then
+    echo "ERROR: missing curl utility. please install and try again"
+    exit -1
+fi
 if [ -z "$github_username" ] ; then
     echo "ERROR: missing username"
     show_help
