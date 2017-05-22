@@ -37,7 +37,6 @@ export LISTENER_URL=$(curl -s $QUBE_HOST:4040/inspect/http | grep URL | sed 's#\
 if [ -z $LISTENER_URL ];  then
     if [ $is_beta ]; then
         export LISTENER_URL=$NGROK_HOSTNAME
-    fi
     else
         echo "ERROR: LISTENER URL is empty "
         exit 1
