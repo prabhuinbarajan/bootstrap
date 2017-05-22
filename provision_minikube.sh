@@ -33,12 +33,18 @@ else
     echo "DEBUG: kubectl already present"
 fi
 
-kubectl config use-context minikube
+minikube_context=$(kubectl config get-contexts | grep minikube | awk '{print $2}')
+if [ ! -z $minikube_context ] ; then
+    echo "INFO: minikube already exists"
+    kubectl config use-context minikube
+fi
+
 echo "INFO: confirming minikube is running"
 if [ $(kubectl config  current-context) != "minikube" ]; then
     echo "WARN: minikube context not found...attempting to start"
     minikube start
 fi
+
 if [ $(kubectl config  current-context) != "minikube" ]; then
     echo "ERROR: minikube configuration failed. endpoint configuration may not be successful"
     exit 0
