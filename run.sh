@@ -38,6 +38,6 @@ if [ $is_beta ]; then
     export LISTENER_URL=$NGROK_HOSTNAME
 fi
 echo "LISTENER URL is : $LISTENER_URL"
-docker-compose pull cli:latest
+docker-compose pull cli
 echo "starting docker-compose $base_command $files $options"
 $base_command $files $options
