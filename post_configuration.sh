@@ -47,8 +47,10 @@ docker cp load.js $(docker-compose ps -q qube_mongodb 2>/dev/null):/tmp
 docker-compose exec qube_mongodb sh -c "mongo < /tmp/load.js" 2>/dev/null
 
 qube_service_configuration_complete="false"
+RUN_VAULT_CMD="docker-compose exec qube-vault vault"
+$RUN_VAULT_CMD auth $VAULT_TOKEN
 
-access_token=$(vault read -field=access_token secret/resources/$TENANT/$ENV_TYPE/$ENV_ID/qubebuilder)
+access_token=$($RUN_VAULT_CMD read -field=access_token secret/resources/$TENANT/$ENV_TYPE/$ENV_ID/qubebuilder)
 
 set +e +x
 #if [ $verbose ]; then
