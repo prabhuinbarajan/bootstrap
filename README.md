@@ -35,7 +35,7 @@ Download the release
 
 3.  Run the install script
 ```
-  ./install.sh --username <githubusername> --password [gitpassword]  [--organization github_organization] [--github-host githubsystemorg]
+  ./install.sh --username <githubusername> --password [gitpassword]  [--organization github_organization] [--github-host github_enterprise_url]
 ```
 
 At the end of installation, you should see a message like this
