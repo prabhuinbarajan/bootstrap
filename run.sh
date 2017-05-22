@@ -35,8 +35,13 @@ fi
 
 export LISTENER_URL=$(curl -s $QUBE_HOST:4040/inspect/http | grep URL | sed 's#\\##g' | sed 's#window.common = JSON.parse("##g' | sed 's#");$##g' | jq -r '.Session.Tunnels.command_line.URL' | awk -F/ '{print $3}')
 if [ -z $LISTENER_URL ];  then
-    echo "ERROR: LISTENER URL is empty "
-    exit 1
+    if [ $is_beta ]; then
+        export LISTENER_URL=$NGROK_HOSTNAME
+    fi
+    else
+        echo "ERROR: LISTENER URL is empty "
+        exit 1
+    fi
 fi
 echo "LISTENER URL is : $LISTENER_URL"
 echo "starting docker-compose $base_command $files $options"
