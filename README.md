@@ -21,6 +21,11 @@ You should be able to run the following command and get a valid output:
 git clone https://github.com/Qubeship/bootstrap
 cd bootstrap ; git checkout community_beta 
 ```
+or 
+Download the release
+```
+   mkdir qubeship-beta && curl -sL https://github.com/Qubeship/bootstrap/archive/beta-v1.0.tar.gz | tar xvz -C qubeship-beta --strip-components=1 && cd qubeship-beta
+```
 
 
 2. **Note** 
