@@ -22,8 +22,8 @@ else
   kubectl_url=http://storage.googleapis.com/kubernetes-release/release/v1.6.0/bin/linux/amd64/kubectl
 fi
 
-if [ -z $(which minikube) ]; then
-    curl -sLo minikube $minikube_url && chmod +x minikube && mv minikube /usr/local/bin/
+if [ -z $(which minikube | grep qubeship_home ) ]; then
+    curl -sLo minikube $minikube_url && chmod +x minikube && mv minikube $DIR/qubeship_home/bin
 else
     echo "DEBUG: minikube already present"
 fi
