@@ -49,12 +49,12 @@ APP: http://192.168.99.100:7000
 4. login to the qubeship app url
 
 
-##Uninstall:
+### Uninstall:
 1. If your release has errors, simply run the following from the qubeship release directory
 	./uninstall.sh —remove-minikube
 2. Restart the installation process
 
-###Features:
+### Features:
 1. Github.com / Github Enterprise
 2. Registry support : Private Docker Registry , DockerHub, Quay,io
 3. Deployment: Kubernetes , Minikube
@@ -63,11 +63,11 @@ APP: http://192.168.99.100:7000
 6. Sonar Qube
 
 
-###FAQ:
+### FAQ:
    1 . How do I install against Github Enterprise
    2. How to install Qubeship with kubernetes
    3. How to install Qubeship with a default docker registry
-   
+   4. How to view services deployed via kubeship to minikube 
 
 ### Help
 
