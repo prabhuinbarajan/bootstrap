@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o allexport
+set -o allexport -x
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 export PATH=$PATH:$DIR/qubeship_home/bin
@@ -20,12 +20,16 @@ if [ ! -z $BETA_ACCESS_USERNAME ];  then
     is_beta="true"
     files="$files -f docker-compose-beta.yaml"
 fi
+DOCKER_INSTALL_TYPE="docker-machine"
 
 if [ "$(uname)" == "Darwin" ]
 then
   is_osx=true
   echo "DEBUG: detected OSX"
   if [ ! -z $(which base64) ]; then
+        if [ ! -z $(docker info | grep -q moby) ]; then
+           DOCKER_INSTALL_TYPE="mac"
+        fi
         base64_bin="base64"
         base64_encode="$base64_bin"
         if [ ! -z "$(base64 --help | grep -i gnu )" ]; then
@@ -98,9 +102,6 @@ function url_ready() {
 
 function get_options() {
     resolved_args="-t"
-    if [ "$*" == "" ]; then
-        echo "no_args=1"
-    fi
     while :; do
         case $1 in
             --install-target)   # Call a "show_help" function to display a synopsis, then exit.
@@ -126,6 +127,7 @@ function get_options() {
                     shift
                 else
                     printf 'ERROR: "--username" requires github username\n' >&2
+                    echo "return_code=1"
                     exit 1
                 fi
                 echo "github_username=$github_username"
@@ -133,7 +135,14 @@ function get_options() {
                 ;;
             --github-host)   # Call a "show_help" function to display a synopsis, then exit.
                  if [ -n "$2" ]; then
-                    github_url=$(echo $2 | sed 's#/*$##')
+                    if [[ "$2" =~ ^http ]]; then
+                        github_url=$(echo $2 | sed 's#/*$##')
+                    else
+                        echo 'ERROR: "--github-host" requires schema + github host name - default [https://github.com ]\n' >&2
+                        echo "return_code=1"
+                        exit 1
+                    fi
+
                     shift
                 else
                     printf 'ERROR: "--github-host" requires github host name [https://github.com ]\n' >&2
@@ -148,9 +157,10 @@ function get_options() {
                     shift
                 else
                     printf 'ERROR: "--organization" requires valid organization\n' >&2
+                    echo "return_code=1"
                     exit 1
                 fi
-                echo "github_org=$github_url"
+                echo "github_org=$github_org"
 
                 resolved_args="$resolved_args --organization $github_org"
                 ;;

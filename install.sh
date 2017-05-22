@@ -3,6 +3,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 set -o allexport
 source $DIR/qube_common_functions.sh
+set +x
+get_options $@
 eval $(get_options $@)
 if [ "$return_code" -eq 1 ]; then
     exit $return_code
@@ -10,6 +12,11 @@ fi
 if [ "$no_args" -eq 1 ]; then
     show_help;
     exit 1
+fi
+if [ ! -z "$DOCKER_INSTALL_TYPE" ]; then
+    if [ "$DOCKER_INSTALL_TYPE" == "mac" ]; then
+        echo "ERROR: Qubeship installation on docker for mac is still on roadmap. please install docker toolbox instead"
+    fi
 fi
 source .env
 touch .client_env
@@ -44,6 +51,10 @@ fi
 
 if [ $is_beta ];  then
     docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
+    if [ $? -ne 0 ]; then
+        echo "ERROR : failed to do docker login. please check your docker installation"
+        exit 1
+    fi
 fi
 
 if [ $auto_pull ] ; then

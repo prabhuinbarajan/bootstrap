@@ -17,19 +17,20 @@ fi
 BETA_CONFIG_FILE=qubeship_home/config/beta.config
 SCM_CONFIG_FILE=qubeship_home/config/scm.config
 set -o allexport
-if [ -e $SCM_CONFIG_FILE ] ; then
-    source $SCM_CONFIG_FILE
-fi
+
+
 if [ -e $BETA_CONFIG_FILE ] ; then
     source $BETA_CONFIG_FILE
+    rm -rf $SCM_CONFIG_FILE
+else
+    source $SCM_CONFIG_FILE
 fi
+
 files="-f docker-compose.yaml"
 
 if [ !  -z "$BETA_ACCESS_USERNAME" ]; then
     files="$files -f docker-compose-beta.yaml"
 fi
-docker-compose $files down -v 2>/dev/null
-docker-compose $files down -v 2>/dev/null
 #docker rm -f $(docker ps --filter name=bootstrap --format "{{lower .ID}}")
 process_ids=$(docker-compose $files ps -q 2>/dev/null)
 set +e
@@ -39,8 +40,18 @@ if [ ! -z  "$process_ids" ]; then
 else
     echo "no containers alive in bootstrap"
 fi
-docker-compose $files down -v 2>/dev/null
-docker volume ls | grep bootstrap_ | awk '{print $2}' | xargs docker volume rm
+#docker-compose $files down -v 2>/dev/null
+#docker volume ls | grep bootstrap_ | awk '{print $2}' | xargs docker volume rm
+for volume in $(echo docker-registry-data  docker-registry-creds qubeship-mongo-data qubeship-postgres-data builder_home_data builder_home_opt vault_file vault_data qubeship-consul-data); do
+   echo "INFO: attempting to remove $volume"
+   volume_id=$(docker volume ls | grep $volume | awk '{print $2}')
+   if [ ! -z $volume_id ]; then
+        echo "INFO: volume removed $volume"
+       docker volume rm $volume_id
+   else
+        echo "WARNING: volume not found $volume. perhaps already removed"
+   fi
+done
 set -e
 # delete .client_env
 if [ -e .client_env ]; then
