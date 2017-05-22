@@ -44,7 +44,6 @@ docker volume ls | grep bootstrap_ | awk '{print $2}' | xargs docker volume rm
 set -e
 # delete .client_env
 if [ -e .client_env ]; then
-    source .client_env
     rm -rf ./.client_env*
 fi
 
