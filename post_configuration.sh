@@ -126,8 +126,9 @@ if [ ! -z $BETA_ACCESS_USERNAME ];  then
     echo "APP: $APP_URL"
 fi
 if [ $install_sample_projects ] ; then
+    guid=$(uuidgen)
     echo "creating python sample project"
-    qube service create --service-name "QubeFirstPythonProject" --language=python
+    qube service create --service-name "QubeFirstPythonProject" --repo-name "$guid" --language=python
     echo "creating java sample project"
-    qube service create --service-name "QubeFirstJavaProject" --language=java
+    qube service create --service-name "QubeFirstJavaProject" --repo-name "$guid" --language=java
 fi
