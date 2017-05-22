@@ -86,6 +86,16 @@ exit 1
 
 }
 
+function url_ready() {
+  url="$1"
+  echo -n "Waiting for ${url} to become available."
+  while [ ! "200" = "$(curl -sLiI -w "%{http_code}\\n" -o /dev/null ${url})" ]; do
+    echo -n '.'
+    sleep 1
+  done
+  echo 'ready.'
+}
+
 function get_options() {
     resolved_args="-t"
     if [ "$*" == "" ]; then
@@ -230,3 +240,4 @@ docker-compose exec qube_mongodb sh -c "mongo < /tmp/ep_update.js"
 
 export -f get_options
 export -f update_endpoint_target_data
+export -f url_ready

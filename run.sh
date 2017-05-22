@@ -22,9 +22,9 @@ fi
 if [ -e $BETA_CONFIG_FILE ] ; then
     source $BETA_CONFIG_FILE
 fi
-set -e
-mkdir -p .data/
+
 docker-machine ssh default sudo chmod a+rwx /var/run/docker.sock
+set -e
 
 base_command="docker-compose"
 options="up -d --remove-orphans"
@@ -33,14 +33,9 @@ if [ $is_beta ]; then
     docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
 fi
 
-export LISTENER_URL=$(curl -s $QUBE_HOST:4040/inspect/http | grep URL | sed 's#\\##g' | sed 's#window.common = JSON.parse("##g' | sed 's#");$##g' | jq -r '.Session.Tunnels.command_line.URL' | awk -F/ '{print $3}')
-if [ -z $LISTENER_URL ];  then
-    if [ $is_beta ]; then
-        export LISTENER_URL=$NGROK_HOSTNAME
-    else
-        echo "ERROR: LISTENER URL is empty "
-        exit 1
-    fi
+
+if [ $is_beta ]; then
+    export LISTENER_URL=$NGROK_HOSTNAME
 fi
 echo "LISTENER URL is : $LISTENER_URL"
 echo "starting docker-compose $base_command $files $options"
