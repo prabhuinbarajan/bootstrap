@@ -128,7 +128,7 @@ fi
 if [ $install_sample_projects ] ; then
     pguid=$(uuidgen)
     jguid=$(uuidgen)
-
+    qube service postconfiguration
     echo "creating python sample project"
     qube service create --service-name "QubeFirstPythonProject" --repo-name "$pguid" --language=python
     echo "creating java sample project"
