@@ -4,13 +4,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 export PATH=$PATH:$DIR/qubeship_home/bin
 
-set -o allexport -e
+set -o allexport
 source $DIR/qube_common_functions.sh
 eval $(get_options $@)
 if [ "$return_code" -eq 1 ]; then
     exit $return_code
 fi
-
+set -e
 if [ $verbose ]; then
     set -x
 fi
