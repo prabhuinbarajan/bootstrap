@@ -6,6 +6,8 @@
    * Docker Runtime v1.11 and above
    * Docker-compose
    * Docker-machine
+   
+   ** Note: Qubeship for now only supports "Docker Toolbox" on Mac OS. "Docker for Mac" and Linux will be supported soon.
 
 2. Text Editor
 3. Curl 
