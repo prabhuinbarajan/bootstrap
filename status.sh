@@ -2,6 +2,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 set -o allexport
+export PATH=$DIR/qubeship_home/bin:$PATH
+
 function url_ready() {
   url="$1"
   echo -n "Waiting for ${url} to become available."
@@ -36,7 +38,7 @@ docker-compose  $files ps
 
 wait_for_services=${1}
 if [ ! -z $wait_for_services ]; then
-    url_ready "${QUBE_BUILDER_URL}/jnlpJars/jenkins-cli.jar"
+    url_ready http://"${QUBE_HOST}:${QUBE_BUILDER_PORT}/jnlpJars/jenkins-cli.jar"
     url_ready "http://$QUBE_HOST:${QUBESERVICE_API_PORT}$QUBESERVICE_API_PATH/version"
 
 fi
@@ -58,7 +60,7 @@ api_pipeline_swagger=$(docker exec -it $(docker-compose ps -q api_registry) curl
 api_pipeline_version=$(docker exec -it $(docker-compose ps -q api_registry) curl http://api_pipeline:${PIPELINE_API_PORT}${PIPELINE_API_PATH}/version| jq -r '.version')
 
 api_pipeline_v2_swagger=$(docker exec -it $(docker-compose ps -q api_registry) curl http://api_pipeline_v2:${ARTIFACTS_API_PORT}/specs.json| jq -r '.swagger') 
-api_pipeline_v2_version=$(docker exec -it $(docker-compose ps -q api_registry) curl http://api_pipeline_v2:${ARTIFACTS_API_PORT}${ARTIFACTS_API_PATH}/version)
+api_pipeline_v2_version=$(docker exec -it $(docker-compose ps -q api_registry) curl http://api_pipeline_v2:${ARTIFACTS_API_PORT}${ARTIFACTS_API_PATH}/version | jq -r '.version')
 
 api_tenant_swagger="not supported"
 api_tenant_version=$(docker logs  $(docker-compose ps -q api_tenant) | grep "Running on http://0.0.0.0:${TENANT_API_PORT}" | awk '{ if ( $0 != "" )  {print "stable" }}')
