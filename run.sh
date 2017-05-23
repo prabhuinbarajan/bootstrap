@@ -22,8 +22,15 @@ fi
 if [ -e $BETA_CONFIG_FILE ] ; then
     source $BETA_CONFIG_FILE
 fi
-
-docker-machine ssh default sudo chmod a+rwx /var/run/docker.sock
+if [ $is_osx ]; then
+    if [ "$DOCKER_INSTALL_TYPE" == "mac" ] ; then
+        chmod a+rwx /var/run/docker.sock
+    else
+        docker-machine ssh default sudo chmod a+rwx /var/run/docker.sock
+    fi
+else
+  chmod a+rwx /var/run/docker.sock
+fi
 set -e
 
 base_command="docker-compose"
