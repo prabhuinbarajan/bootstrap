@@ -105,8 +105,9 @@ fi
 
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
   if [ $install_registry ]; then
+    docker-compose $files run docker_registry_configurator  2>/dev/null
     docker-compose $files up -d docker-registry  2>/dev/null
-    docker cp "$(docker-compose $files ps -q docker_registry_configurator  2>/dev/null)":/auth/registry.config qubeship_home/endpoints/
+    docker cp "$(docker-compose $files ps -q docker-registry  2>/dev/null)":/auth/registry.config qubeship_home/endpoints/
   fi
     docker-compose $files pull oauth_registrator
     docker-compose $files run oauth_registrator $resolved_args  2>/dev/null \
