@@ -67,7 +67,7 @@ APP: http://192.168.99.100:7000
    1. How do I install against Github Enterprise
    2. How to install Qubeship with kubernetes
    3. How to install Qubeship with a default docker registry
-   4. How to view services deployed via kubeship to minikube 
+   4. How to view services deployed via qubeship to minikube 
 
 ### Help
 
