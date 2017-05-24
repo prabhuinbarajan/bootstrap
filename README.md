@@ -11,8 +11,7 @@
 
 2. Text Editor
 3. Curl [download from official site](https://curl.haxx.se/download.html#MacOSX)
-4. jq [download from github](https://stedolan.github.io/jq/download/)
-5. **_A valid and running Docker Host._**
+4. **_A valid and running Docker Host._**
    
    You should be able to run the following command and get a valid output:
 ```
