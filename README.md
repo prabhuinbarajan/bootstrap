@@ -27,7 +27,7 @@
 git clone https://github.com/Qubeship/bootstrap && cd bootstrap && git checkout community_beta 
 ```
 
-2. **Note** 
+2. **Configuration** 
    * **Beta Users**: copy the **beta.config** file to qubeship_home/config  (** this file will be a part of beta welcome kit email that you received from qubeship **)
    
    * **Community users**: create  scm.config file in qubeship_home/config. For instructions, please refer to: https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md
@@ -64,7 +64,7 @@ APP: http://192.168.99.100:7000
 
 
 ### FAQ:
-   1 . How do I install against Github Enterprise
+   1. How do I install against Github Enterprise
    2. How to install Qubeship with kubernetes
    3. How to install Qubeship with a default docker registry
    4. How to view services deployed via kubeship to minikube 
