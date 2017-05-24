@@ -1,7 +1,7 @@
 # Install Qubeship Beta
 
 ## Prerequisites
-1. Docker Toolbox [https://www.docker.com/products/docker-toolbox] which includes the following items
+1. Docker Toolbox ()[https://www.docker.com/products/docker-toolbox] which includes the following items
 
    * Docker Runtime v1.11 and above
    * Docker-compose
@@ -10,10 +10,11 @@
    ** Note: Qubeship for now only supports "Docker Toolbox" on macOS. "Docker for Mac" and Linux will be supported soon.
 
 2. Text Editor
-3. Curl 
-4. **__A valid and running docker host.  Docker Host should be up and running.__**
-
-You should be able to run the following command and get a valid output:
+3. Curl [download from official site](https://curl.haxx.se/download.html#MacOSX)
+4. jq [download from github](https://stedolan.github.io/jq/download/)
+5. **_A valid and running Docker Host._**
+   
+   You should be able to run the following command and get a valid output:
 ```
     docker ps -a 
     CONTAINER ID        IMAGE                                                             COMMAND                  CREATED             STATUS                  PORTS                                                                      NAMES
