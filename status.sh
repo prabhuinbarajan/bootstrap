@@ -2,7 +2,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 set -o allexport
-export PATH=$DIR/qubeship_home/bin:$PATH
+source $DIR/qube_common_functions.sh
 
 function url_ready() {
   url="$1"
