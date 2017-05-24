@@ -24,15 +24,8 @@
 
 1. Clone the repo
 ```
-git clone https://github.com/Qubeship/bootstrap
-cd bootstrap ; git checkout community_beta 
+git clone https://github.com/Qubeship/bootstrap && cd bootstrap && git checkout community_beta 
 ```
-or 
-Download the release
-```
-   mkdir qubeship-beta && curl -sL https://github.com/Qubeship/bootstrap/archive/beta-v1.0.tar.gz | tar xvz -C qubeship-beta --strip-components=1 && cd qubeship-beta
-```
-
 
 2. **Note** 
    * **Beta Users**: copy the **beta.config** file to qubeship_home/config  (** this file will be a part of beta welcome kit email that you received from qubeship **)
@@ -53,7 +46,7 @@ You can use your GITHUB credentials to login !!!!
 APP: http://192.168.99.100:7000
 ```
 
-4. login to the qubeship app url
+4. login to the qubeship app url, showed at the end of step 3.
 
 
 ### Uninstall:
@@ -63,7 +56,7 @@ APP: http://192.168.99.100:7000
 
 ### Features:
 1. Github.com / Github Enterprise
-2. Registry support : Private Docker Registry , DockerHub, Quay,io
+2. Registry support : Private Docker Registry , DockerHub, Quay.io
 3. Deployment: Kubernetes , Minikube
 4. Default out of the box toolchains for python , java, gradle and go
 5. Default out of the box opiniion for end to end build, test and deploy
