@@ -7,11 +7,11 @@
    * Docker-compose
    * Docker-machine
    
-   ** Note: Qubeship for now only supports "Docker Toolbox" on Mac OS. "Docker for Mac" and Linux will be supported soon.
+   ** Note: Qubeship for now only supports "Docker Toolbox" on macOS. "Docker for Mac" and Linux will be supported soon.
 
 2. Text Editor
 3. Curl 
-4. A valid and running docker host.  Docker Host should be up and running.
+4. **__A valid and running docker host.  Docker Host should be up and running.__**
 
 You should be able to run the following command and get a valid output:
 ```
