@@ -33,8 +33,12 @@ git clone https://github.com/Qubeship/bootstrap && cd bootstrap && git checkout 
 
 3.  Run the install script
 ```
-  ./install.sh --username <githubusername> --password [gitpassword]  [--organization github_organization] [--github-host github_enterprise_url]
+./install.sh --username <githubusername> --password [gitpassword]  [--organization github_organization] [--github-host github_enterprise_url]
 ```
+
+Note: Please **do NOT pass the `organization` argument** to the script if:  
+* you are not a member of any Github organization to become the default Qubeship organization.
+* you want to make your Github user account the Qubeship organization with the same name as your login ID.
 
 At the end of installation, you should see a message like this
 ```
@@ -50,7 +54,7 @@ APP: http://192.168.99.100:7000
 
 ### Uninstall:
 1. If your release has errors, simply run the following from the qubeship release directory
-	./uninstall.sh —remove-minikube
+  ./uninstall.sh —remove-minikube
 2. Restart the installation process
 
 ### Features:
