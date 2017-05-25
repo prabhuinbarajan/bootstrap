@@ -35,7 +35,7 @@ git clone https://github.com/Qubeship/bootstrap && cd bootstrap && git checkout 
 
 3.  Run the install script
 <pre>
-./install.sh --username <i>github_username</i> --password [github_password]
+./install.sh --username <i>github_username</i> --password [github_password] [--organization github_organization] [--github-host github_enterprise_url]
 </pre>
 
 Note: if you are the **Github Enterprise** user, the argument <code>--github-host <i>github_enterprise_url</i></code> should be also passed to the script. Please refer to [Help](#help) for all available agruments.
