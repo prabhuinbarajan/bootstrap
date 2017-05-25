@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 # docker login -e $(gcloud auth list | grep ACTIVE | grep qubeship.io | awk '{print $2}')  -u _token -p "$(gcloud auth print-access-token)" https://gcr.io
 volumes:
   qubeship-mongo-data:
@@ -30,7 +30,7 @@ services:
       - qube-vault-opener
     links:
       - qube-consul
-
+      - qube-vault
   api_auth:
     env_file:
        - .env
@@ -59,7 +59,8 @@ services:
       - "${AUTH_API_PORT}:${AUTH_API_PORT}"
     links:
       - api_tenant
-
+      - qube-consul
+      - qube-vault
   api_project:
     env_file:
        - .env
@@ -95,7 +96,8 @@ services:
       - api_auth
       - qube_mongodb
       - ngrok
-
+      - qube-consul
+      - qube-vault
   api_pipeline:
     env_file:
        - .env
@@ -123,7 +125,8 @@ services:
     links:
       - qube_postgres:${PIPELINE_DB_HOST}
       - api_auth
-
+      - qube-consul
+      - qube-vault
   api_pipeline_v2:
     env_file:
        - .env
@@ -149,7 +152,8 @@ services:
     links:
        - qube_mongodb:mongo
        - api_auth
-
+       - qube-consul
+       - qube-vault
   api_toolchains:
     env_file:
        - .env
@@ -179,7 +183,8 @@ services:
     links:
        - qube_mongodb:mongo
        - api_auth
-
+       - qube-consul
+       - qube-vault
   api_opinions:
     env_file:
        - .env
@@ -209,6 +214,8 @@ services:
     links:
        - qube_mongodb:mongo
        - api_auth
+       - qube-consul
+       - qube-vault
 
   api_endpoints:
     env_file:
@@ -240,7 +247,8 @@ services:
       - api_auth
       - qube_mongodb
       - qube_builder
-
+      - qube-consul
+      - qube-vault
   api_qubeservice:
     env_file: 
        - .env
@@ -283,7 +291,8 @@ services:
        - api_project
        - api_toolchains
        - api_opinions
-
+       - qube-consul
+       - qube-vault
   qube_events_listener:
     env_file:
        - .env
@@ -302,6 +311,8 @@ services:
       - qube_builder
     links:
       - qube_builder
+      - qube-consul
+      - qube-vault
 
   api_registry:
     env_file:
@@ -337,6 +348,9 @@ services:
        - api_toolchains
        - api_opinions
        - api_qubeservice
+    links:
+      - qube-consul
+      - qube-vault
 
   qube_mongodb:
     env_file: .env
@@ -373,11 +387,15 @@ services:
       GITHUB_TOKEN_URL: ${GITHUB_TOKEN_URL}
       INSTALL_TYPE: ${INSTALL_TYPE}
       COMPANY: ${COMPANY}
+      QUBE_BUILDER_URL_EXT: http://${QUBE_HOST}:${QUBE_BUILDER_PORT}
     image: ${QUBE_BUILDER_IMAGE}:${QUBE_BUILDER_VERSION}
-#    entrypoint: bash
-#    command: ["-c",  "sleep 300"]
+    #entrypoint: bash
+    #command: ["-c",  "while true ; do sleep 300; done"]
     depends_on:
       - qube-vault-opener
+    links:
+      - qube-consul
+      - qube-vault
     ports:
       - "${QUBE_BUILDER_PORT}:${QUBE_BUILDER_PORT}"
       - "${QUBE_BUILDER_ADDL_PORT}:${QUBE_BUILDER_ADDL_PORT}"
@@ -385,8 +403,10 @@ services:
     volumes:
       - builder_home_data:/data:rw
       - builder_home_opt:/opt:rw
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /usr/local/bin/docker:/usr/local/bin/docker:z
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+    links:
+      - busybox:registry.beta.qubeship.io
+#      - /usr/local/bin/docker:/usr/local/bin/docker:z
 
   qube_builder_slave:
     env_file:
@@ -413,6 +433,9 @@ services:
       - qube-vault-opener
     ports:
       - "${GIT_LISTENER_PORT}:80"
+    links:
+      - qube-consul
+      - qube-vault
 
   cli:
     env_file: .env

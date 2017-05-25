@@ -7,9 +7,7 @@ export PATH=$PATH:$DIR/qubeship_home/bin
 set -o allexport
 source $DIR/qube_common_functions.sh
 eval $(get_options $@)
-if [ "$return_code" -eq 1 ]; then
-    exit $return_code
-fi
+
 set -e
 if [ $verbose ]; then
     set -x
@@ -57,7 +55,7 @@ set +e +x
 #fi
 for i in `seq 1 3`;
 do
-    output_ready=$(curl -u qubebuilder:$access_token -s $QUBE_BUILDER_URL)
+    output_ready=$(curl -u qubebuilder:$access_token -s http://${QUBE_HOST}:${QUBE_BUILDER_PORT})
     output=$(qube service postconfiguration | jq -r '.status')
     if [  "$output"=="Accepted"  ]; then
         qube_service_configuration_complete="true"

@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 volumes:
   docker-registry-data:
   docker-registry-creds:
@@ -23,11 +23,15 @@ services:
       - "${APP_PORT}:${APP_PORT}"
     depends_on:
       - qube-vault-opener
+    links:
+      - qube-consul
+      - qube-vault
 
   docker-registry:
     env_file: .env
     restart: always
     image: registry:2
+    container_name: docker-registry
     ports:
       - "${DOCKER_REGISTRY_PORT}:5000"
     environment:
@@ -60,3 +64,7 @@ services:
       CLI_CB_URL: http://cli.qubeship.io/index.html
       BUILDER_CB_URL: http://${QUBE_HOST}:${QUBE_BUILDER_PORT}/securityRealm/finishLogin
     image: "${REGISTRATOR_IMAGE}:${REGISTRATOR_VERSION}"
+
+  qube_builder:
+    links:
+      - docker-registry:registry.beta.qubeship.io

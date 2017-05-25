@@ -1,21 +1,22 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
-set -o allexport
+set -o allexport +x
 source $DIR/qube_common_functions.sh
 set +x
-get_options $@
 eval $(get_options $@)
-if [ "$return_code" -eq 1 ]; then
+
+if [ "${return_code}" -eq 1 ]; then
     exit $return_code
 fi
-if [ "$no_args" -eq 1 ]; then
+if [ "${no_args:-0}" -eq 1 ]; then
     show_help;
     exit 1
 fi
 if [ ! -z "$DOCKER_INSTALL_TYPE" ]; then
     if [ "$DOCKER_INSTALL_TYPE" == "mac" ]; then
         echo "ERROR: Qubeship installation on docker for mac is still on roadmap. please install docker toolbox instead"
+        #exit 1
     fi
 fi
 source .env

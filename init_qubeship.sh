@@ -5,9 +5,7 @@ set -o allexport +e +x
 
 source $DIR/qube_common_functions.sh
 eval $(get_options $@)
-if [ "$return_code" -eq 1 ]; then
-    exit $return_code
-fi
+
 echo $resolved_args
 
 
@@ -31,7 +29,7 @@ fi
 
 set  -e
 
-if [ "$(uname)" == "Darwin" ]
+if [ $is_osx  ]
 then
   echo "detected OSX"
   jq_url=https://github.com/stedolan/jq/releases/download/jq-1.5/jq-osx-amd64
@@ -42,12 +40,30 @@ else
   jq_url=https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
 fi
 curl -sLo $DIR/qubeship_home/bin/jq $jq_url && chmod +x $DIR/qubeship_home/bin/jq
-
-QUBE_DOCKER_HOST=${DOCKER_HOST:-localhost}
+QUBE_DOCKER_HOST=${DOCKER_HOST}
 if [ -z $DOCKER_HOST ]; then
+    QUBE_DOCKER_HOST=$(ipconfig getifaddr en0)
+    if [ -z $QUBE_DOCKER_HOST ]; then
+        QUBE_DOCKER_HOST=localhost
+    fi
     echo "INFO: DOCKER_HOST is not defined. setting QUBE_DOCKER_HOST to $QUBE_DOCKER_HOST"
 fi
-
+if [ $is_osx ]; then
+    if [ $DOCKER_INSTALL_TYPE == "mac" ]; then
+        iface="lo0"
+    else
+        iface="vboxnet0"
+    fi
+    if [ ! "$QUBE_DOCKER_HOST" ==  *"$DEFAULT_DOCKER_HOST"* ]; then
+        echo "WARN: QUBE_DOCKER_HOST not running under $DEFAULT_DOCKER_HOST. - $QUBE_DOCKER_HOST"
+        if [  -z "$(ifconfig $iface | grep $DEFAULT_DOCKER_HOST)" ]; then
+            echo "ERROR: DOCKER_MACHINE doesnt run in default setup. Please run sudo ./qube_fix_ip.sh before running install"
+            exit -1
+        fi
+    else
+        echo "INFO: QUBE_DOCKER_HOST running under $DEFAULT_DOCKER_HOST. - $QUBE_DOCKER_HOST"
+    fi
+fi
 
 
 # QUBE_CONFIG_FILE=qubeship_home/config/qubeship.config
@@ -63,14 +79,13 @@ if [ ! -f /usr/local/bin/docker-compose ]; then
   docker-compose --version
 fi
 
-
 QUBE_CONSUL_SERVICE=qube-consul
 QUBE_VAULT_SERVICE=qube-vault
 LOG_FILE=qube_vault_log
 QUBE_HOST=$(echo $QUBE_DOCKER_HOST | awk '{ sub(/tcp:\/\//, ""); sub(/:.*/, ""); print $0}')
 API_URL_BASE=http://$QUBE_HOST:$API_REGISTRY_PORT
 APP_URL=http://$QUBE_HOST:$APP_PORT
-BUILDER_URL=http://$QUBE_HOST:$QUBE_BUILDER_PORT
+#BUILDER_URL=http://$QUBE_HOST:$QUBE_BUILDER_PORT
 
 consul_access_token=$(uuidgen | tr '[:upper:]' '[:lower:]')
 sed "s#\$consul_acl_master_token#$consul_access_token#g" qubeship_home/consul/data/consul.json.template  > qubeship_home/consul/data/consul.json
@@ -94,7 +109,6 @@ UNSEAL_KEY=$(cat $LOG_FILE | awk -F': ' 'NR==1{print $2}' | tr -d '\r')
 VAULT_TOKEN=$(cat $LOG_FILE | awk -F': ' 'NR==2{print $2}' | tr -d '\r')
 
 # unseal vault server
-$RUN_VAULT_CMD unseal $UNSEAL_KEY
 
 if [ -f $BETA_CONFIG_FILE ]; then
     echo "sourcing $BETA_CONFIG_FILE"
@@ -105,28 +119,30 @@ fi
 
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
   if [ $install_registry ]; then
+    docker-compose $files run docker_registry_configurator  2>/dev/null
     docker-compose $files up -d docker-registry  2>/dev/null
-    docker cp "$(docker-compose $files ps -q docker_registry_configurator  2>/dev/null)":/auth/registry.config qubeship_home/endpoints/
+    docker cp "$(docker-compose $files ps -q docker-registry  2>/dev/null)":/auth/registry.config qubeship_home/endpoints/
   fi
     docker-compose $files pull oauth_registrator
     docker-compose $files run oauth_registrator $resolved_args  2>/dev/null \
     | grep -v "# " | awk '{gsub("\r","",$0);print}' > $SCM_CONFIG_FILE  
     # cat /tmp/scm.config |  grep -v "# "| sed -e 's/\r$//' >  $SCM_CONFIG_FILE
-    
 fi
+
 
 echo "copying client template"
 cp client_env.template .client_env
 # put key and token to .client_env
 sed -ibak "s#<unseal_key>#$UNSEAL_KEY#g" .client_env
 sed -ibak "s/<vault_token>/$VAULT_TOKEN/g" .client_env
-sed -ibak "s/<vault_addr>/$QUBE_HOST/g" .client_env
+#sed -ibak "s/<vault_addr>/$QUBE_HOST/g" .client_env
 sed -ibak "s/<vault_port>/$VAULT_PORT/g" .client_env
-sed -ibak "s/<consul_addr>/$QUBE_HOST/g" .client_env
+#sed -ibak "s/<consul_addr>/$QUBE_HOST/g" .client_env
 sed -ibak "s/<consul_port>/$CONSUL_PORT/g" .client_env
 sed -ibak "s#<api_url_base>#$API_URL_BASE#g" .client_env
 sed -ibak "s#<app_url>#$APP_URL#g" .client_env
-sed -ibak "s#<qube_builder_url>#$BUILDER_URL#g" .client_env
+#sed -ibak "s#<qube_builder_url>#$BUILDER_URL#g" .client_env
+sed -ibak "s#<qube_builder_port>#$QUBE_BUILDER_PORT#g" .client_env
 sed -ibak "s#<qube_host>#$QUBE_HOST#g" .client_env
 
 #github api url adjustments
@@ -152,6 +168,7 @@ echo "GITHUB_TOKEN_URL=$GITHUB_ENTERPRISE_HOST/login/oauth/access_token" >> .cli
 sed -ibak "s#<system_github_org>#$SYSTEM_GITHUB_ORG#g" .client_env
 sed -ibak "s#<conf_server_token>#${consul_access_token}#g" .client_env
 echo "sourcing .client_env"
+
 source .client_env
 
 auth=$(echo -n $github_username:$github_password | $base64_encode)
@@ -182,6 +199,8 @@ github_token=$(curl -s -X POST \
 set -o allexport
 
 # vault auth
+$RUN_VAULT_CMD unseal $UNSEAL_KEY
+
 $RUN_VAULT_CMD auth $VAULT_TOKEN
 
 BASE_PATH="secret/resources"

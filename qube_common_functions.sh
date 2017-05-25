@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o allexport -x
+set -o allexport
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 export PATH=$PATH:$DIR/qubeship_home/bin
@@ -11,6 +11,8 @@ KUBE_CONFIG_FILE=$DIR/qubeship_home/endpoints/kube.config
 REGISTRY_CONFIG_FILE=$DIR/qubeship_home/endpoints/registry.config
 is_beta=
 files="-f docker-compose.yaml"
+DEFAULT_DOCKER_HOST="192.168.99.100"
+
 is_osx=
 if [ -f $BETA_CONFIG_FILE ] ; then
     source $BETA_CONFIG_FILE
@@ -27,7 +29,7 @@ then
   is_osx=true
   echo "DEBUG: detected OSX"
   if [ ! -z $(which base64) ]; then
-        if [ ! -z $(docker info | grep -q moby) ]; then
+        if  [[ $(docker version --format "{{.Server.KernelVersion}}") == *-moby ]]; then
            DOCKER_INSTALL_TYPE="mac"
         fi
         base64_bin="base64"
@@ -110,6 +112,7 @@ function get_options() {
                     target_cluster_type=$2
                     if [ $target_cluster_type != "minikube" ] ; then
                         printf 'ERROR: "--install-target" supports only [minikube]\n' >&2
+                        echo "return_code=1 "
                         exit 1
                     fi
                     shift
@@ -117,8 +120,8 @@ function get_options() {
                     printf 'ERROR: "--install-target" requires a non-empty option argument. choices [minikube]\n' >&2
                     exit 1
                 fi
-                echo "install_target_cluster=true"
-                echo "target_cluster_type=minikube"
+                echo "install_target_cluster=true "
+                echo "target_cluster_type=minikube "
                 resolved_args="$resolved_args --install-target $target_cluster_type"
                 ;;
             --username)   # Call a "show_help" function to display a synopsis, then exit.
@@ -127,10 +130,10 @@ function get_options() {
                     shift
                 else
                     printf 'ERROR: "--username" requires github username\n' >&2
-                    echo "return_code=1"
+                    echo "return_code=1 "
                     exit 1
                 fi
-                echo "github_username=$github_username"
+                echo "github_username=$github_username "
                 resolved_args="$resolved_args --username $github_username"
                 ;;
             --github-host)   # Call a "show_help" function to display a synopsis, then exit.
@@ -139,16 +142,17 @@ function get_options() {
                         github_url=$(echo $2 | sed 's#/*$##')
                     else
                         echo 'ERROR: "--github-host" requires schema + github host name - default [https://github.com ]\n' >&2
-                        echo "return_code=1"
+                        echo "return_code=1 "
                         exit 1
                     fi
 
                     shift
                 else
                     printf 'ERROR: "--github-host" requires github host name [https://github.com ]\n' >&2
+                    echo "return_code=1 "
                     exit 1
                 fi
-                echo "github_url=$github_url"
+                echo "github_url=$github_url "
                 resolved_args="$resolved_args --github-host $github_url"
                 ;;
             --organization)   # Call a "show_help" function to display a synopsis, then exit.
@@ -157,10 +161,10 @@ function get_options() {
                     shift
                 else
                     printf 'ERROR: "--organization" requires valid organization\n' >&2
-                    echo "return_code=1"
+                    echo "return_code=1 "
                     exit 1
                 fi
-                echo "github_org=$github_org"
+                echo "github_org=$github_org "
 
                 resolved_args="$resolved_args --organization $github_org"
                 ;;
@@ -180,34 +184,35 @@ function get_options() {
                     fi
                     if [ -z $github_password ];  then
                         printf 'ERROR: "--password" requires valid password\n' >&2
+                        echo "return_code=1 "
                     fi
                 fi
-                echo "github_password=$github_password"
+                echo "github_password=$github_password "
 
                 resolved_args="$resolved_args --password $github_password"
                ;;
             --install-registry)       # Takes an option argument, ensuring it has been specified.
                 registry=true
-                echo "registry=true"
+                echo "registry=true "
                 resolved_args="$resolved_args --install-registry"
                 ;;
             --install-sample-projects)
                 install_sample_projects=true
-                echo "install_sample_projects=true"
+                echo "install_sample_projects=true "
                 resolved_args="$resolved_args $1"
                 ;;
             -h|-\?|--help)   # Call a "show_help" function to display a synopsis, then exit.
-                echo return_code=1
+                echo "return_code=1 "
                 show_help
                 ;;
             --auto-pull)
                 auto_pull=true
-                echo "auto_pull=true"
+                echo "auto_pull=true "
                 resolved_args="$resolved_args $1"
                 ;;
             -v|--verbose)
                 verbose=true
-                echo "verbose=true"
+                echo "verbose=true "
                 resolved_args="$resolved_args $1"
                 set -x
                 ;;
@@ -219,8 +224,8 @@ function get_options() {
 
         shift
     done
-    echo "return_code=0"
-    echo 'resolved_args="'$resolved_args'"'
+    echo "return_code=0 "
+    echo "resolved_args=\"$resolved_args\" "
 
 }
 

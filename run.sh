@@ -45,6 +45,13 @@ if [ $is_beta ]; then
     export LISTENER_URL=$NGROK_HOSTNAME
 fi
 echo "LISTENER URL is : $LISTENER_URL"
-docker-compose pull cli
+docker-compose $files pull cli
 echo "starting docker-compose $base_command $files $options"
 $base_command $files $options
+if [ $is_osx ]; then
+    if [ "$DOCKER_INSTALL_TYPE" == "mac" ] ; then
+        docker-compose $files exec -T --user root qube_builder bash -c 'GID=$(stat -c %g /var/run/docker.sock); usermod -G $GID jenkins; ls -aln /var/run/docker.sock; echo $GID; chmod a+rwx /var/run/docker.sock'
+        docker-compose $files exec -T qube_builder bash -c 'id -Gn; ls -all /var/run/docker.sock; output=$(docker ps -a); echo $?'
+    fi
+
+fi
