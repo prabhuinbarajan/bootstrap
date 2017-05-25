@@ -34,9 +34,11 @@ git clone https://github.com/Qubeship/bootstrap && cd bootstrap && git checkout 
    * **Community users**: create  scm.config file in qubeship_home/config. For instructions, please refer to: https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md
 
 3.  Run the install script
-```
-  ./install.sh --username <githubusername> --password [gitpassword]  [--organization github_organization] [--github-host github_enterprise_url]
-```
+<pre>
+./install.sh --username <i>github_username</i> --password [github_password] [--organization github_organization] [--github-host github_enterprise_url]
+</pre>
+
+Note: if you are the **Github Enterprise** user, the argument <code>--github-host <i>github_enterprise_url</i></code> should be also passed to the script. Please refer to [Help](#help) for all available agruments.
 
 At the end of installation, you should see a message like this
 ```
@@ -52,7 +54,7 @@ APP: http://192.168.99.100:7000
 
 ### Uninstall:
 1. If your release has errors, simply run the following from the qubeship release directory
-	./uninstall.sh —remove-minikube
+  ./uninstall.sh —remove-minikube
 2. Restart the installation process
 
 ### Features:
@@ -80,16 +82,16 @@ Usage: install.sh [-h|--help] [--verbose] [--username githubusername] [--passwor
     --verbose                   verbose mode.
     --auto-pull                 automatic pull of docker images from qubeship
 
-a. -- organization :            if it is not specified, Qubeship will take the users personal organization as default
-b. -- github-host:              if is not supplied, Qubeship will default the SCM to https://github.com. it should only be of the pattern https://hostname.
+a. --organization :            the name of the Github organization of which Qubeship gives the admin access to every member. by default, Qubeship will give admin access to only you.
+b. --github-host:              if is not supplied, Qubeship will default the SCM to https://github.com. it should only be of the pattern https://hostname.
                                 DO NOT specify context path. Qubeship will automatically remove the trailing slashes if specified
-c.  --install-registry :        if you want to register  a default registry on installation , set to true.
+c. --install-registry :        if you want to register  a default registry on installation , set to true.
                                 Community Users:
                                     Qubeship will expect  the registry details to be provided by user in  qubeship_home/endpoints/registry.config
                                     Please refer to qubeship_home/endpoints/registry.config.template for example.
                                 BETA Users:
                                     this is done automatically. no action required
-d.  --install-target :          if you want to register  a default target endpoint for deployment , set value to one of the supported cluster types
+d. --install-target :          if you want to register  a default target endpoint for deployment , set value to one of the supported cluster types
                                 supported cluster values are : ["minikube"]
                                 Community Users:
                                     Qubeship will expect  the kubernetes config details to be provided by user in qubeship_home/endpoints/kube.config
