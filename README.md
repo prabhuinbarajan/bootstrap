@@ -127,7 +127,7 @@ curl http://10.0.0.63/api
 ### FAQ:
    1. How to stop Qubeship services (in bootstrap folder).
    
-      In the bootstrap folder, do: `docker-compose down`
+      In the bootstrap folder, do: `./down.sh`
       
    1. How to start Qubeship services again after they were stopped.
       
