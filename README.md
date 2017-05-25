@@ -33,12 +33,10 @@ git clone https://github.com/Qubeship/bootstrap && cd bootstrap && git checkout 
 
 3.  Run the install script
 ```
-./install.sh --username <githubusername> --password [gitpassword]  [--organization github_organization] [--github-host github_enterprise_url]
+./install.sh --username <githubusername> --password [gitpassword]
 ```
 
-Note: Please **do NOT pass the `organization` argument** to the script if:  
-* you are not a member of any Github organization to become the default Qubeship organization.
-* you want to make your Github user account the Qubeship organization with the same name as your login ID.
+Note: please refer to [Help](#help) for all available agruments.
 
 At the end of installation, you should see a message like this
 ```
