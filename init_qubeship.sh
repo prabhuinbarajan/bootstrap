@@ -115,10 +115,11 @@ if [ ! -z $BETA_ACCESS_USERNAME ];  then
   else
     echo "$SCM_CONFIG_FILE not found, proceeding with oauth registration"
     docker-compose $files pull oauth_registrator
-    docker-compose $files run oauth_registrator $resolved_args  2>/dev/null \
-    | grep -v "# " | awk '{gsub("\r","",$0);print}' > $SCM_CONFIG_FILE
-    #TODO: Handle timeout error and provide link to manual instructions 
-    # https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md#github-configuration
+
+     docker-compose $files run oauth_registrator $resolved_args  2>/dev/null 
+     | if [ $? -eq 0 ]; then grep -v "# " | awk '{gsub("\r","",$0);print}' > $SCM_CONFIG_FILE else 
+     echo "Error configuring qubeship application with github. Please configure manually and retry install with reference to
+      https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md#github-configuration."; exit -1; fi
   fi
 fi
 
