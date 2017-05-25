@@ -82,7 +82,7 @@ Usage: install.sh [-h|--help] [--verbose] [--username githubusername] [--passwor
     --verbose                   verbose mode.
     --auto-pull                 automatic pull of docker images from qubeship
 
-a. -- organization :            if it is not specified, Qubeship will take the users personal organization as default
+a. -- organization :            the Github organization to become the default Qubeship organization. if it is not specified, Qubeship will take the user's personal organization as default
 b. -- github-host:              if is not supplied, Qubeship will default the SCM to https://github.com. it should only be of the pattern https://hostname.
                                 DO NOT specify context path. Qubeship will automatically remove the trailing slashes if specified
 c.  --install-registry :        if you want to register  a default registry on installation , set to true.
@@ -101,6 +101,9 @@ d.  --install-target :          if you want to register  a default target endpoi
 e.  --install-sample-projects   install sample qubeship projects
 
 ```
+
+2. terms
+    * Default organization: the organization that has administration privileges. Members of this group have higher permissions that other members in your company.
 
 ### Post Install - viewing services deployed to qubeship
 In order to view the services deployed via qubeship, you will have to take some special steps. This is necessary because the local kubernetes installation doesn't give access to services over standard endpoints. As a one time setup effort, you have to run this from the bootsrap directory.
