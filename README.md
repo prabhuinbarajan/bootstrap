@@ -125,14 +125,24 @@ curl http://10.0.0.63/api
 
 
 ### FAQ:
-   1. How to stop Qubeship services (in bootstrap folder).
+   1. How to stop Qubeship services:
    
       In the bootstrap folder, do: `./down.sh`
       
    1. How to start Qubeship services again after they were stopped.
       
       In the bootstrap folder, do: `./run.sh`
+
+   1. I rebooted my machine and Qubeship stopped working, what should I do:
       
+      The best way to avoid this problem is to "Save State" in virtualbox before rebooting and "start" the VM again afterwards.
+
+      Otherwise, do the following:
+      
+      * Open virtualbox, make sure "default" VM is running. If not, "start" it.
+      * Make sure the VM has finish booting and running correctly.
+      * In the bootstrap folder, do: `./run.sh`
+   
    1. How do I install against Github Enterprise
    1. How to install Qubeship with kubernetes
    1. How to install Qubeship with a default docker registry
