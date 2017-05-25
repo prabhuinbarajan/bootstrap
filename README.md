@@ -7,7 +7,7 @@
    * Docker-compose
    * Docker-machine
    
-   ** Note: Qubeship for now only supports "Docker Toolbox" on macOS. "Docker for Mac" and Linux will be supported soon.
+   ** **_Note_** **: Qubeship for now only supports "Docker Toolbox" on macOS. "Docker for Mac" and Linux will be supported soon.
 
 2. Text Editor
 3. Curl [download from official site](https://curl.haxx.se/download.html#MacOSX)
@@ -61,12 +61,6 @@ APP: http://192.168.99.100:7000
 5. Default out of the box opiniion for end to end build, test and deploy
 6. Sonar Qube
 
-
-### FAQ:
-   1. How do I install against Github Enterprise
-   2. How to install Qubeship with kubernetes
-   3. How to install Qubeship with a default docker registry
-   4. How to view services deployed via qubeship to minikube 
 
 ### Help
 
@@ -129,4 +123,18 @@ curl http://10.0.0.63/api
 ```   
 
 
+
+### FAQ:
+   1. How to stop Qubeship services (in bootstrap folder).
+   
+      In the bootstrap folder, do: `docker-compose down`
+      
+   1. How to start Qubeship services again after they were stopped.
+      
+      In the bootstrap folder, do: `./run.sh`
+      
+   1. How do I install against Github Enterprise
+   1. How to install Qubeship with kubernetes
+   1. How to install Qubeship with a default docker registry
+   1. How to view services deployed via qubeship to minikube 
 
