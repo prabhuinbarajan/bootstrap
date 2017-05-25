@@ -109,11 +109,17 @@ if [ ! -z $BETA_ACCESS_USERNAME ];  then
     docker-compose $files up -d docker-registry  2>/dev/null
     docker cp "$(docker-compose $files ps -q docker-registry  2>/dev/null)":/auth/registry.config qubeship_home/endpoints/
   fi
+
+  if [ -f $SCM_CONFIG_FILE ] ; then
+    echo "Found a $SCM_CONFIG_FILE, proceeding with the file..."
+  else
+    echo "$SCM_CONFIG_FILE not found, proceeding with oauth registration"
     docker-compose $files pull oauth_registrator
     docker-compose $files run oauth_registrator $resolved_args  2>/dev/null \
     | grep -v "# " | awk '{gsub("\r","",$0);print}' > $SCM_CONFIG_FILE  
-    # cat /tmp/scm.config |  grep -v "# "| sed -e 's/\r$//' >  $SCM_CONFIG_FILE
-    
+    exit -1
+  fi
+   
 fi
 
 echo "copying client template"
