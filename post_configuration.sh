@@ -83,7 +83,7 @@ if [ $is_beta ];  then
          fi
     fi
 fi
-if [ $install_registry ];  then
+if [ $install_registry && $install_registry != "false" ];  then
     if [ -e $REGISTRY_CONFIG_FILE ]; then
         source $REGISTRY_CONFIG_FILE
         registry_endpoint_id=58edb422238503000b74d7a6
@@ -100,7 +100,7 @@ if [ $install_registry ];  then
     fi
 fi
 
-if [ $install_target_cluster ]; then
+if [ $install_target_cluster && $install_target_cluster != "false" ]; then
     if [ -e $KUBE_CONFIG_FILE ]; then
         source $KUBE_CONFIG_FILE
         minikube_endpoint_id=58e3fad42a0603000b3e58a8
