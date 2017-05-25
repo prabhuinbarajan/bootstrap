@@ -67,22 +67,22 @@ Usage: install.sh [-h|--help] [--verbose] [--username githubusername] [--passwor
     --verbose               verbose mode.
     --auto-pull             automatic pull of docker images from qubeship
 
-a. -- organization : if it is not specified, Qubeship will take the users personal organization as default
-b. -- github-host: if is not supplied, Qubeship will default the SCM to https://github.com. it should only be of the pattern https://hostname.
+a. --organization : the name of the Github organization of which Qubeship gives the admin access to every member. by default, Qubeship will give admin access to only you.
+b. --github-host: if is not supplied, Qubeship will default the SCM to https://github.com. it should only be of the pattern https://hostname.
                     DO NOT specify context path. Qubeship will automatically remove the trailing slashes if specified
-c.  --install-registry : if you want to register  a default registry on installation , set to true.
+c. --install-registry : if you want to register  a default registry on installation , set to true.
                        Community Users:
                             Qubeship will expect  the registry details to be provided by user in  qubeship_home/endpoints/registry.config
                             Please refer to qubeship_home/endpoints/registry.config.template for example.
                        BETA Users: this is done automatically.
-d.  --install-target : if you want to register  a default target endpoint for deployment , set value to one of the supported cluster types
+d. --install-target : if you want to register  a default target endpoint for deployment , set value to one of the supported cluster types
                        supported cluster values are : ["minikube"]
                        Community Users:
                          Qubeship will expect  the kubernetes config details to be provided by user in qubeship_home/endpoints/kube.config
                          Please refer to qubeship_home/endpoints/kube.config.template for example.
                        BETA Users:
                          this is done automatically.
-e.  --install-sample-projects install sample qubeship projects
+e. --install-sample-projects install sample qubeship projects
 
 EOF
 )
