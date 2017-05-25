@@ -102,9 +102,6 @@ e.  --install-sample-projects   install sample qubeship projects
 
 ```
 
-2. terms
-    * Default organization: the organization that has administration privileges. Members of this group have higher permissions that other members in your company.
-
 ### Post Install - viewing services deployed to qubeship
 In order to view the services deployed via qubeship, you will have to take some special steps. This is necessary because the local kubernetes installation doesn't give access to services over standard endpoints. As a one time setup effort, you have to run this from the bootsrap directory.
 ```
