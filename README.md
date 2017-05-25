@@ -19,6 +19,8 @@
     CONTAINER ID        IMAGE                                                             COMMAND                  CREATED             STATUS                  PORTS                                                                      NAMES
 ```
 ----
+5. Qubeship uses firebase which is a service backed by google cloud platform. Please make sure you are able to connect to       firebase from within your corporate firewalls
+
 ## Install
 
 1. Clone the repo
@@ -57,10 +59,10 @@ APP: http://192.168.99.100:7000
 
 ### Features:
 1. Github.com / Github Enterprise
-2. Registry support : Private Docker Registry , DockerHub, Quay.io
-3. Deployment: Kubernetes , Minikube
-4. Default out of the box toolchains for python , java, gradle and go
-5. Default out of the box opiniion for end to end build, test and deploy
+2. Registry support : Private Docker Registry, DockerHub, Quay.io
+3. Deployment: Kubernetes, Minikube
+4. Default out of the box toolchains for python, java, gradle and go
+5. Default out of the box opinion for end to end build, test and deploy
 6. Sonar Qube
 
 
