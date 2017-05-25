@@ -19,7 +19,7 @@
     CONTAINER ID        IMAGE                                                             COMMAND                  CREATED             STATUS                  PORTS                                                                      NAMES
 ```
 ----
-5. Qubeship uses firebase which is a service backed by google cloud platform. Please make sure you are able to connect to       firebase from within your corporate firewalls
+5. Make sure that you can connect to the internet from within your corporate firewalls. Qubeship uses firebase and firebase    requires internet connectivity.
 
 ## Install
 
