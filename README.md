@@ -148,6 +148,11 @@ curl http://10.0.0.63/api
       * Make sure the VM has finished booting and is showing you a terminal UI.
       * In the bootstrap folder, do a: `./run.sh` to restart Qubeship's services.
    
+   1. Tried installing qubeship but script throws error getting credentials - err: exec: "Docker-credential-osxkeychain": executable file not found in $PATH        out: ``
+
+        Make sure docker login command works successfully. If docker login command gives you a similar docker-credentials-osxkeychain issue follow the below steps to resolve it.
+        a. Open ./docker/config.json file and see if your file has "credsStore": "osxkeychain" key value pair and if it does exist then you need to download docker-credential-osxkeychain from https://github.com/docker/docker-credential-helpers/releases and save it to your usr/local/bin directory.
+        
    1. How do I install using Github Enterprise?
    1. How to install Qubeship with Kubernetes?
    1. How to install Qubeship with a default Docker registry?
