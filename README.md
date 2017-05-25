@@ -52,7 +52,7 @@ APP: http://192.168.99.100:7000
 
 ### Uninstall:
 1. If your release has errors, simply run the following from the qubeship release directory
-	./uninstall.sh —remove-minikube
+	./uninstall.sh
 2. Restart the installation process
 
 ### Features:
