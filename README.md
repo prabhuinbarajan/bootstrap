@@ -34,11 +34,11 @@ git clone https://github.com/Qubeship/bootstrap && cd bootstrap && git checkout 
    * **Community users**: create  scm.config file in qubeship_home/config. For instructions, please refer to: https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md
 
 3.  Run the install script
-```
-./install.sh --username <githubusername> --password [gitpassword]
-```
+<pre>
+./install.sh --username <i>github_username</i> --password [github_password]
+</pre>
 
-Note: please refer to [Help](#help) for all available agruments.
+Note: if you are the **Github Enterprise** user, the argument <code>--github-host <i>github_enterprise_url</i></code> should be also passed to the script. Please refer to [Help](#help) for all available agruments.
 
 At the end of installation, you should see a message like this
 ```
