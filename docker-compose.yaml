@@ -386,7 +386,6 @@ services:
       - builder_home_data:/data:rw
       - builder_home_opt:/opt:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /usr/local/bin/docker:/usr/local/bin/docker:z
 
   qube_builder_slave:
     env_file:
