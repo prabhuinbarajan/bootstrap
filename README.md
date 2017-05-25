@@ -124,7 +124,7 @@ curl http://10.0.0.63/api
 {"api": "hello world"}
 ```   
 Step 3: 
-You are done with the install and configuration. To ship your first project, tell Qubeship where to put the project. If you are using the UI, use our tutorial that you can find here <link>. If you are using the CLI, here is more information <http://qubeship.io/docs>.
+You're done! Now you can use Qubeship to import your first project from your repo.  [Use our handy web app to do this](http://qubeship.nickelled.com/welcome) or if you prefer, [use our command-line interface](http://qubeship.io/docs)
 
 ### FAQ:
    1. How to stop Qubeship services:
