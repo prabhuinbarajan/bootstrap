@@ -302,6 +302,7 @@ services:
       - qube_builder
     links:
       - qube_builder
+    restart: on-failure
 
   api_registry:
     env_file:
