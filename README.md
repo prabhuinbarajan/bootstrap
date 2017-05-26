@@ -148,10 +148,23 @@ curl http://10.0.0.63/api
       * Make sure the VM has finished booting and is showing you a terminal UI.
       * In the bootstrap folder, do a: `./run.sh` to restart Qubeship's services.
    
-   1. Tried installing qubeship but script throws error getting credentials - err: exec: "Docker-credential-osxkeychain": executable file not found in $PATH        out: ``
+   1. I tried installing Qubeship, but the script is giving me an error: exec: “Docker-credential-osxkeychain”: executable file not found in $PATH out: ``.         What’s wrong?
 
-        Make sure docker login command works successfully. If docker login command gives you a similar docker-credentials-osxkeychain issue follow the below steps to resolve it.
-        a. Open ./docker/config.json file and see if your file has "credsStore": "osxkeychain" key value pair and if it does exist then you need to download docker-credential-osxkeychain from https://github.com/docker/docker-credential-helpers/releases and save it to your usr/local/bin directory.
+    It sounds like your config file is slightly misconfigured. This can happen if you’ve converted from Docker for Mac to Docker Toolbox, or  similar nonstandard situations. Your system thinks that your credentials are being stored on an external location (which is good, as it’s typically much more secure than storing it locally), but it lacks the actual keychain executable to make the connection. You can confirm this by looking in your ./docker/config.json file for
+    “credsStore”: “osxkeychain”
+    If you see it, then you’ve got confirmation. To fix this, you have two options:
+
+    a. Install the keychain: Open ./docker/config.json and see if your file has
+           “credsStore”: “osxkeychain”
+    If it does, then you need to go to https://github.com/docker/docker-credential-helpers/releases, find the Release version marked ‘Latest release’ (probably the top block), and then click ‘docker-credential-osxkeychain-v#.#.#-#####.tar.gz’ where ‘#.#.#’ is the release number. Unzip the downloaded file, and then put the resulting ‘docker-credential-osxkeychain’ executable file into your /usr/local/bin directory. Now try installing Qubeship again.
+
+    --- or ---
+
+    b. Tell your system you want to store your credentials locally: Simply remove the “credsStore”: “osxkeychain” from ./docker/config.json and then try installing Qubeship again. Easy, but less secure.
+
+    Again, we highly recommend that you try for option ‘a’ as it’s definitely the most secure way to go.
+
+
         
    1. How do I install using Github Enterprise?
    1. How to install Qubeship with Kubernetes?
