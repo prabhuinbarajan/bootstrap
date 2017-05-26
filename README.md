@@ -61,6 +61,90 @@ APP: http://192.168.99.100:7000
 5. Default out of the box opiniion for end to end build, test and deploy
 6. Sonar Qube
 
+### Github Configuration 
+There are three primary interfaces to Qubeship. 
+  * Qubeship GUI application - Qubeship user interface access
+  * Qubeship CLI application - Qubeship command line access
+  * Qubeship Builder - orchestrates the Qubeship workflow
+
+With open source Qubeship, you only have access to the Builder only. 
+
+Qubeship manages authentication for all three interfaces through Github OAuth. This allows for single sign-on 
+through Github identity management. The first time you use Qubeship, register the Builder 
+as an 0Auth application in GitHub. You only need to do this once. 
+ 
+To configure OAuth applications, enter the following information in GitHub OAuth:
+
+#### 1. Builder:  
+```
+    Client Name : qubeship-builder
+    Home Page : https://qubeship.io
+    Description : Qubeship Builder
+    call back URL: http://<docker endpoint>:8080/securityRealm/finishLogin
+```
+Copy and paste the client id and secret into the qubeship_home/config/scm.config 
+in the variables **GITHUB_BUILDER_CLIENTID** and **GITHUB_BUILDER_SECRET**
+
+#### 2. CLI: 
+```
+    Client Name : qubeship-cli
+    Home Page : https://qubeship.io
+    Description : Qubeship CLI client
+    call back URL: http://cli.qubeship.io/index.html
+```
+Copy and paste the client id and secret into the qubeship_home/config/scm.config 
+in the variables **GITHUB_CLI_CLIENTID** and **GITHUB_CLI_SECRET**
+
+#### 3. GUI:  
+```
+    Client Name : qubeship-gui
+    Home Page : https://qubeship.io
+    Description : Qubeship GUI client
+    call back URL:  http://<docker endpoint>:7000/api/v1/auth/callback?provider=github
+```
+
+Copy and paste the client id and secret into the qubeship_home/config/scm.config 
+in the variables **GITHUB_GUI_CLIENTID** and **GITHUB_GUI_SECRET**
+
+### Other Configuration Entries
+
+#### 4. GITHUB_ENTERPRISE_HOST:
+This is the url for the Github SCM instance to be used with qubeship. Qubeship will use this system as the defacto identity manager for Qubeship authentication , as well as use this for pulling the source code for builds. if this is left blank, the GITHUB_ENTERPRISE_HOST will be defaulted to https://github.com
+Qubeship currently supports only http(s):// . SSH is in pipeline. 
+
+```
+GITHUB_ENTERPRISE_HOST  =   # no trailing slashes , only schema://hostname
+```
+#### 5. SYSTEM_GITHUB_ORG:  
+This denotes the default system  organization for Qubeship. All users with membership to this org will be considered admin users for that Qubeship instance.   
+![Example](https://raw.githubusercontent.com/Qubeship/bootstrap/master/GithubORG.png)  
+if this is left blank, the installers personal github org will be used as default.  
+
+```
+SYSTEM_GITHUB_ORG  =  # if left blank , default will be install  users personal github org
+```
+
+### Config File Example
+
+This is what the config file looks like:
+```
+#optional - use only for onprem github : format : https://github_enterprise_host (no trailing slash)
+GITHUB_ENTERPRISE_HOST=
+
+# required
+SYSTEM_GITHUB_ORG=
+# Qubeship GUI client Authentication Realm
+GITHUB_GUI_CLIENTID=
+GITHUB_GUI_SECRET=
+# Qubeship CLI client Authentication Realm
+GITHUB_BUILDER_CLIENTID=
+GITHUB_BUILDER_SECRET=
+# Qubeship Builder Authentication Realm
+GITHUB_CLI_CLIENTID=
+GITHUB_CLI_SECRET=
+```
+
+
 
 ### FAQ:
    1. How do I install against Github Enterprise
