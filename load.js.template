@@ -86,7 +86,7 @@ db.Toolchain.insertMany(
 		"visibility" : "public",
 		"name" : "Qubeship-Jarvis-Toolchain",
 		"modifiedDate" : "1493803846",
-		"imageName" : "qubeship/jarvis-toolchain",
+		"imageName" : "jarvis-toolchain",
 		"isDefault" : false,
 		"tenantId" : "d25a61af-3f88-3c58-9bff-0c44244f1d42",
 		"createdBy" : "e2ba0158-f880-3f2c-b5eb-3e3745fd9c81",
@@ -98,7 +98,26 @@ db.Toolchain.insertMany(
 		"modifiedBy" : "e2ba0158-f880-3f2c-b5eb-3e3745fd9c81",
 		"endpointId" : "123",
 		"status" : "published"
-	}
+	},
+	{
+    "_id" : ObjectId("592cea54d2a4c00040fe3fff"),
+	"orgId" : "<SYSTEM_GITHUB_ORG>",
+    "visibility" : "public",
+    "createdDate" : "1496115796",
+    "modifiedDate" : "1496115796",
+    "endpointId" : "e123456",
+    "isDefault" : false,
+    "manifest" : "LS0tCmJ1aWxkLmNvbXBpbGU6ICJjZCBGcm9udGVuZCAmJiBucG0gaW5zdGFsbCAmJiBucG0gcnVuIGJ1aWxkICYmIG5wbSBzdGFydCAmJiBjZCAuLi9TZXJ2aWNlcyAmJiBtdm4gcGFja2FnZSIKYnVpbGQudW5pdHRlc3Q6ICJlY2hvIHVuaXR0ZXN0IgpidWlsZC5zdGF0aWNfY29kZV9hbmFseXNpczogImVjaG8gc3RhdGljX2NvZGVfYW5hbHlzaXMiCmRlcGxveV90b19xYS5mdW5jdGlvbmFsX3Rlc3Q6ICJlY2hvIGZ1bmN0aW9uYWxfdGVzdCIKZGVwbG95X3RvX3FhLm1hbnVhbF9hcHByb3ZlOiAiZWNobyBtYW51YWxfYXBwcm92ZSIK",
+    "name" : "qube-java-nodejs-alpine",
+	"tenantId" : "d25a61af-3f88-3c58-9bff-0c44244f1d42",
+    "isFinal" : true,
+    "createdBy" : "e92c1dbd-4442-349e-ac13-7abfcf088533",
+    "imageName" : "qube-java-nodejs",
+    "language" : "java",
+    "tagName" : "latest",
+    "status" : "published",
+    "modifiedBy" : "e92c1dbd-4442-349e-ac13-7abfcf088533"
+    }
 ]
 );
 use opinions;
