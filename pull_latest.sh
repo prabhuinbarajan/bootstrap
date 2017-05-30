@@ -9,5 +9,7 @@ if [ -f $BETA_CONFIG_FILE ]; then
     docker login -u $BETA_ACCESS_USERNAME -p $BETA_ACCESS_TOKEN quay.io
     files="$files -f docker-compose-beta.yaml"
 fi
-
+SECONDS=0
+echo "${BASH_SOURCE[0]} started"
 docker-compose $files pull
+echo "${BASH_SOURCE[0]} completed  in $SECONDS"
