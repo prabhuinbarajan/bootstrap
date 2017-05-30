@@ -87,6 +87,10 @@ fi
 if [ ! -z "$uninstall_images" ]; then
     if [ "$uninstall_images" == "--remove-images" ]; then
         set -x
-        docker rmi $(docker images | grep "qubeship/" | awk '{print $3}')
+        images=$(docker images | grep "qubeship/" | awk '{print $3}')
+        if [ ! -z  "$images" ]; then
+            echo "force remove: $images"
+            docker rmi -f $images
+        fi
     fi
 fi
