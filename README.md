@@ -21,17 +21,16 @@ You should be able to run the following command and get a valid output:
 git clone https://github.com/Qubeship/bootstrap
 cd bootstrap ; git checkout community_beta 
 ```
-or 
-Download the release
-```
-   mkdir qubeship-beta && curl -sL https://github.com/Qubeship/bootstrap/archive/beta-v1.0.tar.gz | tar xvz -C qubeship-beta --strip-components=1 && cd qubeship-beta
-```
 
 
 2. **Note** 
    * **Beta Users**: copy the **beta.config** file to qubeship_home/config  (** this file will be a part of beta welcome kit email that you received from qubeship **)
    
    * **Community users**: create  scm.config file in qubeship_home/config. For instructions, please refer to: https://github.com/Qubeship/bootstrap/blob/master/OPEN_SOURCE_README.md
+   
+  ```
+    ./pull_latest.sh
+  ```
 
 3.  Run the install script
 ```
