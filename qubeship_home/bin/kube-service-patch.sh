@@ -8,13 +8,13 @@ export PATH=$DIR/qubeship_home/bin:$PATH
 
 if [ "$(id -u)" != "0" ]; then
     echo "this script needs to be run as root. You dont seem to have root privileges"
-    echo "Usage: sudo  ${BASH_SOURCE[0]} \$(minikube ip)"
+    echo "Usage: sudo  ${BASH_SOURCE[0]} \$($DIR/minikube ip)"
     exit 1
 fi
 ip=$1
 if [ -z "$ip" ]; then
     echo "ERROR: route not specified"
-	echo "Usage: sudo  ${BASH_SOURCE[0]} \$(minikube ip)"
+	echo "Usage: sudo  ${BASH_SOURCE[0]} \$($DIR/minikube ip)"
     exit 1
 fi
 set -x
