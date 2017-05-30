@@ -32,9 +32,8 @@ files="-f docker-compose.yaml"
 if [ !  -z "$BETA_ACCESS_USERNAME" ]; then
     files="$files -f docker-compose-beta.yaml"
 fi
-docker rm -f
 #docker rm -f $(docker ps --filter name=bootstrap --format "{{lower .ID}}")
-docker rm -f $(docker ps -a | grep "qubeship/" | awk '{print $1}')
+
 process_ids=$(docker-compose $files ps -q 2>/dev/null)
 set +e
 if [ ! -z  "$process_ids" ]; then
@@ -42,6 +41,11 @@ if [ ! -z  "$process_ids" ]; then
     docker rm -f $process_ids
 else
     echo "no containers alive in bootstrap"
+fi
+stray_process_ids=$(docker ps -a | grep "qubeship/" | awk '{print $1}')
+if [ ! -z  "$stray_process_ids" ]; then
+    echo "force remove: $stray_process_ids"
+    docker rm -f $stray_process_ids
 fi
 #docker-compose $files down -v 2>/dev/null
 #docker volume ls | grep bootstrap_ | awk '{print $2}' | xargs docker volume rm
