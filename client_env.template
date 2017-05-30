@@ -17,3 +17,5 @@ QUBE_HOST=<qube_host>
 ANALYTICS_ENDPOINT=https://qubeship-analytics.firebaseio.com
 CI_ADDR=http://qube_builder:<qube_builder_port>
 SYSTEM_GITHUB_ORG=<system_github_org>
+QUBE_CONSUL_SERVICE=qube-consul
+QUBE_VAULT_SERVICE=qube-vault

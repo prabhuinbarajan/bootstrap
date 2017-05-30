@@ -7,6 +7,7 @@ export PATH=$PATH:$DIR/qubeship_home/bin
 set -o allexport
 source $DIR/qube_common_functions.sh
 eval $(get_options $@)
+source .env
 
 set -e
 if [ $verbose ]; then
@@ -36,9 +37,8 @@ fi
 #extra_args=""
 
 qube auth login $extra_args
-
 orgId=$(qube auth user-info --org | jq -r '.tenant.orgs[0].id')
-sed "s/<SYSTEM_GITHUB_ORG>/${orgId}/g" load.js.template | sed  "s/beta_access/${is_beta:-false}/g" > load.js
+sed "s/<SYSTEM_GITHUB_ORG>/${orgId}/g" load.js.template | sed  "s/beta_access/${is_beta:-false}/g" |  sed  "s/install_registry/${install_registry:-false}/g" | sed  "s/install_target_cluster/${install_target_cluster:-false}/g" > load.js
 
 
 docker cp load.js $(docker-compose ps -q qube_mongodb 2>/dev/null):/tmp
@@ -49,13 +49,22 @@ RUN_VAULT_CMD="docker-compose exec qube-vault vault"
 $RUN_VAULT_CMD auth $VAULT_TOKEN
 
 access_token=$($RUN_VAULT_CMD read -field=access_token secret/resources/$TENANT/$ENV_TYPE/$ENV_ID/qubebuilder)
+qubeuser=$($RUN_VAULT_CMD read -field=user secret/resources/$TENANT/$ENV_TYPE/$ENV_ID/qubebuilder)
 
-set +e +x
+set +e 
 #if [ $verbose ]; then
 #fi
-for i in `seq 1 3`;
+docker-compose $files exec -T qube_builder bash -c 'rm -rf /home/jenkins/plugins/docker-plugin/WEB-INF/lib/jersey-apache-connector*.jar' 2>/dev/null
+docker-compose $files exec -T qube_builder bash -c 'grep -Ril ApacheConnector /home/jenkins/plugins/docker-plugin/WEB-INF/ | xargs ls -lorth;' 2>/dev/null
+CRUMB=$(curl -s --user $qubeuser:$access_token  http://${QUBE_HOST}:${QUBE_BUILDER_PORT}/crumbIssuer/api/xml?xpath=concat\(//crumbRequestField,%22:%22,//crumb\))
+curl -X POST -H $CRUMB -u $qubeuser:$access_token -s http://${QUBE_HOST}:${QUBE_BUILDER_PORT}/restart
+sleep 10
+set +x
+for i in `seq 1 5`;
 do
-    output_ready=$(curl -u qubebuilder:$access_token -s http://${QUBE_HOST}:${QUBE_BUILDER_PORT})
+    #output_ready=$(curl -u $qubeuser:$access_token -s "http://${QUBE_HOST}:${QUBE_BUILDER_PORT}/jnlpJars/jenkins-cli.jar")
+    url_ready http://"${QUBE_HOST}:${QUBE_BUILDER_PORT}/jnlpJars/jenkins-cli.jar"
+
     output=$(qube service postconfiguration | jq -r '.status')
     if [  "$output"=="Accepted"  ]; then
         qube_service_configuration_complete="true"
@@ -68,20 +77,20 @@ if [ "$qube_service_configuration_complete" == "false" ]; then
     echo "error in qube service configuration. please rerun post configuration step ./postconfiguration.sh"
     exit 1
 fi
-if [ $verbose ]; then
+if [ "$verbose" ]; then
     set -x
 fi
 
 #$DIR/run.sh
-if [ $is_beta ];  then
-    if [ $install_target_cluster ]; then
-        if [ $target_cluster_type == "minikube" ]; then
+if [ "$is_beta" == "true" ];  then
+    if [ "$install_target_cluster" == "true" ]; then
+        if [ "$target_cluster_type" == "minikube" ]; then
             echo "provisioning minikube"
             ./provision_minikube.sh
          fi
     fi
 fi
-if [ $install_registry ];  then
+if [ "$install_registry" == "true" ];  then
     if [ -e $REGISTRY_CONFIG_FILE ]; then
         source $REGISTRY_CONFIG_FILE
         registry_endpoint_id=58edb422238503000b74d7a6
@@ -98,7 +107,7 @@ if [ $install_registry ];  then
     fi
 fi
 
-if [ $install_target_cluster ]; then
+if [ "$install_target_cluster" == "true" ]; then
     if [ -e $KUBE_CONFIG_FILE ]; then
         source $KUBE_CONFIG_FILE
         minikube_endpoint_id=58e3fad42a0603000b3e58a8
@@ -123,7 +132,7 @@ echo "You can use your GITHUB credentials to login !!!!"
 if [ ! -z $BETA_ACCESS_USERNAME ];  then
     echo "APP: $APP_URL"
 fi
-if [ $install_sample_projects ] ; then
+if [ "$install_sample_projects" == "true" ] ; then
     pguid=$(uuidgen)
     jguid=$(uuidgen)
     qube service postconfiguration

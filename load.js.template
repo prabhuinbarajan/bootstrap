@@ -127,14 +127,14 @@ db.Opinion.insertMany(
 ]
 );
 use qubeship;
-if (true) {
+if (beta_access) {
     db.endPoint.remove(
         {_id: ObjectId("58edb422238503000b74d7a6")}
     );
     db.endPoint.remove(
         {_id: ObjectId("58e3fad42a0603000b3e58a8")}
     );
-
+    if (install_registry) {
     db.endPoint.insertMany(
     [
         {
@@ -160,7 +160,12 @@ if (true) {
             "additionalInfo" : {
                 "account" : "someregistryprefix"
             }
-        },
+        }
+    ]);
+    }
+    if(install_target_cluster) {
+    db.endPoint.insertMany(
+    [
         {
             "_id" : ObjectId("58e3fad42a0603000b3e58a8"),
             "_class" : "com.ca.io.qubeship.model.EndPoint",
@@ -187,4 +192,5 @@ if (true) {
             }
         }
     ]);
+    }
 }

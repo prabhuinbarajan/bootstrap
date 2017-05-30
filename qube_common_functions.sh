@@ -5,6 +5,18 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 export PATH=$PATH:$DIR/qubeship_home/bin
 
+
+function url_ready() {
+  url="$1"
+  echo -n "Waiting for ${url} to become available."
+  while [ ! "200" = "$(curl -sLiI -w "%{http_code}\\n" -o /dev/null ${url})" ]; do
+    echo -n '.'
+    sleep 1
+  done
+  echo 'ready.'
+}
+
+
 BETA_CONFIG_FILE=qubeship_home/config/beta.config
 SCM_CONFIG_FILE=qubeship_home/config/scm.config
 KUBE_CONFIG_FILE=$DIR/qubeship_home/endpoints/kube.config

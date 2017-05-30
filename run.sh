@@ -16,6 +16,13 @@ if [ -e .client_env ]; then
 else
   ./login.sh
 fi
+docker-compose run --rm -T busybox sh -c "echo clearing raft; rm -rf /consul/data/raft/peers.*"
+
+docker-compose up -d $QUBE_VAULT_SERVICE $QUBE_CONSUL_SERVICE  2>/dev/null
+
+RUN_VAULT_CMD="docker-compose exec $QUBE_VAULT_SERVICE vault"
+$RUN_VAULT_CMD unseal $UNSEAL_KEY
+
 if [ -e $SCM_CONFIG_FILE ] ; then
     source $SCM_CONFIG_FILE
 fi
@@ -55,3 +62,4 @@ if [ $is_osx ]; then
     fi
 
 fi
+

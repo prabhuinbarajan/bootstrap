@@ -426,7 +426,7 @@ services:
       ENV_TYPE: ${ENV_TYPE}
       VAULT_TOKEN: ${VAULT_TOKEN}
       ENV_ID: ${ENV_ID}
-      CI_ADDR: ${QUBE_BUILDER_URL}
+      CI_ADDR: http://${QUBE_HOST}:${QUBE_BUILDER_PORT}
       CI_USER: qubebuilder
     image: ${GIT_LISTENER_IMAGE}:${GIT_LISTENER_VERSION}
     depends_on:
@@ -484,7 +484,7 @@ services:
   qube-consul:
     image: consul:latest
     container_name: qube-consul
-    command: agent -server -bootstrap -ui -client 0.0.0.0 -config-file=/consul/data/consul.json
+    command: agent -server -bootstrap-expect=1 -data-dir="/consul/data" -ui -client 0.0.0.0 -config-file=/consul/data/consul.json
     volumes:
       - qubeship-consul-data:/consul/data:rw
     ports:

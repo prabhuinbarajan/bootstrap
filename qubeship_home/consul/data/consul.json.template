@@ -2,5 +2,8 @@
   "acl_datacenter":"dc1",
   "acl_default_policy":"allow",
   "acl_down_policy":"allow",
-  "acl_master_token":"$consul_acl_master_token"
+  "acl_master_token":"$consul_acl_master_token",
+  "skip_leave_on_interrupt": false,
+  "leave_on_terminate": true
+
 }
