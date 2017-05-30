@@ -2,7 +2,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 set -o allexport -x -e
-touch .client_env
+touch $DIR/.client_env
 BETA_CONFIG_FILE=$DIR/qubeship_home/config/beta.config
 files="-f docker-compose.yaml"
 if [ -f $BETA_CONFIG_FILE ]; then
