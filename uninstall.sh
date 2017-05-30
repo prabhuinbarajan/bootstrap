@@ -32,7 +32,9 @@ files="-f docker-compose.yaml"
 if [ !  -z "$BETA_ACCESS_USERNAME" ]; then
     files="$files -f docker-compose-beta.yaml"
 fi
+docker rm -f
 #docker rm -f $(docker ps --filter name=bootstrap --format "{{lower .ID}}")
+docker rm -f $(docker ps -a | grep "qubeship/" | awk '{print $1}')
 process_ids=$(docker-compose $files ps -q 2>/dev/null)
 set +e
 if [ ! -z  "$process_ids" ]; then
