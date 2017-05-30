@@ -2,6 +2,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 uninstall_minikube=$1
+uninstall_images=$2
 output=`docker ps -a`
 docker_client_status=$?
 
@@ -61,17 +62,25 @@ fi
 if [ $is_osx ]; then
     set +e
     if [ ! -z "$uninstall_minikube" ]; then
-        set -x
-        echo "uninstalling minikube"
-        rm -rf ~/.minikube/*
-        rm -rf qubeship_home/endpoints/kube.config
-        if [ ! -z "$(which VBoxManage)" ]; then
-            VBoxManage controlvm minikube poweroff
-            VBoxManage unregistervm minikube -delete
+        if [ "$uninstall_minikube" == "--remove-minikube" ]; then
+            set -x
+            echo "uninstalling minikube"
+            rm -rf ~/.minikube/*
+            rm -rf qubeship_home/endpoints/kube.config
+            if [ ! -z "$(which VBoxManage)" ]; then
+                VBoxManage controlvm minikube poweroff
+                VBoxManage unregistervm minikube -delete
+            fi
         fi
-
     fi
     set -e
 else
     echo "uninstall minikube not supported"
+fi
+
+if [ ! -z "$uninstall_images" ]; then
+    if [ "$uninstall_images" == "--remove-images" ]; then
+        set -x
+        docker rmi $(docker images | grep "qubeship/" | awk '{print $3}')
+    fi
 fi
