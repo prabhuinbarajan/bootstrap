@@ -313,6 +313,7 @@ services:
       - qube_builder
       - qube-consul
       - qube-vault
+    restart: on-failure
 
   api_registry:
     env_file:
