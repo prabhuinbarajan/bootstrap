@@ -42,10 +42,9 @@ fi
 curl -sLo $DIR/qubeship_home/bin/jq $jq_url && chmod +x $DIR/qubeship_home/bin/jq
 QUBE_DOCKER_HOST=${DOCKER_HOST}
 if [ -z $DOCKER_HOST ]; then
-    if [  -z "$(ifconfig $iface | grep $DEFAULT_DOCKER_HOST)" ]; then
-        QUBE_DOCKER_HOST=$(ipconfig getifaddr en0)
-    else
-       QUBE_DOCKER_HOST=$DEFAULT_DOCKER_HOST
+    QUBE_DOCKER_HOST=$(ipconfig getifaddr en0)
+    if [ -z $QUBE_DOCKER_HOST ]; then
+        QUBE_DOCKER_HOST=localhost
     fi
     echo "INFO: DOCKER_HOST is not defined. setting QUBE_DOCKER_HOST to $QUBE_DOCKER_HOST"
 fi
@@ -60,6 +59,9 @@ if [ $is_osx ]; then
         if [  -z "$(ifconfig $iface | grep $DEFAULT_DOCKER_HOST)" ]; then
             echo "ERROR: DOCKER_MACHINE doesnt run in default setup. Please run sudo ./qube_fix_ip.sh before running install"
             exit -1
+        else
+            QUBE_DOCKER_HOST=$DEFAULT_DOCKER_HOST
+            echo "WARN: QUBE_DOCKER_HOST alias found setting  QUBE_DOCKER_HOST to  $DEFAULT_DOCKER_HOST "
         fi
     else
         echo "INFO: QUBE_DOCKER_HOST running under $DEFAULT_DOCKER_HOST. - $QUBE_DOCKER_HOST"
