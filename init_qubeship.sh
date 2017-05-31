@@ -42,9 +42,10 @@ fi
 curl -sLo $DIR/qubeship_home/bin/jq $jq_url && chmod +x $DIR/qubeship_home/bin/jq
 QUBE_DOCKER_HOST=${DOCKER_HOST}
 if [ -z $DOCKER_HOST ]; then
-    QUBE_DOCKER_HOST=$(ipconfig getifaddr en0)
-    if [ -z $QUBE_DOCKER_HOST ]; then
-        QUBE_DOCKER_HOST=localhost
+    if [  -z "$(ifconfig $iface | grep $DEFAULT_DOCKER_HOST)" ]; then
+        QUBE_DOCKER_HOST=$(ipconfig getifaddr en0)
+    else
+       QUBE_DOCKER_HOST=$DEFAULT_DOCKER_HOST
     fi
     echo "INFO: DOCKER_HOST is not defined. setting QUBE_DOCKER_HOST to $QUBE_DOCKER_HOST"
 fi
