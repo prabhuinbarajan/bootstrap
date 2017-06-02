@@ -84,6 +84,8 @@ services:
       CI_ADDR: http://qube_builder:${QUBE_BUILDER_PORT}
       QUBE_SERVER_SCHEME: http
       LISTENER_URL: ${NGROK_HOSTNAME}
+      QUBE_OPINIONENGINE_URL: ${QUBE_OPINIONENGINE_URL}
+      QUBE_PIPELINE_SCRIPT: ${QUBE_PIPELINE_SCRIPT}
     image: ${PROJECT_API_IMAGE}:${PROJECT_API_VERSION}
     ports:
       - "${PROJECT_API_PORT}:${PROJECT_API_PORT}"
@@ -408,6 +410,7 @@ services:
     links:
       - busybox:registry.beta.qubeship.io
 #      - /usr/local/bin/docker:/usr/local/bin/docker:z
+    #restart: on-failure
 
   qube_builder_slave:
     env_file:
