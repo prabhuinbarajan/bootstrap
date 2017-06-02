@@ -16,9 +16,10 @@ if [ -e .client_env ]; then
 else
   ./login.sh
 fi
-docker-compose run --rm -T busybox sh -c "echo clearing raft; rm -rf /consul/data/raft/peers.*"
-
-docker-compose up -d $QUBE_VAULT_SERVICE $QUBE_CONSUL_SERVICE  2>/dev/null
+docker-compose run --rm -T $QUBE_CONSUL_SERVICE  sh -c "echo clearing raft; rm -rf /consul/data/raft/peers.*" 2>/dev/null
+docker-compose up -d $QUBE_CONSUL_SERVICE  2>/dev/null
+sleep 10
+docker-compose up -d $QUBE_VAULT_SERVICE  2>/dev/null
 
 RUN_VAULT_CMD="docker-compose exec $QUBE_VAULT_SERVICE vault"
 $RUN_VAULT_CMD unseal $UNSEAL_KEY
