@@ -396,6 +396,7 @@ services:
     #command: ["-c",  "while true ; do sleep 300; done"]
     depends_on:
       - qube-vault-opener
+      - qube-consul
     links:
       - qube-consul
       - qube-vault

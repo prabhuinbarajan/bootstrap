@@ -117,7 +117,26 @@ db.Toolchain.insertMany(
     "tagName" : "latest",
     "status" : "published",
     "modifiedBy" : "e92c1dbd-4442-349e-ac13-7abfcf088533"
-    }
+    },
+    {
+	    "_id" : ObjectId("5938814c8290230035589f2f"),
+	    "endpointId" : "593877d7bfe5230020984464",
+		"orgId" : "<SYSTEM_GITHUB_ORG>",
+	    "language" : "java",
+	    "visibility" : "private",
+	    "tenantId" : "1b30b103-2da7-3bc1-bf04-7bb937e79e6a",
+	    "imageName" : "qube-java-nodejs",
+	    "modifiedDate" : "1496875340",
+	    "isDefault" : false,
+	    "tagName" : "squashed",
+	    "isFinal" : true,
+	    "name" : "qube-java-nodejs-debian",
+	    "status" : "published",
+	    "manifest" : "LS0tDQpidWlsZC5jb21waWxlOiAiY2QgRnJvbnRlbmQgJiYgbnBtIGluc3RhbGwgJiYgbnBtIHJ1biBidWlsZCAmJiBucG0gc3RhcnQgJiYgY2QgLi4vU2VydmljZXMgJiYgbXZuIHBhY2thZ2UiDQpidWlsZC51bml0dGVzdDogImVjaG8gdW5pdHRlc3QiDQpidWlsZC5zdGF0aWNfY29kZV9hbmFseXNpczogIm12biAtRG1hdmVuLnJlcG8ucmVtb3RlPWh0dHA6Ly9uZXh1cy5xdWJlc2hpcC5pby9yZXBvc2l0b3J5L21hdmVuLXJlbGVhc2VzLyxxdWJlc2hpcC1yZWxlYXNlcyBjb20uZm9ydGlmeS5wcy5tYXZlbi5wbHVnaW46c2NhLW1hdmVuLXBsdWdpbjpjbGVhbiBjb20uZm9ydGlmeS5wcy5tYXZlbi5wbHVnaW46c2NhLW1hdmVuLXBsdWdpbjp0cmFuc2xhdGUgY29tLmZvcnRpZnkucHMubWF2ZW4ucGx1Z2luOnNjYS1tYXZlbi1wbHVnaW46c2NhbiAgLURza2lwVGVzdCINCmRlcGxveV90b19xYS5mdW5jdGlvbmFsX3Rlc3Q6ICJlY2hvIGZ1bmN0aW9uYWxfdGVzdCINCmRlcGxveV90b19xYS5tYW51YWxfYXBwcm92ZTogImVjaG8gbWFudWFsX2FwcHJvdmUi",
+	    "createdDate" : "1496875340",
+	    "createdBy" : "e92c1dbd-4442-349e-ac13-7abfcf088533",
+	    "modifiedBy" : "e92c1dbd-4442-349e-ac13-7abfcf088533"
+	}
 ]
 );
 use opinions;
@@ -209,7 +228,31 @@ if (beta_access) {
             "additionalInfo" : {
                 "namespace" : "somenamespace"
             }
-        }
+        },
+        {
+		    "_id" : ObjectId("593877d7bfe5230020984464"),
+		    "_class" : "com.ca.io.qubeship.model.EndPoint",
+		    "tenant" : "1b30b103-2da7-3bc1-bf04-7bb937e79e6a",
+            "orgId" : "<SYSTEM_GITHUB_ORG>",
+		    "owner" : "e92c1dbd-4442-349e-ac13-7abfcf088533",
+		    "credentialId" : "36bcd9b8-47eb-4289-b29a-2f855beb143d",
+		    "credentialPath" : "secret/resources/a1380669-9252-3d1a-b3ac-3d13affc7504/non_production/creds/36bcd9b8-47eb-4289-b29a-2f855beb143d",
+		    "createdBy" : "e92c1dbd-4442-349e-ac13-7abfcf088533",
+		    "createdDate" : "1496872919007",
+		    "modifiedBy" : "e92c1dbd-4442-349e-ac13-7abfcf088533",
+		    "modifiedDate" : "1496872919007",
+		    "credentialType" : "username_password",
+		    "name" : "ca_registry",
+		    "provider" : "generic",
+		    "category" : "non_production",
+		    "endPoint" : "https://isl-dsdc.ca.com:5000/",
+		    "type" : "registry",
+		    "visibility" : "private_",
+		    "isDefault" : false,
+		    "additionalInfo" : {
+		        "account" : "qubeship"
+		    }
+		}
     ]);
     }
 }
