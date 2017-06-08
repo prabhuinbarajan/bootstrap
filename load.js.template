@@ -250,7 +250,7 @@ if (beta_access) {
 		    "visibility" : "private_",
 		    "isDefault" : false,
 		    "additionalInfo" : {
-		        "account" : "qubeship"
+		        "account" : "isl-dsdc.ca.com:5000/qubeship"
 		    }
 		}
     ]);
